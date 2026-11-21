@@ -1,13 +1,20 @@
 # Publie la PWA sur GitHub Pages, lancé à la main : onglet Actions → Pages → Run workflow (branche main).
+# Demande patch, minor ou major, incrémente la version (commit « Version x.y.z » et étiquette vx.y.z sur main), publie.
 # Le hook pre-push a déjà lancé toute la suite de tests avant que `main` arrive sur GitHub.
 # Adresse : https://semisens.github.io/masterscards/
 name: Pages
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: Quelle version publier ?
+        type: choice
+        options: [patch, minor, major]
+        default: patch
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -20,11 +27,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
       - run: npm ci
+      # `npm ci` active les hooks du dépôt (prepare) : ils lanceraient les tests au commit et au push de la version.
+      # Les tests ont déjà tourné sur le poste, au push de main.
+      - name: Hooks git coupés, identité du bot
+        run: |
+          git config core.hooksPath /dev/null
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Nouvelle version (${{ inputs.version }})
+        id: version
+        run: |
+          npm version ${{ inputs.version }} -m "Version %s"
+          version=$(node -p "require('./package.json').version")
+          echo "number=$version" >> "$GITHUB_OUTPUT"
+          echo "Version publiée : **$version** (${{ inputs.version }})" >> "$GITHUB_STEP_SUMMARY"
       - run: npm run build
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
@@ -34,6 +57,9 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+      # Seulement si le build a réussi : la version reste sur main, avec son étiquette.
+      - name: Commit et étiquette de la version ${{ steps.version.outputs.number }}
+        run: git push origin HEAD:main --follow-tags
 
   deploy:
     needs: build
