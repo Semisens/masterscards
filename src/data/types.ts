@@ -67,29 +67,57 @@ interface CardGroupBase {
 }
 
 /** Un groupe de cartes à garder, tel qu'écrit dans la configuration. */
-export interface CardGroupConfig extends CardGroupBase {
-  /** Cartes du paquet de 52. Absent : un groupe de jokers seulement. */
-  cards?: CardSpecConfig[]
-  /** Nombre de jokers du groupe (le paquet de 52 n'en a pas : on prend ceux de la boîte). */
-  jokers?: number
-  /** Carte montrée dans la liste et la vue à balayer. Absent : la première carte du groupe, ou le joker. */
-  display?: { rank: RankInput; suit: Suit } | JokerCard
-}
+export interface CardGroupConfig extends CardGroupBase, CardSetConfig {}
 
 /**
  * Un groupe de cartes du paquet à garder : une ligne de la vue liste, une page de la vue à balayer.
  * Ex. pour Trio, « 2 à 6 » réunit cinq rangs en trois couleurs, soit 15 cartes.
  */
-export interface CardGroup extends CardGroupBase {
-  /** Les cartes exactes du groupe, jokers exclus. */
+export interface CardGroup extends CardGroupBase, CardSet {}
+
+/** Les cartes d'un groupe ou d'une ligne de points, telles qu'écrites dans la configuration. */
+export interface CardSetConfig {
+  /** Cartes du paquet de 52. Absent : des jokers seulement. */
+  cards?: CardSpecConfig[]
+  /** Nombre de jokers (le paquet de 52 n'en a pas : on prend ceux de la boîte). */
+  jokers?: number
+  /** Carte montrée. Absent : la première carte, ou le joker. */
+  display?: { rank: RankInput; suit: Suit } | JokerCard
+}
+
+/** Les cartes d'un groupe ou d'une ligne de points, prêtes à l'emploi. */
+export interface CardSet {
+  /** Les cartes exactes, jokers exclus. */
   cards: DeckCard[]
-  /** Nombre de jokers du groupe. */
+  /** Nombre de jokers. */
   jokers: number
-  /** Les rangs du groupe, dans l'ordre du paquet. */
+  /** Les rangs, dans l'ordre du paquet. */
   ranks: Rank[]
-  /** Cartes du groupe, jokers compris. */
+  /** Cartes, jokers compris. */
   count: number
   display: DisplayCard
+}
+
+/** Une ligne de « Compter les points », telle qu'écrite dans la configuration. */
+export interface PointsRowConfig extends CardSetConfig {
+  /** Titre de la ligne (« Les rois »). */
+  label: string
+  /** Sous le titre (« Jokers compris. »). */
+  short?: string
+  /** Points rapportés par chacune de ces cartes. */
+  points: number
+  /** Mode connaisseur : la valeur d'origine (« 5 têtes »). Remplace `short`. */
+  expert?: string
+}
+
+/** Une ligne de « Compter les points » : ses cartes et ce qu'elles rapportent. */
+export type PointsRow = Omit<PointsRowConfig, keyof CardSetConfig> & CardSet
+
+/** L'écran facultatif « Compter les points » : une ligne par valeur. */
+export interface Points<Row = PointsRow> {
+  /** Phrase sous le titre. */
+  intro?: string
+  rows: Row[]
 }
 
 export interface TurnStep {
@@ -209,6 +237,8 @@ interface GameBase {
 export interface GameConfig extends GameBase {
   font?: FontConfig
   card_groups: CardGroupConfig[]
+  /** Facultatif : l'écran « Compter les points ». */
+  points?: Points<PointsRowConfig>
   tutorial: Tutorial<DiagramItemConfig, DeckCardConfig>
 }
 
@@ -217,5 +247,7 @@ export interface Game extends GameBase {
   /** Police du nom ; `url` est l'adresse du fichier embarqué, s'il y en a un. */
   font?: FontConfig & { url?: string }
   card_groups: CardGroup[]
+  /** Facultatif : l'écran « Compter les points » (après « Un tour », et depuis la saisie des scores). */
+  points?: Points
   tutorial: Tutorial
 }

@@ -176,6 +176,12 @@ const gameScreens = (game: Game): Screen[] => {
     { name: 'mise en place', url: `${url}/tutoriel/mise-en-place` },
     // Pas « Un tour » : sa table est celle de la mise en place, à l'identique (quelques cartes retournées) ;
     // la page peut défiler au besoin (choix de l'utilisateur, cahier des charges §5).
+    ...(game.points
+      ? [
+          { name: 'compter les points, classique', url: `${url}/tutoriel/points`, mode: 'classic' as const },
+          { name: 'compter les points, connaisseur', url: `${url}/tutoriel/points`, mode: 'expert' as const },
+        ]
+      : []),
     { name: 'qui joue ?', url: `${url}/joueurs` },
     { name: `partie sans prénoms, ${max} joueurs`, url: `${url}/partie`, game: game.id, party: unnamedParty(max) },
     {

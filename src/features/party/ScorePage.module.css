@@ -2,6 +2,11 @@
   margin: 0;
 }
 
+/* Le lien « Compter les points » garde sa largeur, à gauche. */
+.count {
+  display: flex;
+}
+
 .spacer {
   flex: 1;
 }

@@ -51,7 +51,7 @@ export function PlayersPage() {
   return (
     <Screen>
       <StepHeader
-        backTo={fromParty ? paths.party(game.id) : paths.turn(game.id)}
+        backTo={fromParty ? paths.party(game.id) : game.points ? paths.points(game.id) : paths.turn(game.id)}
         onSkip={fromParty ? undefined : () => void start(names.map(() => ''))}
       />
       <PageTitle>{fr.players.title}</PageTitle>

@@ -4,6 +4,8 @@ import { expandCards, toRank } from './deck.ts'
 import type {
   CardGroup,
   CardGroupConfig,
+  CardSet,
+  CardSetConfig,
   DeckCard,
   DeckCardConfig,
   DiagramItem,
@@ -11,6 +13,8 @@ import type {
   DisplayCard,
   Game,
   GameConfig,
+  PointsRow,
+  PointsRowConfig,
   TurnReveal,
 } from './types.ts'
 
@@ -55,42 +59,53 @@ function loadTurnReveal({ hand, across, center, played }: TurnReveal<DeckCardCon
   }
 }
 
+/** Des cartes prêtes à l’emploi (groupe ou ligne de points) : cartes exactes, jokers, rangs, nombre, carte montrée. */
+export function loadCardSet(set: CardSetConfig): CardSet {
+  const cards = expandCards(set.cards ?? [])
+  const jokers = set.jokers ?? 0
+  const ranks = RANKS.filter((rank) => cards.some((card) => card.rank === rank))
+  const display: DisplayCard = !set.display
+    ? (cards[0] ?? { joker: true })
+    : 'joker' in set.display
+      ? { joker: true }
+      : { rank: toRank(set.display.rank), suit: set.display.suit }
+  return { cards, jokers, ranks, count: cards.length + jokers, display }
+}
+
+/** Une ligne de « Compter les points » prête à l’emploi. */
+function loadPointsRow(row: PointsRowConfig): PointsRow {
+  return { ...row, ...loadCardSet(row) }
+}
+
 /** Un groupe de cartes prêt à l’emploi : cartes exactes, jokers, rangs, nombre de cartes, carte montrée. */
 export function loadCardGroup(
   group: CardGroupConfig,
   assetUrl: (file: string) => string | undefined = () => undefined,
 ): CardGroup {
-  const cards = expandCards(group.cards ?? [])
-  const jokers = group.jokers ?? 0
-  const ranks = RANKS.filter((rank) => cards.some((card) => card.rank === rank))
-  const display: DisplayCard = !group.display
-    ? (cards[0] ?? { joker: true })
-    : 'joker' in group.display
-      ? { joker: true }
-      : { rank: toRank(group.display.rank), suit: group.display.suit }
   const originals = group.expert.cards?.map((card) => ({
     ...card,
     ...(card.image ? { imageUrl: assetUrl(card.image) } : {}),
   }))
   const expert = originals ? { ...group.expert, cards: originals } : group.expert
-  return { ...group, expert, cards, jokers, ranks, count: cards.length + jokers, display }
+  return { ...group, expert, ...loadCardSet(group) }
 }
 
 /**
- * Prépare un jeu à partir de sa configuration (`game.yaml`) : cartes exactes et nombre de cartes de chaque groupe,
- * carte montrée, `{cards}` remplacé dans les textes, adresse du fichier de police.
+ * Prépare un jeu à partir de sa configuration (`game.yaml`) : cartes exactes et nombre de cartes de chaque groupe
+ * (et de chaque ligne de « Compter les points »), carte montrée, `{cards}` remplacé dans les textes, adresse du fichier de police.
  * La configuration est supposée valide (schéma vérifié par `src/data/games.test.ts`).
  * @param assetUrl adresse d'un fichier du dossier du jeu (police), ou `undefined` s'il n'existe pas.
  */
 export function loadGame(config: GameConfig, assetUrl: (file: string) => string | undefined = () => undefined): Game {
   const card_groups = config.card_groups.map((group) => loadCardGroup(group, assetUrl))
   const total = card_groups.reduce((sum, group) => sum + group.count, 0)
-  const { font, ...rest } = fillTexts(config, { cards: total })
+  const { font, points, ...rest } = fillTexts(config, { cards: total })
   const { reveal, ...turn } = rest.tutorial.turn
   return {
     ...rest,
     ...(font ? { font: { ...font, url: font.file ? assetUrl(font.file) : undefined } } : {}),
     card_groups: card_groups.map((group) => fillTexts(group, { cards: total })),
+    ...(points ? { points: { ...points, rows: points.rows.map(loadPointsRow) } } : {}),
     tutorial: {
       ...rest.tutorial,
       setup: {

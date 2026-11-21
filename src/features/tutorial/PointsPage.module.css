@@ -1,0 +1,64 @@
+.intro {
+  margin: 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mc-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Comme une ligne de « Tes cartes », sans être un lien : la carte, le titre, la valeur à droite. */
+.row {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--mc-space-1) * 1.5);
+  padding: calc(var(--mc-space-1) * 0.75) calc(var(--mc-space-1) * 1.5) calc(var(--mc-space-1) * 0.75) var(--mc-space-1);
+  border-radius: var(--mc-radius-ligne);
+  background: var(--mc-card-face);
+  color: var(--mc-color-encre);
+  box-shadow: 0 var(--mc-elevation-s) 0 var(--game-edge, var(--mc-color-bordure));
+}
+
+.card {
+  display: inline-flex;
+  flex: none;
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.title,
+.note {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.note {
+  color: var(--mc-color-texte-secondaire);
+}
+
+/* La valeur, en pastille à la couleur du jeu : on la lit d'un coup d'œil. */
+.value {
+  flex: none;
+  padding: 0 var(--mc-space-1);
+  border-radius: var(--mc-radius-s);
+  background: var(--game-pill-bg, var(--mc-color-nuit));
+  color: var(--game-pill-fg, var(--mc-text-on-nuit));
+  font-weight: 800;
+  line-height: var(--mc-space-4);
+  white-space: nowrap;
+}
+
+.spacer {
+  flex: 1;
+}

@@ -54,6 +54,12 @@ test.describe('parcours de chaque jeu', () => {
       await expect(page.getByText(game.tutorial.setup.steps[0])).toBeVisible()
       await page.getByRole('link', { name: 'Suivant' }).click()
       await expect(page.getByRole('heading', { level: 1, name: game.tutorial.turn.title })).toBeVisible()
+      // « Compter les points », facultatif, vient avant « Qui joue ? ».
+      if (game.points) {
+        await page.getByRole('link', { name: 'Suivant' }).click()
+        await expect(page.getByRole('heading', { level: 1, name: 'Compter les points' })).toBeVisible()
+        for (const row of game.points.rows) await expect(page.getByText(row.label, { exact: true })).toBeVisible()
+      }
       await page.getByRole('link', { name: 'Jouer' }).click()
 
       for (const [i, name] of names.entries())

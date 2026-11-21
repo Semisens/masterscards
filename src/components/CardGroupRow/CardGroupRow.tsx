@@ -15,8 +15,11 @@ export interface CardGroupRowProps {
   to: string
 }
 
-/** La main du groupe (2 ou 3 cartes), ou la carte seule d'un groupe d'une seule carte. */
-function HandOfGroup({ group }: { group: CardGroup }) {
+/**
+ * La main du groupe (2 ou 3 cartes), ou la carte seule d'un groupe d'une seule carte, au format de la liste.
+ * Sert aussi aux lignes de « Compter les points ».
+ */
+export function HandOfGroup({ group }: { group: Pick<CardGroup, 'cards' | 'display'> }) {
   const cards = handOf(group)
   if (cards.length === 1) return <PlayingCard {...cards[0]} variant="list" />
   return (

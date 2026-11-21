@@ -10,6 +10,7 @@ import { HomePage } from './features/home/HomePage.tsx'
 import { NotFoundPage } from './features/not-found/NotFoundPage.tsx'
 import { PartyPage } from './features/party/PartyPage.tsx'
 import { ScorePage } from './features/party/ScorePage.tsx'
+import { PointsPage } from './features/tutorial/PointsPage.tsx'
 import { PlayersPage } from './features/players/PlayersPage.tsx'
 import { ResultsPage } from './features/results/ResultsPage.tsx'
 import { RulesPage } from './features/rules/RulesPage.tsx'
@@ -35,6 +36,7 @@ export function AppRoutes() {
         <Route path="tutoriel/cartes/:groupe" element={<CardSwipePage />} />
         <Route path="tutoriel/mise-en-place" element={<SetupPage />} />
         <Route path="tutoriel/tour" element={<TurnPage />} />
+        <Route path="tutoriel/points" element={<PointsPage />} />
         <Route path="joueurs" element={<PlayersPage />} />
         <Route path="partie" element={<PartyPage />} />
         <Route path="partie/scores" element={<ScorePage />} />

@@ -3,6 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router'
 import { Button } from '../../components/Button/Button.tsx'
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx'
 import { Panel } from '../../components/Panel/Panel.tsx'
+import { PillLink } from '../../components/PillLink/PillLink.tsx'
 import { Screen } from '../../components/Screen/Screen.tsx'
 import { ScoreStepper } from '../../components/ScoreStepper/ScoreStepper.tsx'
 import { StepHeader } from '../../components/StepHeader/StepHeader.tsx'
@@ -53,6 +54,12 @@ export function ScorePage() {
       <StepHeader backTo={paths.party(game.id)} />
       <PageTitle>{fill(scoring.title, { round: session.round })}</PageTitle>
       <p className={styles.question}>{scoring.question}</p>
+      {/* Le jeu a un écran « Compter les points » : on l'ouvre au moment où l'on compte, il ramène ici. */}
+      {game.points && (
+        <div className={styles.count}>
+          <PillLink to={paths.points(game.id, true)}>{fr.points.link}</PillLink>
+        </div>
+      )}
       <Panel>
         {session.players.map((player, index) => (
           <ScoreStepper

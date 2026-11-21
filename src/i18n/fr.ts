@@ -107,6 +107,15 @@ export const fr = {
   rules: {
     title: 'Règles complètes',
   },
+  points: {
+    title: 'Compter les points',
+    /** Pastille de droite d'une ligne : « 7 points ». */
+    value: (n: number) => plural(n, 'point', 'points'),
+    list: 'Points de chaque carte',
+    /** Lien de la saisie des scores. */
+    link: 'Compter les points',
+    backToScores: 'Retour aux scores',
+  },
   party: {
     title: 'Partie en cours',
     rules: 'Règles',

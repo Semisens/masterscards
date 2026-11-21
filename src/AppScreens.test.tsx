@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { games } from './data/games.ts'
@@ -157,6 +157,37 @@ describe('Love Letter : tutoriel', () => {
   it('dit de garder tout le paquet et les jokers quand rien n’est à retirer (6 qui prend)', async () => {
     renderApp('/jeu/6-qui-prend/tutoriel/cartes')
     expect(await screen.findByText('Garde tout le paquet, avec les 2 jokers. Ne retire rien.')).toBeInTheDocument()
+  })
+
+  it('compte les points de 6 qui prend : une ligne par valeur, puis « Jouer »', async () => {
+    renderApp('/jeu/6-qui-prend/tutoriel/points')
+    expect(await screen.findByRole('heading', { level: 1, name: 'Compter les points' })).toBeInTheDocument()
+    const rows = within(screen.getByRole('list', { name: 'Points de chaque carte' })).getAllByRole('listitem')
+    expect(rows).toHaveLength(5)
+    expect(rows[0]).toHaveTextContent('Dame de pique')
+    expect(rows[0]).toHaveTextContent('7 points')
+    expect(rows[4]).toHaveTextContent('1 point')
+    expect(screen.getByRole('link', { name: 'Jouer' })).toHaveAttribute('href', '/jeu/6-qui-prend/joueurs')
+  })
+
+  it('donne la valeur d’origine en mode connaisseur (6 qui prend)', async () => {
+    window.localStorage.setItem('masterscards:mode', 'expert')
+    renderApp('/jeu/6-qui-prend/tutoriel/points')
+    expect(await screen.findByText('7 têtes')).toBeInTheDocument()
+  })
+
+  it('ramène à la saisie des scores quand on y a ouvert « Compter les points »', async () => {
+    renderApp('/jeu/6-qui-prend/tutoriel/points?depuis=scores')
+    expect(await screen.findByRole('link', { name: 'Retour aux scores' })).toHaveAttribute(
+      'href',
+      '/jeu/6-qui-prend/partie/scores',
+    )
+    expect(screen.queryByText('Quitter le tutoriel')).not.toBeInTheDocument()
+  })
+
+  it('n’a pas d’écran « Compter les points » pour un jeu qui n’en déclare pas (Trio)', async () => {
+    renderApp('/jeu/trio/tutoriel/points')
+    expect(await screen.findByText('Cette page n’existe pas.')).toBeInTheDocument()
   })
 
   it('remplace la carte en pointillés par la carte d’origine en mode connaisseur', async () => {
@@ -335,14 +366,15 @@ describe('réglages', () => {
 })
 
 // Même chemin pour tous les jeux, à chaque fois : « Jouer » ouvre « Tes cartes », même après un tutoriel fini.
-describe.each(games.map((game) => [game.id, game.name] as const))('« Jouer » : %s', (id) => {
+describe.each(games.map((game) => [game.id, game] as const))('« Jouer » : %s', (id, game) => {
   it('ouvre « Tes cartes »', async () => {
     renderApp(`/jeu/${id}`)
     expect(await screen.findByRole('link', { name: 'Jouer' })).toHaveAttribute('href', `/jeu/${id}/tutoriel/cartes`)
   })
 
   it('ouvre encore « Tes cartes » après avoir fini le tutoriel', async () => {
-    const first = renderApp(`/jeu/${id}/tutoriel/tour`)
+    // Dernier écran du tutoriel : « Compter les points » si le jeu en a un, sinon « Un tour ».
+    const first = renderApp(`/jeu/${id}/tutoriel/${game.points ? 'points' : 'tour'}`)
     await userEvent.click(await screen.findByRole('link', { name: 'Jouer' }))
     expect(await screen.findByRole('heading', { level: 1, name: 'Qui joue ?' })).toBeInTheDocument()
     first.unmount()

@@ -123,6 +123,25 @@ scoring:
   target: 5 # score qui termine la partie ; ou par nombre de joueurs : { 2: 7, 3: 5, 4: 4, 5: 3 } ; facultatif
   # lowest_wins: true # le plus petit score gagne (6 qui prend) : podium et historique classés dans l'autre sens
 
+# Écran « Compter les points », facultatif : quand les cartes rapportent des points différents (6 qui prend).
+# Il vient après « Un tour » ; pendant la partie, un lien l'ouvre depuis la saisie des scores.
+# Une ligne par valeur : ses cartes (mêmes règles que card_groups : cards, jokers, display) et ses points.
+# Chaque carte gardée doit avoir une valeur, une seule (vérifié par `npm test`). Sans ce bloc, pas d'écran.
+#
+# points:
+#   intro: À la fin de la manche, compte les cartes que tu as ramassées. # facultatif
+#   rows:
+#     - label: Les As # titre de la ligne
+#       cards: [{ ranks: [A], suits: all }]
+#       short: Les plus précieux. # ligne 2 ; facultatif
+#       points: 5
+#       expert: 5 têtes # mode Connaisseur : la valeur d'origine, à la place de short ; facultatif
+#     - label: Toutes les autres
+#       cards:
+#         - { ranks: [2, 3, 4, 5, 6], suits: [spades, hearts] }
+#         - { ranks: [7], suits: [clubs] }
+#       points: 1
+
 # --- Tutoriel ----------------------------------------------------------------------------------------------------
 
 tutorial:

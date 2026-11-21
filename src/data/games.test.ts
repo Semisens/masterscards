@@ -60,10 +60,13 @@ const classicTexts = (game: Game): string[] => [
   game.tutorial.turn.win.title,
   game.tutorial.turn.win.text,
   ...game.full_rules.flatMap((s) => [s.title, s.text]),
+  game.points?.intro ?? '',
+  ...(game.points?.rows ?? []).flatMap((row) => [row.label, row.short ?? '']),
 ]
 const allTexts = (game: Game): string[] => [
   ...classicTexts(game),
   ...game.card_groups.flatMap((g) => [g.expert.original, g.expert.power ?? '']),
+  ...(game.points?.rows ?? []).map((row) => row.expert ?? ''),
 ]
 
 // ---------------------------------------------------------------------------------------------------------
@@ -221,6 +224,28 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
 
     it('donnent à chacun son pendant dans le jeu d’origine (mode connaisseur)', () => {
       for (const group of game.card_groups) expect(group.expert.original.trim(), group.label).not.toBe('')
+    })
+  })
+
+  describe('compter les points (écran facultatif)', () => {
+    const rows = game.points?.rows ?? []
+    const key = (c: { rank: string; suit: string }) => `${c.rank}-${c.suit}`
+
+    it('donne une valeur à chaque carte gardée, une seule fois', () => {
+      if (!game.points) return
+      const counted = rows.flatMap((row) => row.cards).map(key)
+      const kept = game.card_groups.flatMap((g) => g.cards).map(key)
+      expect(new Set(counted).size, 'carte comptée deux fois').toBe(counted.length)
+      expect([...counted].sort()).toEqual([...kept].sort())
+      expect(rows.reduce((sum, row) => sum + row.jokers, 0)).toBe(deckPlan(game).keptJokers)
+    })
+
+    it('a des lignes aux noms différents, qui montrent une de leurs cartes', () => {
+      expect(new Set(rows.map((row) => row.label)).size).toBe(rows.length)
+      for (const row of rows) {
+        if ('joker' in row.display) expect(row.jokers, row.label).toBeGreaterThan(0)
+        else expect(row.cards, row.label).toContainEqual(row.display)
+      }
     })
   })
 
@@ -583,18 +608,28 @@ describe('6 qui prend', () => {
     expect(plan.removedTotal).toBe(0)
   })
 
-  it('regroupe les cartes par points : 6 lignes, la dame de pique à part des autres dames', () => {
-    expect(six.card_groups.map((g) => g.label)).toEqual([
-      'Les autres',
-      'Les 5',
-      'Les 10',
-      'Les rois',
-      'Dame de pique',
-      'Jokers',
+  it('montre l’ordre de force dans « Tes cartes » : une ligne par couleur, puis les jokers', () => {
+    expect(six.card_groups.map((g) => g.label)).toEqual(['Trèfle', 'Pique', 'Carreau', 'Cœur', 'Jokers'])
+    expect(six.card_groups.map((g) => g.count)).toEqual([13, 13, 13, 13, 2])
+    expect(six.card_groups.slice(0, 4).map((g) => g.cards[0].suit)).toEqual(['clubs', 'spades', 'diamonds', 'hearts'])
+    // Plus de points dans « Tes cartes » : ils sont sur « Compter les points ».
+    for (const group of six.card_groups) expect(group.short, group.label).not.toMatch(/point/)
+  })
+
+  it('compte les points : dame de pique 7, rois 5, 10 3, 5 2, les autres (jokers compris) 1', () => {
+    const rows = six.points?.rows ?? []
+    expect(rows.map((row) => [row.label, row.count, row.points])).toEqual([
+      ['Dame de pique', 1, 7],
+      ['Les rois', 4, 5],
+      ['Les 10', 4, 3],
+      ['Les 5', 4, 2],
+      ['Toutes les autres', 41, 1],
     ])
-    expect(six.card_groups.map((g) => g.count)).toEqual([39, 4, 4, 4, 1, 2])
-    expect(six.card_groups[4].cards).toEqual([{ rank: 'Q', suit: 'spades' }])
-    expect(six.card_groups[0].cards.filter((c) => c.rank === 'Q').map((c) => c.suit)).not.toContain('spades')
+    expect(rows[0].cards).toEqual([{ rank: 'Q', suit: 'spades' }])
+  })
+
+  it('ne dit plus « dans l’ordre croissant » dans sa présentation', () => {
+    expect(six.description).not.toMatch(/ordre croissant/)
   })
 
   it('se joue de 2 à 5 joueurs : 10 cartes chacun et 4 rangées tiennent dans 54 cartes', () => {

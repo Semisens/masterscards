@@ -8,6 +8,8 @@
  *   /jeu/:id/tutoriel/cartes/:groupe    vue à balayer d'un groupe de cartes (à partir de 1)
  *   /jeu/:id/tutoriel/mise-en-place     mise en place
  *   /jeu/:id/tutoriel/tour              un tour de jeu
+ *   /jeu/:id/tutoriel/points            compter les points (facultatif, `points` du jeu ; avec `?depuis=scores` :
+ *                                       ouvert depuis la saisie des scores, retour à la saisie)
  *   /jeu/:id/joueurs                    qui joue ? (avec `?depuis=partie` : pour noter les scores, retour à la partie)
  *   /jeu/:id/partie                     partie en cours
  *   /jeu/:id/partie/scores              saisie des scores (trios gagnés, fin de manche)
@@ -20,6 +22,8 @@
  * le retour mène alors à la partie, pas au tutoriel.
  */
 export const FROM_PARTY = { param: 'depuis', value: 'partie' } as const
+/** « Compter les points » ouvert depuis la saisie des scores : le retour y ramène. */
+export const FROM_SCORES = { param: 'depuis', value: 'scores' } as const
 
 const fromParty = (path: string, party: boolean) => (party ? `${path}?${FROM_PARTY.param}=${FROM_PARTY.value}` : path)
 
@@ -32,6 +36,8 @@ export const paths = {
   group: (id: string, group: number, party = false) => fromParty(`/jeu/${id}/tutoriel/cartes/${group}`, party),
   setup: (id: string, party = false) => fromParty(`/jeu/${id}/tutoriel/mise-en-place`, party),
   turn: (id: string, party = false) => fromParty(`/jeu/${id}/tutoriel/tour`, party),
+  points: (id: string, fromScores = false) =>
+    `/jeu/${id}/tutoriel/points${fromScores ? `?${FROM_SCORES.param}=${FROM_SCORES.value}` : ''}`,
   players: (id: string, party = false) => fromParty(`/jeu/${id}/joueurs`, party),
   party: (id: string) => `/jeu/${id}/partie`,
   scores: (id: string) => `/jeu/${id}/partie/scores`,

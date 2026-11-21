@@ -10,84 +10,109 @@ name: '6 qui prend'
 main_color: '#6B3FA0' # violet, texte blanc ; le fond des écrans reste le bleu de l'app
 tagline: Ne pose pas la sixième carte !
 description: >-
-  Tout le monde joue en même temps. Les joueurs jouent dans l’ordre croissant, posent une carte au bout d’une rangée.
-  Si c’est la sixième, tu ramasses la rangée et ses points. Le moins de points gagne.
+  Tout le monde joue en même temps et pose une carte au bout d’une rangée. Si c’est la sixième, tu ramasses la rangée
+  et ses points. Le moins de points gagne.
 players: { min: 2, max: 5 }
 duration_min: 30
 classic_forbidden_terms: [tête, têtes, bœuf]
 
-# Cartes à garder (54) : tout le paquet et les 2 jokers. Une ligne de « Tes cartes » par nombre de points.
+# Cartes à garder (54) : tout le paquet et les 2 jokers. « Tes cartes » montre l'ordre de force, une ligne par
+# couleur ; les points sont sur l'écran « Compter les points » (`points`, plus bas).
 card_groups:
-  - label: Les autres
+  - label: Trèfle
     cards:
-      - { ranks: [A, 2, 3, 4, 6, 7, 8, 9, J], suits: all }
-      - { ranks: [Q], suits: [hearts, diamonds, clubs] }
-    short: 1 point chacune.
+      - { ranks: [A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K], suits: [clubs] }
+    short: Forces 1 à 13. Les plus faibles.
     detail:
-      title: Chaque carte vaut 1 point.
-      text: 'Force des cartes : trèfle, pique, carreau, puis cœur. Dans chaque couleur, de l’as au roi. L’as de trèfle est la plus faible.'
+      title: Le trèfle vaut de 1 à 13.
+      text: 'L’as de trèfle vaut 1 : c’est la carte la plus faible. Le roi de trèfle vaut 13.'
     expert:
-      original: 1 tête
-      power: les cartes 1 à 104 deviennent 54 forces, de l’as de trèfle aux jokers
+      original: '1–104'
+      power: les 104 cartes deviennent 54 forces, de l’as de trèfle aux jokers
 
-  - label: Les 5
+  - label: Pique
     cards:
-      - { ranks: [5], suits: all }
-    display: { rank: 5, suit: hearts }
-    short: 2 points chacun.
+      - { ranks: [A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K], suits: [spades] }
+    short: Forces 14 à 26.
     detail:
-      title: Un 5 vaut 2 points.
-      text: Il se range à sa place, entre le 4 et le 6 de sa couleur.
+      title: Le pique vaut de 14 à 26.
+      text: L’as de pique vaut 14, juste après le roi de trèfle. Le roi de pique vaut 26.
     expert:
-      original: 2 têtes
+      original: '1–104'
+      power: les 104 cartes deviennent 54 forces, de l’as de trèfle aux jokers
 
-  - label: Les 10
+  - label: Carreau
     cards:
-      - { ranks: [10], suits: all }
-    display: { rank: 10, suit: clubs }
-    short: 3 points chacun.
+      - { ranks: [A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K], suits: [diamonds] }
+    short: Forces 27 à 39.
     detail:
-      title: Un 10 vaut 3 points.
-      text: Il se range entre le 9 et le valet de sa couleur.
+      title: Le carreau vaut de 27 à 39.
+      text: L’as de carreau vaut 27, juste après le roi de pique. Le roi de carreau vaut 39.
     expert:
-      original: 3 têtes
+      original: '1–104'
+      power: les 104 cartes deviennent 54 forces, de l’as de trèfle aux jokers
 
-  - label: Les rois
+  - label: Cœur
     cards:
-      - { ranks: [K], suits: all }
-    display: { rank: K, suit: diamonds }
-    short: 5 points chacun.
+      - { ranks: [A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K], suits: [hearts] }
+    short: Forces 40 à 52.
     detail:
-      title: Un roi vaut 5 points.
-      text: C’est la plus forte carte de sa couleur. Le roi de cœur vaut 52.
+      title: Le cœur vaut de 40 à 52.
+      text: L’as de cœur vaut 40, juste après le roi de carreau. Le roi de cœur vaut 52.
     expert:
-      original: 5 têtes
-
-  - label: Dame de pique
-    cards:
-      - { ranks: [Q], suits: [spades] }
-    short: 7 points. Évite-la !
-    badge: Spécial
-    detail:
-      title: La dame de pique vaut 7 points.
-      text: C’est la carte la plus piégeuse. Ne la laisse pas finir dans ta pile.
-    expert:
-      original: 7 têtes
-      power: la carte 55, la seule à 7 têtes
+      original: '1–104'
+      power: les 104 cartes deviennent 54 forces, de l’as de trèfle aux jokers
 
   - label: Jokers
     jokers: 2
     display: { joker: true }
-    short: Forces 53 et 54. 1 point chacun.
+    short: Forces 53 et 54. Les plus fortes.
     badge: Spécial
     detail:
       title: Les deux cartes les plus fortes.
       text: >-
-        Ils valent 53 et 54, après le roi de cœur. Chacun rapporte 1 point. Deux jokers au même tour, et l’un doit
-        ramasser ? Chi-fou-prend : le perdant ramasse.
+        Ils valent 53 et 54, après le roi de cœur. Deux jokers au même tour, et l’un doit ramasser ? Chi-fou-prend : le
+        perdant ramasse.
     expert:
       original: Aucune
       power: nouveauté de cette version, sans équivalent dans le jeu d’origine
+
+# « Compter les points » : après « Un tour », et depuis la saisie des scores. Chaque carte a une valeur, une seule.
+points:
+  intro: À la fin de la manche, compte les cartes que tu as ramassées.
+  rows:
+    - label: Dame de pique
+      cards:
+        - { ranks: [Q], suits: [spades] }
+      short: La plus piégeuse.
+      points: 7
+      expert: 7 têtes
+    - label: Les rois
+      cards:
+        - { ranks: [K], suits: all }
+      display: { rank: K, suit: hearts }
+      points: 5
+      expert: 5 têtes
+    - label: Les 10
+      cards:
+        - { ranks: [10], suits: all }
+      display: { rank: 10, suit: clubs }
+      points: 3
+      expert: 3 têtes
+    - label: Les 5
+      cards:
+        - { ranks: [5], suits: all }
+      display: { rank: 5, suit: hearts }
+      points: 2
+      expert: 2 têtes
+    - label: Toutes les autres
+      cards:
+        - { ranks: [A, 2, 3, 4, 6, 7, 8, 9, J], suits: all }
+        - { ranks: [Q], suits: [hearts, diamonds, clubs] }
+      jokers: 2
+      short: Jokers compris.
+      points: 1
+      expert: 1 tête
 
 # Partie en manches : chacun note les points ramassés. Dès qu'un joueur atteint 66, la partie s'arrête ; le plus petit
 # score gagne.

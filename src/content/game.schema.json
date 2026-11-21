@@ -147,6 +147,28 @@
       "minLength": 1,
       "maxLength": 12
     },
+    "points": {
+      "description": "Facultatif. Écran « Compter les points » : après « Un tour », et depuis la saisie des scores. Une ligne par valeur : les cartes (mêmes règles que `card_groups`) et les points qu'elles rapportent. Chaque carte gardée doit avoir une valeur, une seule (vérifié par test).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rows"],
+      "properties": {
+        "intro": {
+          "description": "Phrase sous le titre, ex. « À la fin de la manche, compte les cartes que tu as ramassées. »",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/pointsRow"
+          }
+        }
+      }
+    },
     "scoring": {
       "description": "Comment la partie se marque. Tous les jeux fonctionnent pareil : à chaque saisie on note les points gagnés, « Valider » les ajoute et passe à la manche suivante. {round} = numéro de manche.",
       "type": "object",
@@ -484,38 +506,7 @@
         },
         "cards": {
           "description": "Les cartes du paquet de 52 à garder dans ce groupe. Ex. 2 à 6 en trois couleurs : `- { ranks: [2, 3, 4, 5, 6], suits: [spades, hearts, clubs] }`. Le nombre de cartes est calculé. Absent : un groupe de jokers (`jokers`).",
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["ranks", "suits"],
-            "properties": {
-              "ranks": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "$ref": "#/$defs/rank"
-                }
-              },
-              "suits": {
-                "description": "Couleurs : spades (pique), hearts (cœur), diamonds (carreau), clubs (trèfle), ou `all` pour les quatre.",
-                "oneOf": [
-                  {
-                    "const": "all"
-                  },
-                  {
-                    "type": "array",
-                    "minItems": 1,
-                    "uniqueItems": true,
-                    "items": {
-                      "$ref": "#/$defs/suit"
-                    }
-                  }
-                ]
-              }
-            }
-          }
+          "$ref": "#/$defs/cardSpecs"
         },
         "jokers": {
           "description": "Nombre de jokers du groupe. Le paquet de 52 n'en a pas : on prend ceux de la boîte (paquet de 54). Compté dans « Garde ces N cartes ».",
@@ -525,21 +516,7 @@
         },
         "display": {
           "description": "La carte montrée dans la liste et la vue à balayer. Absent : la première carte du groupe, ou le joker. Un joker : `{ joker: true }`.",
-          "oneOf": [
-            {
-              "$ref": "#/$defs/cardRef"
-            },
-            {
-              "type": "object",
-              "additionalProperties": false,
-              "required": ["joker"],
-              "properties": {
-                "joker": {
-                  "const": true
-                }
-              }
-            }
-          ]
+          "$ref": "#/$defs/displayCard"
         },
         "short": {
           "description": "Sous le titre, après « ×3 · ».",
@@ -618,6 +595,116 @@
         },
         "suit": {
           "$ref": "#/$defs/suit"
+        }
+      }
+    },
+    "cardSpecs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ranks", "suits"],
+        "properties": {
+          "ranks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/rank"
+            }
+          },
+          "suits": {
+            "description": "Couleurs : spades (pique), hearts (cœur), diamonds (carreau), clubs (trèfle), ou `all` pour les quatre.",
+            "oneOf": [
+              {
+                "const": "all"
+              },
+              {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "$ref": "#/$defs/suit"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "displayCard": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/cardRef"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["joker"],
+          "properties": {
+            "joker": {
+              "const": true
+            }
+          }
+        }
+      ]
+    },
+    "pointsRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "points"],
+      "anyOf": [
+        {
+          "required": ["cards"],
+          "properties": {
+            "cards": {}
+          }
+        },
+        {
+          "required": ["jokers"],
+          "properties": {
+            "jokers": {}
+          }
+        }
+      ],
+      "properties": {
+        "label": {
+          "description": "Titre de la ligne, ex. « Les rois ».",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "short": {
+          "description": "Facultatif. Sous le titre, ex. « Jokers compris. ».",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "cards": {
+          "description": "Les cartes du paquet de 52 qui valent ces points.",
+          "$ref": "#/$defs/cardSpecs"
+        },
+        "jokers": {
+          "description": "Nombre de jokers qui valent ces points.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "display": {
+          "description": "La carte montrée. Absent : la main des cartes (2 ou 3), ou la première carte, ou le joker.",
+          "$ref": "#/$defs/displayCard"
+        },
+        "points": {
+          "description": "Points rapportés par chacune de ces cartes.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99
+        },
+        "expert": {
+          "description": "Facultatif. Mode connaisseur : la valeur d’origine, ex. « 7 têtes ». Remplace `short`.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
         }
       }
     }

@@ -183,6 +183,9 @@ Un clic sur une ligne ouvre cette vue sur le groupe touché. « Groupe 3 / 6 »,
 ### 7.5 Mise en place et un tour de jeu (maquettes *Setup* et *TurnFlow*)
 Mise en place : la **table vue de haut** (`CardTable`) : quatre mains de **cartes de dos** à la couleur de dos du jeu (en face, à gauche et à droite tournées vers le centre, et la tienne en bas, seule légendée), et au centre ce que le jeu y pose (1 à 3 éléments, des dos ou une carte visible). Trio : mains en éventail, « Ta main, triée » ; « Au centre, cachées » en cartes alignées (3 x 2). Love Letter : une carte par main, « Ta main » ; « Pioche » en pile et « Écartée, cachée ». Les quatre mains sont **à la même distance** des cartes du centre, quelle que soit la légende (un reflet invisible de la légende au-dessus des cartes répond à la vraie légende en dessous). Puis les étapes numérotées. Un tour de jeu : **la table de la mise en place, à l'identique** (mêmes dimensions, mêmes positions, mêmes légendes), avec **quelques cartes retournées** (`turn.reveal`) : Trio, un 4 au centre et un as au bord de la main d'en face ; Love Letter, ta main de 2 cartes de face (un 5 et la dame de cœur) et une carte découverte à côté de la main du joueur d'en face et de celui de droite, posée hors du flux pour que rien ne bouge. Puis 4 étapes resserrées, la façon de gagner (« Gagner » ou « Gagner la manche »), bouton « Jouer ».
 
+### 7.5 bis Compter les points (facultatif, sans maquette)
+Pour un jeu dont les cartes rapportent des points différents (`points` dans le `game.yaml`). Le même écran pour tous les jeux : titre « Compter les points », une phrase (`intro`), puis **une ligne par valeur** (la main ou la carte seule, comme dans « Tes cartes », le titre, une ligne grise, et la valeur en pastille à la couleur du jeu : « 7 points »). Mode connaisseur : la ligne grise donne la valeur d'origine (« 7 têtes »). Il vient **après « Un tour »** (« Un tour » dit alors « Suivant » ; « Compter les points » dit « Jouer ») ; pendant la partie, un lien « Compter les points » l'ouvre depuis la **saisie des scores** (`?depuis=scores`, « Retour aux scores »). Chaque carte gardée a une valeur, une seule (test). « Tes cartes », lui, ne parle que de l'ordre ou du rôle des cartes. 6 qui prend : « Tes cartes » montre l'ordre de force (une ligne par couleur, puis les jokers) ; « Compter les points » : dame de pique 7, rois 5, 10 3, 5 2, toutes les autres (jokers compris) 1.
+
 ### 7.6 Règles complètes (maquette *FullRules*)
 Une carte blanche avec toutes les sections : But, Mise en place, Un tour, Trio, Cartes différentes, Mode piquant.
 
@@ -356,6 +359,8 @@ Un test automatisé (`src/data/games.test.ts`, Vitest + Ajv) vérifie **chaque j
 1. **Trio** *(réalisé, d'après les maquettes)*. Fin automatique au 3e trio. 36 cartes d'origine (valeurs 1 à 12 en trois exemplaires) jouées avec le paquet de 52 : on garde pique, cœur et trèfle de l'As à la Dame, et on **retire les carreaux et les rois**. As = 1, Valet = 11, Dame = 12. Six groupes : A, 2 à 6, 7 (« Spécial »), 8 à 10, Valet, Dame. 3 à 6 joueurs, environ 15 minutes. Le mode « Piquant » n'est pas jouable : ses liens entre numéros sont imprimés sur les cartes d'origine.
 2. **Love Letter** *(réalisé, règle de l'édition 2019)*. 2 à 6 joueurs, 20 minutes, nom en Great Vibes, palette bordeaux (tapis #812B2B, ombre #400E0E, texte crème #EEDDC8) et un sceau de cire original (corail, rose, crème) en logo. **21 cartes**, valeur = rang : Espionne 0 = les 2 **jokers** (rien ne se passe quand on la joue ; 1 point en fin de manche si l'on est en vie et **seul** à en avoir une devant soi) ; Garde 1 = 4 valets et 2 rois noirs (×6) ; Prêtre 2, Baron 3, Servante 4, Prince 5, Chancelier 6 (×2 chacun, cœur et pique) ; Roi 7 = 7♥ ; Comtesse 8 = 8♠ ; Princesse 9 = la **dame de cœur**. Dix groupes. Tout le reste du paquet est retiré. Une manche rapporte 1 point (2 au plus avec les jokers) ; le premier à 6, 5, 4, 3 ou 3 points gagne à 2, 3, 4, 5 ou 6 joueurs.
 
+3. **6 qui prend** *(réalisé, version MastersCards)*. 2 à 5 joueurs, 30 minutes, tapis violet. **54 cartes** (le paquet et les 2 jokers), rien à retirer. Force : trèfle 1 à 13, pique 14 à 26, carreau 27 à 39, cœur 40 à 52, jokers 53 et 54 (« Tes cartes » : une ligne par couleur). Points (« Compter les points ») : dame de pique 7, rois 5, 10 3, 5 2, les autres 1. Fin dès qu'un joueur atteint 66 ; le moins de points gagne.
+
 > Les textes viennent des **maquettes, mot pour mot**. Rédigés par nous, à relire : pour Trio, cinq textes de la vue à balayer ; pour Love Letter, les règles complètes, les détails de groupe et les noms de groupe (Jokers, Dame de cœur).
 
 ### 9.4 Persistance locale
@@ -417,6 +422,7 @@ android/  ios/   # projets natifs Capacitor
 | `/jeu/:id/tutoriel/cartes/3` | Vue à balayer, ouverte sur le groupe 3 (à partir de 1) |
 | `/jeu/:id/tutoriel/mise-en-place` | Mise en place |
 | `/jeu/:id/tutoriel/tour` | Un tour de jeu |
+| `/jeu/:id/tutoriel/points` | Compter les points (facultatif ; `?depuis=scores` : ouvert depuis la saisie des scores) |
 | `/jeu/:id/joueurs` | Qui joue ? |
 | `/jeu/:id/partie` | Partie en cours |
 | `/jeu/:id/partie/scores` | Saisie des scores (points gagnés, ajoutés à la validation) |
