@@ -189,11 +189,8 @@ const HISTORY = [
   ),
 ]
 
-/** Troisième vignette de l'accueil : un gabarit « [JEU 3] » dans la maquette, qu'on ne publie pas. */
-const GAME_3_TILE: Rect = { x: 24, y: 444, w: 342, h: 96 }
-
 const APP_SCREENS: Screen[] = [
-  { game: 'love-letter', name: '02-accueil', url: '/', masks: [GAME_3_TILE], max: 0.01 },
+  { game: 'love-letter', name: '02-accueil', url: '/', max: 0.01 },
   { game: 'love-letter', name: '12-podium-termine', url: `${LL}/resultat/1`, history: PODIUM, max: 0.01 },
   {
     game: 'love-letter',
