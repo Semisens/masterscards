@@ -1,0 +1,174 @@
+# yaml-language-server: $schema=../../game.schema.json
+# 6 qui prend : configuration complète du jeu. Modèle commenté : docs/modele-jeu.yaml.
+#
+# Version MastersCards, avec un paquet de 54 cartes (52 + 2 jokers), de 2 à 5 joueurs (10 cartes x 5 + 4 rangées = 54).
+# Force : trèfle 1 à 13, pique 14 à 26, carreau 27 à 39, cœur 40 à 52, les deux jokers 53 et 54.
+# Points : 5 = 2, 10 = 3, roi = 5, dame de pique = 7, les autres (jokers compris) = 1. Fin à 66, le moins de points gagne.
+
+id: 6-qui-prend
+name: '6 qui prend'
+main_color: '#6B3FA0' # violet, texte blanc ; le fond des écrans reste le bleu de l'app
+tagline: Ne pose pas la sixième carte !
+description: >-
+  Tout le monde joue en même temps. Les joueurs jouent dans l’ordre croissant, posent une carte au bout d’une rangée.
+  Si c’est la sixième, tu ramasses la rangée et ses points. Le moins de points gagne.
+players: { min: 2, max: 5 }
+duration_min: 30
+classic_forbidden_terms: [tête, têtes, bœuf]
+
+# Cartes à garder (54) : tout le paquet et les 2 jokers. Une ligne de « Tes cartes » par nombre de points.
+card_groups:
+  - label: Les autres
+    cards:
+      - { ranks: [A, 2, 3, 4, 6, 7, 8, 9, J], suits: all }
+      - { ranks: [Q], suits: [hearts, diamonds, clubs] }
+    short: 1 point chacune.
+    detail:
+      title: Chaque carte vaut 1 point.
+      text: 'Force des cartes : trèfle, pique, carreau, puis cœur. Dans chaque couleur, de l’as au roi. L’as de trèfle est la plus faible.'
+    expert:
+      original: 1 tête
+      power: les cartes 1 à 104 deviennent 54 forces, de l’as de trèfle aux jokers
+
+  - label: Les 5
+    cards:
+      - { ranks: [5], suits: all }
+    display: { rank: 5, suit: hearts }
+    short: 2 points chacun.
+    detail:
+      title: Un 5 vaut 2 points.
+      text: Il se range à sa place, entre le 4 et le 6 de sa couleur.
+    expert:
+      original: 2 têtes
+
+  - label: Les 10
+    cards:
+      - { ranks: [10], suits: all }
+    display: { rank: 10, suit: clubs }
+    short: 3 points chacun.
+    detail:
+      title: Un 10 vaut 3 points.
+      text: Il se range entre le 9 et le valet de sa couleur.
+    expert:
+      original: 3 têtes
+
+  - label: Les rois
+    cards:
+      - { ranks: [K], suits: all }
+    display: { rank: K, suit: diamonds }
+    short: 5 points chacun.
+    detail:
+      title: Un roi vaut 5 points.
+      text: C’est la plus forte carte de sa couleur. Le roi de cœur vaut 52.
+    expert:
+      original: 5 têtes
+
+  - label: Dame de pique
+    cards:
+      - { ranks: [Q], suits: [spades] }
+    short: 7 points. Évite-la !
+    badge: Spécial
+    detail:
+      title: La dame de pique vaut 7 points.
+      text: C’est la carte la plus piégeuse. Ne la laisse pas finir dans ta pile.
+    expert:
+      original: 7 têtes
+      power: la carte 55, la seule à 7 têtes
+
+  - label: Jokers
+    jokers: 2
+    display: { joker: true }
+    short: Forces 53 et 54. 1 point chacun.
+    badge: Spécial
+    detail:
+      title: Les deux cartes les plus fortes.
+      text: >-
+        Ils valent 53 et 54, après le roi de cœur. Chacun rapporte 1 point. Deux jokers au même tour, et l’un doit
+        ramasser ? Chi-fou-prend : le perdant ramasse.
+    expert:
+      original: Aucune
+      power: nouveauté de cette version, sans équivalent dans le jeu d’origine
+
+# Partie en manches : chacun note les points ramassés. Dès qu'un joueur atteint 66, la partie s'arrête ; le plus petit
+# score gagne.
+scoring:
+  unit: point
+  party_label: Manche {round}
+  title: Fin de la manche {round}
+  question: Combien de points chacun a-t-il ramassés ?
+  validate: Valider la manche
+  target: 66
+  lowest_wins: true
+
+tutorial:
+  setup:
+    title: Mise en place
+    hand: { label: 'Ta main, 10 cartes', layout: spread }
+    center:
+      - label: '4 rangées'
+        slots: 5 # la carte de départ, puis 4 places vides : la 6e carte fait ramasser
+        cards:
+          - { rank: 3, suit: clubs }
+          - { rank: 9, suit: hearts }
+          - { rank: Q, suit: spades }
+          - { rank: 6, suit: diamonds }
+    steps:
+      - Mélange les {cards} cartes.
+      - Donne 10 cartes à chaque joueur.
+      - 'Pose 4 cartes face visible, l’une sous l’autre : ce sont les 4 rangées.'
+      - Mets le reste de côté, face cachée.
+  turn:
+    title: Un tour de jeu
+    reveal: # ta main de face, et la carte que chacun vient de retourner, toi compris
+      hand: [{ rank: 2, suit: diamonds }, { rank: 9, suit: spades }, { rank: K, suit: hearts }]
+      played:
+        across: { rank: 4, suit: clubs }
+        left: { rank: 10, suit: diamonds }
+        right: { rank: J, suit: spades }
+        you: { rank: 7, suit: hearts }
+    steps:
+      - label: Choisis.
+        text: Pose une carte de ta main, face cachée.
+      - label: Révèle.
+        text: Tout le monde retourne sa carte en même temps.
+      - label: Place.
+        text: De la plus faible à la plus forte. Chaque carte va au bout de la rangée qui finit juste en dessous.
+      - label: '6e carte ?'
+        text: Tu ramasses les 5 cartes de la rangée. Ta carte en démarre une nouvelle.
+      - label: Trop faible ?
+        text: Ta carte est sous toutes les rangées. Ramasse celle de ton choix, ta carte la remplace.
+    win:
+      title: Gagner
+      text: La partie s’arrête dès qu’un joueur atteint 66 points. Le moins de points gagne.
+
+full_rules:
+  - title: But
+    text: >-
+      Ramasse le moins de points possible. La partie s’arrête dès qu’un joueur atteint 66 points. Le plus petit score
+      gagne.
+  - title: Mise en place
+    text: >-
+      {cards} cartes, jokers compris. De 2 à 5 joueurs. Donne 10 cartes à chacun. Pose 4 cartes face visible, l’une
+      sous l’autre : ce sont les 4 rangées.
+  - title: Force des cartes
+    text: >-
+      Trèfle, pique, carreau, puis cœur. Dans chaque couleur, de l’as au roi. L’as de trèfle vaut 1, le roi de cœur 52.
+      Les deux jokers valent 53 et 54.
+  - title: Un tour
+    text: >-
+      Chacun pose une carte face cachée. Tout le monde les retourne en même temps. Les cartes se placent ensuite de la
+      plus faible à la plus forte.
+  - title: Rangée
+    text: Ta carte va au bout de la rangée qui finit par la carte la plus proche, juste en dessous de la tienne.
+  - title: Sixième carte
+    text: Si ta carte est la sixième de la rangée, tu ramasses les 5 autres. Ta carte démarre la rangée.
+  - title: Carte trop faible
+    text: >-
+      Ta carte est plus faible que la fin de toutes les rangées ? Ramasse la rangée de ton choix. Ta carte la remplace.
+  - title: Deux jokers
+    text: >-
+      Deux jokers au même tour, et l’un doit ramasser ? Les deux joueurs font un chi-fou-prend. Le perdant ramasse.
+  - title: Fin de manche
+    text: >-
+      Après 10 tours, les mains sont vides. Compte les points ramassés : 5 = 2, 10 = 3, roi = 5, dame de pique = 7,
+      les autres = 1. Note-les, puis redistribue.

@@ -13,6 +13,8 @@
    */
   --hand-card-w: 2rem;
   --center-card-w: 2.25rem;
+  /* Les rangées (6 qui prend) : cinq places tiennent entre les mains de gauche et de droite. */
+  --row-card-w: 1.75rem;
   --table-gap: var(--mc-space-1);
   /* Hauteur d'une ligne de légende. */
   --label-line: 1.364;
@@ -56,11 +58,19 @@
  */
 .top .played,
 .left .played,
-.right .played {
+.right .played,
+.yours .played {
   position: absolute;
 }
 
-.top .played {
+/* Ta main : le repère de la carte que tu poses à sa droite, sur un tour. */
+.yours {
+  position: relative;
+  display: block;
+}
+
+.top .played,
+.yours .played {
   top: 50%;
   left: calc(100% + var(--mc-space-1) / 2);
   transform: translateY(-50%);
@@ -152,4 +162,27 @@
   padding: calc(var(--mc-space-1) / 2) 0;
   /* Une carte du centre, plus les deux décalages de la pile. */
   min-height: calc(var(--center-card-w) * var(--mc-card-ratio) + var(--mc-space-1) * 1.5);
+}
+
+/* Les rangées (6 qui prend) : une ligne par carte, bien séparées ; chaque carte suivie de ses emplacements vides. */
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mc-space-1);
+}
+
+.row {
+  display: flex;
+  gap: calc(var(--mc-space-1) / 2);
+}
+
+/* Un emplacement vide de la rangée : la taille d'une carte, en pointillés de la couleur du texte de la table. */
+.slot {
+  flex: none;
+  box-sizing: border-box;
+  width: var(--row-card-w);
+  aspect-ratio: 1 / var(--mc-card-ratio);
+  border: calc(var(--row-card-w) * 0.08) dashed currentColor;
+  border-radius: var(--mc-card-radius);
+  opacity: 0.6;
 }

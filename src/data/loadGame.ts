@@ -25,9 +25,15 @@ function fillTexts<T>(value: T, values: Record<string, number>): T {
 
 const loadCard = ({ rank, suit }: DeckCardConfig): DeckCard => ({ rank: toRank(rank), suit })
 
-/** Un élément de la table prêt à l'emploi : la carte visible (si elle est donnée) a un vrai rang. */
-function loadDiagramItem({ label, layout, card }: DiagramItemConfig): DiagramItem {
-  return { label, ...(layout ? { layout } : {}), ...(card ? { card: loadCard(card) } : {}) }
+/** Un élément de la table prêt à l'emploi : les cartes visibles (si elles sont données) ont un vrai rang. */
+function loadDiagramItem({ label, layout, card, cards, slots }: DiagramItemConfig): DiagramItem {
+  return {
+    label,
+    ...(layout ? { layout } : {}),
+    ...(card ? { card: loadCard(card) } : {}),
+    ...(cards ? { cards: cards.map(loadCard) } : {}),
+    ...(slots ? { slots } : {}),
+  }
 }
 
 /** Les cartes retournées d'« Un tour », avec un vrai rang. */
@@ -42,6 +48,7 @@ function loadTurnReveal({ hand, across, center, played }: TurnReveal<DeckCardCon
             ...(played.across ? { across: loadCard(played.across) } : {}),
             ...(played.left ? { left: loadCard(played.left) } : {}),
             ...(played.right ? { right: loadCard(played.right) } : {}),
+            ...(played.you ? { you: loadCard(played.you) } : {}),
           },
         }
       : {}),

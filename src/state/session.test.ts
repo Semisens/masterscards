@@ -195,4 +195,22 @@ describe('rankPlayers', () => {
     ])
     expect(ranked.map((p) => p.rank)).toEqual([1, 1, 3])
   })
+
+  it('classe par score croissant quand le plus petit score gagne (6 qui prend)', () => {
+    const ranked = rankPlayers(
+      [
+        { name: 'Léa', score: 23 },
+        { name: 'Tom', score: 66 },
+        { name: 'Inès', score: 12 },
+        { name: 'Sam', score: 23 },
+      ],
+      true,
+    )
+    expect(ranked.map((p) => [p.name, p.rank])).toEqual([
+      ['Inès', 1],
+      ['Léa', 2],
+      ['Sam', 2],
+      ['Tom', 4],
+    ])
+  })
 })

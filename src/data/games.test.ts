@@ -191,11 +191,6 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
   })
 
   describe('groupes de cartes', () => {
-    it('ne gardent chaque rang qu’une fois', () => {
-      const ranks = game.card_groups.flatMap((g) => g.ranks)
-      expect(new Set(ranks).size).toBe(ranks.length)
-    })
-
     it('ne gardent jamais deux fois la même carte', () => {
       const cards = game.card_groups.flatMap((g) => g.cards).map((c) => `${c.rank}-${c.suit}`)
       expect(new Set(cards).size).toBe(cards.length)
@@ -273,16 +268,21 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
   describe('schémas de cartes de dos', () => {
     it('ne posent des cartes de dos que si le jeu n’y met pas une carte visible', () => {
       const { hand, center } = game.tutorial.setup
-      for (const item of [hand, ...center]) if (item.card) expect(item.layout, item.label).toBeUndefined()
+      for (const item of [hand, ...center]) {
+        if (item.card || item.cards) expect(item.layout, item.label).toBeUndefined()
+        expect(item.card && item.cards, item.label).toBeFalsy()
+        if (item.slots) expect(item.cards, item.label).toBeDefined()
+      }
     })
 
     it('ne retourne dans « Un tour » que des cartes de la table de la mise en place', () => {
       const { setup, turn } = game.tutorial
       expect(turn.reveal?.center?.length ?? 0).toBeLessThanOrEqual(setup.center.length)
       // Une carte retournée au centre : il y a des dos à cet endroit, pas déjà une carte visible.
-      turn.reveal?.center?.forEach((_, index) =>
-        expect(setup.center[index].card, setup.center[index].label).toBeUndefined(),
-      )
+      turn.reveal?.center?.forEach((_, index) => {
+        expect(setup.center[index].card, setup.center[index].label).toBeUndefined()
+        expect(setup.center[index].cards, setup.center[index].label).toBeUndefined()
+      })
       if (turn.reveal?.hand) expect(setup.hand.card).toBeUndefined()
     })
   })
@@ -570,5 +570,57 @@ describe('Love Letter', () => {
 
   it('écrit « Carte 2 / 10 » dans la vue à balayer', () => {
     expect(ll.group_word).toBe('Carte')
+  })
+})
+
+describe('6 qui prend', () => {
+  const six = getGame('6-qui-prend')!
+  const plan = deckPlan(six)
+
+  it('garde tout le paquet de 52 et les 2 jokers : 54 cartes, rien à retirer', () => {
+    expect(plan.keptTotal).toBe(54)
+    expect(plan.keptJokers).toBe(2)
+    expect(plan.removedTotal).toBe(0)
+  })
+
+  it('regroupe les cartes par points : 6 lignes, la dame de pique à part des autres dames', () => {
+    expect(six.card_groups.map((g) => g.label)).toEqual([
+      'Les autres',
+      'Les 5',
+      'Les 10',
+      'Les rois',
+      'Dame de pique',
+      'Jokers',
+    ])
+    expect(six.card_groups.map((g) => g.count)).toEqual([39, 4, 4, 4, 1, 2])
+    expect(six.card_groups[4].cards).toEqual([{ rank: 'Q', suit: 'spades' }])
+    expect(six.card_groups[0].cards.filter((c) => c.rank === 'Q').map((c) => c.suit)).not.toContain('spades')
+  })
+
+  it('se joue de 2 à 5 joueurs : 10 cartes chacun et 4 rangées tiennent dans 54 cartes', () => {
+    expect(six.players).toEqual({ min: 2, max: 5 })
+    expect(10 * six.players.max + 4).toBeLessThanOrEqual(plan.keptTotal)
+  })
+
+  it('s’arrête à 66 points, et le plus petit score gagne', () => {
+    expect(six.scoring.target).toBe(66)
+    expect(six.scoring.lowest_wins).toBe(true)
+  })
+
+  it('pose les 4 rangées au centre de la table : une carte de face, puis 4 places vides', () => {
+    expect(six.tutorial.setup.center).toHaveLength(1)
+    expect(six.tutorial.setup.center[0].cards).toHaveLength(4)
+    expect(six.tutorial.setup.center[0].slots).toBe(5)
+  })
+
+  it('montre dans « Un tour » une carte posée à côté de chacune des quatre mains, la tienne comprise', () => {
+    expect(Object.keys(six.tutorial.turn.reveal?.played ?? {}).sort()).toEqual(['across', 'left', 'right', 'you'])
+  })
+
+  it('dit la règle des deux jokers : chi-fou-prend, le perdant ramasse', () => {
+    const rules = six.full_rules.map((s) => s.text).join('\n')
+    expect(rules).toMatch(/53 et 54/)
+    expect(rules).toMatch(/chi-fou-prend/)
+    expect(rules).toMatch(/perdant ramasse/)
   })
 })

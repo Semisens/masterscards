@@ -74,4 +74,13 @@ describe('summary', () => {
       ),
     ).toBe('Léa 4 · Inès 3')
   })
+
+  it('résume avec les deux plus petits scores quand le plus petit gagne', () => {
+    const players = [
+      { name: 'Tom', score: 66 },
+      { name: 'Léa', score: 12 },
+      { name: 'Inès', score: 30 },
+    ]
+    expect(summary(entry('1', { gameId: '6-qui-prend', players }), true)).toBe('Léa 12 · Inès 30')
+  })
 })

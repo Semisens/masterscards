@@ -32,7 +32,7 @@ export function ResultsPage() {
   const entry = entries.find((item) => item.id === partieId && item.gameId === game.id)
   if (!entry) return <NotFoundPage message={fr.results.notFound} />
 
-  const ranked = rankPlayers(entry.players)
+  const ranked = rankPlayers(entry.players, game.scoring.lowest_wins)
   const steps = STEPS.map(({ place, className }) => ({ player: ranked[place], className })).filter(
     (step) => step.player,
   )

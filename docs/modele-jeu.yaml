@@ -121,6 +121,7 @@ scoring:
   question: Qui a gagné des points ?
   validate: Valider la manche
   target: 5 # score qui termine la partie ; ou par nombre de joueurs : { 2: 7, 3: 5, 4: 4, 5: 3 } ; facultatif
+  # lowest_wins: true # le plus petit score gagne (6 qui prend) : podium et historique classés dans l'autre sens
 
 # --- Tutoriel ----------------------------------------------------------------------------------------------------
 
@@ -136,6 +137,11 @@ tutorial:
         layout: pile # single (une carte, défaut) | pile (la pioche) | spread (un éventail) | grid (des cartes alignées, 3 x 2)
       - label: Défausse
         card: { rank: 5, suit: hearts }
+      # Des rangées de cartes visibles, l'une sous l'autre (2 à 5) : `cards`, sans `layout` ni `card`. `slots` (facultatif) :
+      # les places de chaque rangée, la carte puis des emplacements vides en pointillés. Ex. les rangées de 6 qui prend :
+      # - label: '4 rangées'
+      #   slots: 5
+      #   cards: [{ rank: 3, suit: clubs }, { rank: 9, suit: hearts }, { rank: Q, suit: spades }, { rank: 6, suit: diamonds }]
     steps:
       - Mélange les {cards} cartes.
       - Donne 5 cartes à chaque joueur.
@@ -146,7 +152,7 @@ tutorial:
       hand: [{ rank: 5, suit: hearts }, { rank: Q, suit: hearts }] # ta main pendant le tour, de face (1 à 3 cartes)
       across: { rank: A, suit: spades } # la carte du bord de la main d'en face
       center: [{ rank: 4, suit: hearts }] # une carte par élément du centre, dans l'ordre
-      played: { left: { rank: 2, suit: hearts } } # la carte découverte à côté de la main d'un autre joueur (across, left, right)
+      played: { left: { rank: 2, suit: hearts } } # la carte découverte à côté de la main d'un joueur (across, left, right ; you : la tienne)
     steps:
       - label: Pioche.
         text: Prends la carte du dessus.

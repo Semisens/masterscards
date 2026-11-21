@@ -69,7 +69,7 @@ export function HistoryPage() {
                     {parties.map((entry) => (
                       <li key={entry.id} className={styles.row}>
                         <span>{dateFormat.format(new Date(entry.date))}</span>
-                        <span>{summary(entry)}</span>
+                        <span>{summary(entry, game.scoring.lowest_wins)}</span>
                         <b>
                           <span className={entry.status === 'finished' ? styles.finished : styles.interrupted}>
                             {entry.status === 'finished' ? fr.history.finished : fr.history.interrupted}

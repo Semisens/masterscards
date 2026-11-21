@@ -31,11 +31,13 @@ export function CardsPage() {
   const plan = deckPlan(game)
   const removal = removalList(plan)
   const sentence =
-    plan.removalMode === 'keepOnly'
-      ? fr.cards.keepOnly(plan.keptTotal, plan.keptJokers)
-      : removal
-        ? `${fr.cards.remove(removal)} ${fr.cards.keep(plan.keptTotal)}`
-        : fr.cards.keepAll
+    plan.removedTotal === 0 && plan.keptJokers > 0
+      ? fr.cards.keepAllWithJokers(plan.keptJokers)
+      : plan.removalMode === 'keepOnly'
+        ? fr.cards.keepOnly(plan.keptTotal, plan.keptJokers)
+        : removal
+          ? `${fr.cards.remove(removal)} ${fr.cards.keep(plan.keptTotal)}`
+          : fr.cards.keepAll
 
   return (
     <Screen fixed tight>

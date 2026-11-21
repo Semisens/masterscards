@@ -116,11 +116,16 @@ export interface DeckCardConfig {
   suit: Suit
 }
 
-/** Un élément légendé de la table : des cartes de dos (`layout`), ou une carte visible si `card` est donné. */
+/**
+ * Un élément légendé de la table : des cartes de dos (`layout`), une carte visible si `card` est donné, ou des rangées
+ * si `cards` est donné : une ligne par carte, suivie d'emplacements vides jusqu'à `slots` places (6 qui prend).
+ */
 export interface DiagramItem<Card = DeckCard> {
   label: string
   layout?: CardLayout
   card?: Card
+  cards?: Card[]
+  slots?: number
 }
 
 export type DiagramItemConfig = DiagramItem<DeckCardConfig>
@@ -130,13 +135,13 @@ export type DiagramItemConfig = DiagramItem<DeckCardConfig>
  * - `hand` : ta main pendant le tour, de face (en éventail si elle a plusieurs cartes) ;
  * - `across` : la carte du bord de la main d'en face ;
  * - `center` : une carte par élément du centre, dans l'ordre ;
- * - `played` : la carte découverte posée à côté de la main d'un autre joueur.
+ * - `played` : la carte découverte posée à côté de la main d'un joueur (`you` : la tienne).
  */
 export interface TurnReveal<Card = DeckCard> {
   hand?: Card[]
   across?: Card
   center?: Card[]
-  played?: { across?: Card; left?: Card; right?: Card }
+  played?: { across?: Card; left?: Card; right?: Card; you?: Card }
 }
 
 export interface Tutorial<Item = DiagramItem, Card = DeckCard> {
@@ -165,6 +170,8 @@ export interface Scoring {
   validate: string
   /** Points à atteindre pour gagner : un nombre, ou un nombre par effectif (clé = nombre de joueurs). Absent : pas de fin automatique. */
   target?: number | Record<string, number>
+  /** Vrai si le plus petit score gagne (6 qui prend) : le classement se lit dans l'autre sens. Absent : le plus grand. */
+  lowest_wins?: boolean
 }
 
 interface GameBase {

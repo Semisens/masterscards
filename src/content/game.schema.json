@@ -181,6 +181,10 @@
           "minLength": 1,
           "maxLength": 30
         },
+        "lowest_wins": {
+          "description": "Vrai si le plus petit score gagne (ex. 6 qui prend) : podium et historique classent dans l'autre sens. La partie s'arrête toujours quand un joueur atteint `target`. Absent : le plus grand score gagne.",
+          "type": "boolean"
+        },
         "target": {
           "description": "Points à atteindre pour gagner : un nombre, ou un nombre par effectif (clé = nombre de joueurs). La partie se termine seule. Absent : pas de fin automatique.",
           "oneOf": [
@@ -251,7 +255,7 @@
               "minLength": 1
             },
             "reveal": {
-              "description": "Facultatif. « Un tour » montre la table de la mise en place, à l'identique, avec quelques cartes de face : ta main pendant le tour (`hand`, en éventail si elle a plusieurs cartes), la carte du bord de la main d'en face (`across`), une carte par élément du centre (`center`, dans l'ordre), et la carte découverte posée à côté de la main des autres joueurs (`played`).",
+              "description": "Facultatif. « Un tour » montre la table de la mise en place, à l'identique, avec quelques cartes de face : ta main pendant le tour (`hand`, en éventail si elle a plusieurs cartes), la carte du bord de la main d'en face (`across`), une carte par élément du centre (`center`, dans l'ordre), et la carte découverte posée à côté de la main de chaque joueur (`played` : `across`, `left`, `right`, et `you` pour la tienne).",
               "type": "object",
               "additionalProperties": false,
               "minProperties": 1,
@@ -287,6 +291,9 @@
                       "$ref": "#/$defs/cardRef"
                     },
                     "right": {
+                      "$ref": "#/$defs/cardRef"
+                    },
+                    "you": {
                       "$ref": "#/$defs/cardRef"
                     }
                   }
@@ -399,6 +406,21 @@
         },
         "card": {
           "$ref": "#/$defs/cardRef"
+        },
+        "cards": {
+          "description": "Des rangées de cartes visibles, l'une sous l'autre : une ligne par carte (ex. les 4 rangées de 6 qui prend). Sans `layout` ni `card`.",
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 5,
+          "items": {
+            "$ref": "#/$defs/cardRef"
+          }
+        },
+        "slots": {
+          "description": "Avec `cards` : le nombre de places de chaque rangée. La carte occupe la première, les autres sont des emplacements vides en pointillés. Absent : la carte seule.",
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 6
         }
       }
     },

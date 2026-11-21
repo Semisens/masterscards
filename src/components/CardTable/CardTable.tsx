@@ -15,18 +15,43 @@ export interface CardTableProps {
 interface CardsProps {
   layout?: CardLayout
   card?: DeckCard
+  cards?: DeckCard[]
+  slots?: number
   label?: string
   reveal?: DeckCard
   width: string
 }
 
-/** Les cartes d'un emplacement : une carte visible si le jeu en donne une, sinon des dos (dont une peut être retournée). */
-function Cards({ layout, card, label, reveal, width }: CardsProps) {
+/**
+ * Des rangées, l'une sous l'autre (6 qui prend) : chaque carte ouvre sa ligne, suivie d'emplacements vides en
+ * pointillés jusqu'à `slots` places. Décoratif : la légende et les étapes disent la même chose.
+ */
+function CardRows({ cards, slots = 1 }: { cards: DeckCard[]; slots?: number }) {
+  return (
+    <span className={styles.rows} aria-hidden="true">
+      {cards.map((card, row) => (
+        <span key={row} className={styles.row}>
+          <PlayingCard rank={card.rank} suit={card.suit} variant="table" width="var(--row-card-w)" />
+          {Array.from({ length: slots - 1 }, (_, slot) => (
+            <span key={slot} className={styles.slot} />
+          ))}
+        </span>
+      ))}
+    </span>
+  )
+}
+
+/**
+ * Les cartes d'un emplacement : une carte visible si le jeu en donne une, des rangées de cartes visibles (`cards`),
+ * sinon des dos (dont une peut être retournée).
+ */
+function Cards({ layout, card, cards, slots, label, reveal, width }: CardsProps) {
   if (card) return <PlayingCard rank={card.rank} suit={card.suit} variant="table" width={width} label={label} />
+  if (cards) return <CardRows cards={cards} slots={slots} />
   return <CardPile layout={layout} reveal={reveal} width={width} className={styles.hand} />
 }
 
-/** La carte découverte posée à côté de la main d'un autre joueur (un tour) : hors du flux, rien ne bouge. */
+/** La carte découverte posée à côté de la main d'un joueur (un tour) : hors du flux, rien ne bouge. */
 function Played({ card }: { card?: DeckCard }) {
   if (!card) return null
   return (
@@ -43,7 +68,7 @@ function Played({ card }: { card?: DeckCard }) {
 /**
  * La table vue de haut, la même sur la mise en place et sur un tour : quatre mains de dos (en face, à gauche, à droite,
  * et la tienne en bas, légendée) autour de ce que le jeu pose au centre. Sur un tour, quelques cartes sont de face
- * (`reveal`) : retournées, ta main, ou posées à côté de la main d'un autre joueur ; rien d'autre ne bouge. Les quatre
+ * (`reveal`) : retournées, ta main, ou posées à côté de la main d'un joueur ; rien d'autre ne bouge. Les quatre
  * mains sont à la même distance des cartes du centre, quelle que soit la légende. Les dos portent la couleur du jeu.
  */
 export function CardTable({ hand, center, reveal }: CardTableProps) {
@@ -77,17 +102,21 @@ export function CardTable({ hand, center, reveal }: CardTableProps) {
       </div>
 
       <div className={`${styles.seat} ${styles.bottom}`}>
-        {yourHand ? (
-          // Ta main pendant le tour, de face : en éventail si elle a plusieurs cartes.
-          <CardPile
-            layout={yourHand.length > 1 ? 'spread' : 'single'}
-            faces={yourHand}
-            width="var(--hand-card-w)"
-            className={styles.hand}
-          />
-        ) : (
-          <Cards layout={layout} width="var(--hand-card-w)" />
-        )}
+        {/* Ta main et, sur un tour, la carte que tu viens de poser à sa droite (hors du flux : la légende ne bouge pas). */}
+        <span className={styles.yours}>
+          {yourHand ? (
+            // Ta main pendant le tour, de face : en éventail si elle a plusieurs cartes.
+            <CardPile
+              layout={yourHand.length > 1 ? 'spread' : 'single'}
+              faces={yourHand}
+              width="var(--hand-card-w)"
+              className={styles.hand}
+            />
+          ) : (
+            <Cards layout={layout} width="var(--hand-card-w)" />
+          )}
+          <Played card={reveal?.played?.you} />
+        </span>
         {hand.label}
       </div>
     </div>

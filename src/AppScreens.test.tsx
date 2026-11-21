@@ -55,7 +55,7 @@ describe('accueil « Tes jeux »', () => {
     expect(screen.getByRole('link', { name: /Trio/ })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /Love Letter/ })).not.toBeInTheDocument()
     await userEvent.click(screen.getByRole('radio', { name: 'Tous' }))
-    expect(screen.getAllByRole('link', { name: /joueurs/ })).toHaveLength(2)
+    expect(screen.getAllByRole('link', { name: /joueurs/ })).toHaveLength(games.length)
   })
 
   it('dit quand rien ne correspond', async () => {
@@ -152,6 +152,11 @@ describe('Love Letter : tutoriel', () => {
     renderApp('/jeu/love-letter/tutoriel/cartes/1')
     expect(await screen.findByText('Carte 1 / 10')).toBeInTheDocument()
     expect(screen.getByRole('img', { name: 'Jokers' })).toBeInTheDocument()
+  })
+
+  it('dit de garder tout le paquet et les jokers quand rien n’est à retirer (6 qui prend)', async () => {
+    renderApp('/jeu/6-qui-prend/tutoriel/cartes')
+    expect(await screen.findByText('Garde tout le paquet, avec les 2 jokers. Ne retire rien.')).toBeInTheDocument()
   })
 
   it('remplace la carte en pointillés par la carte d’origine en mode connaisseur', async () => {

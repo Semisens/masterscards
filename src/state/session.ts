@@ -96,9 +96,12 @@ export interface RankedPlayer extends Player {
   rank: number
 }
 
-/** Classement par score décroissant. Les égalités gardent l'ordre de la partie et partagent le même rang. */
-export function rankPlayers(players: Player[]): RankedPlayer[] {
-  const sorted = [...players].sort((a, b) => b.score - a.score)
+/**
+ * Classement par score décroissant, ou croissant si le plus petit score gagne (`lowestWins`, 6 qui prend).
+ * Les égalités gardent l'ordre de la partie et partagent le même rang.
+ */
+export function rankPlayers(players: Player[], lowestWins = false): RankedPlayer[] {
+  const sorted = [...players].sort((a, b) => (lowestWins ? a.score - b.score : b.score - a.score))
   let rank = 0
   return sorted.map((player, i) => {
     if (i === 0 || player.score !== sorted[i - 1].score) rank = i + 1

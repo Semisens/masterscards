@@ -70,6 +70,9 @@ export const fr = {
     remove: (list: string) => `Retire ${list}.`,
     keep: (count: number) => `Garde ${plural(count, 'carte', 'cartes')}.`,
     keepAll: 'Garde tout le paquet.',
+    /** Tout le paquet de 52, plus des jokers : rien à retirer. */
+    keepAllWithJokers: (jokers: number) =>
+      `Garde tout le paquet, avec ${jokers > 1 ? `les ${jokers} jokers` : 'le joker'}. Ne retire rien.`,
     /** Titre de la rangée des cartes d'origine, en mode connaisseur. */
     originalCards: 'Dans le jeu d’origine',
     /** Libellé d'un joker pour lecteurs d'écran. */

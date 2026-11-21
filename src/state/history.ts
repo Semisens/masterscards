@@ -61,10 +61,10 @@ export function withEntry(history: HistoryEntry[], entry: HistoryEntry): History
   return [entry, ...history.filter((item) => item.id !== entry.id)].slice(0, MAX_HISTORY)
 }
 
-/** Résumé court d'une partie : les deux meilleurs, « Léa 4 · Tom 2 ». */
-export function summary(entry: HistoryEntry): string {
+/** Résumé court d'une partie : les deux meilleurs, « Léa 4 · Tom 2 » (les deux plus petits scores si `lowestWins`). */
+export function summary(entry: HistoryEntry, lowestWins = false): string {
   return [...entry.players]
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => (lowestWins ? a.score - b.score : b.score - a.score))
     .slice(0, 2)
     .map((player) => `${player.name} ${player.score}`)
     .join(' · ')
