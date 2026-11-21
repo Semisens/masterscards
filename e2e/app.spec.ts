@@ -215,6 +215,8 @@ test.describe('parcours Love Letter', () => {
       window.sessionStorage.setItem('test-init', '1')
       window.localStorage.clear()
       window.localStorage.setItem('masterscards:welcomed', '1')
+      // Nouveautés déjà vues : pas de popup par-dessus l'écran testé.
+      window.localStorage.setItem('masterscards:news-seen', '9999.0.0')
     })
   })
 

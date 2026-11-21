@@ -62,6 +62,14 @@ Tous les jeux ont les mêmes écrans et le même fonctionnement. **Un jeu = une 
 5. Pièges YAML : un texte avec « : » ou « # », ou qui commence par un chiffre, se met entre apostrophes droites (`'7'`). Pas d'accolades `{ }` autour d'un texte qui contient une virgule.
 6. Les textes de l'interface sont dans `src/i18n/fr.ts`, ceux des jeux dans leur `game.yaml`. Modifier le code n'est utile que pour une **nouvelle fonction** (nouveau champ du schéma, nouvel écran).
 
+## Annoncer une version (popup « Nouveautés »)
+
+Seulement quand Jeremy le demande : une version sans note ne montre rien.
+
+1. Ajoute la note **en tête** de `src/content/changelog.yaml` : `version: prochaine`, `title`, `text`, et au besoin `items` (puces) et `game` (id d'un jeu : vignette et « Voir le jeu »).
+2. En dev, elle compte pour la version en cours : Réglages → « Nouveautés », ou `localStorage.setItem('masterscards:news-seen','0.0.0')` puis recharger l'accueil.
+3. À la publication, `npm version` (action Pages) lance `scripts/stamp-changelog.ts` : `prochaine` devient le numéro, dans le commit « Version x.y.z ». Au lancement suivant, chaque utilisateur voit les notes qu'il n'a pas vues (5 au plus, à balayer).
+
 ## Règles du dépôt
 
 - Fichiers `*.generated.*` : jamais édités à la main, régénérés par `npm run tokens`.

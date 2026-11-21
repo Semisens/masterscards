@@ -1,0 +1,158 @@
+/* Voile plein écran, au-dessus de la barre d'onglets : la page derrière ne bouge pas. */
+.overlay {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(var(--mc-space-5), env(safe-area-inset-top)) max(var(--mc-space-3), env(safe-area-inset-right))
+    max(var(--mc-space-3), env(safe-area-inset-bottom)) max(var(--mc-space-3), env(safe-area-inset-left));
+  background: var(--mc-veil-shadow);
+}
+
+.dialog {
+  /* Contour de focus des boutons : sombre sur la surface blanche. */
+  --game-screen-fg: var(--mc-color-nuit);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--mc-space-2);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--mc-text-min) * 28);
+  max-height: 100%;
+  padding: var(--mc-space-3);
+  border-radius: var(--mc-radius-l);
+  background: var(--mc-card-face);
+  color: var(--mc-color-encre);
+  box-shadow: 0 var(--mc-elevation-m) 0 var(--mc-color-bordure);
+  /* Le défilement vertical du texte reste au navigateur ; le balayage horizontal change de note. */
+  touch-action: pan-y;
+  outline: none;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--mc-space-2);
+}
+
+.kicker {
+  margin: 0;
+  font-family: var(--mc-font-title);
+  font-weight: 700;
+  font-size: calc(var(--mc-text-min) * 1.125);
+}
+
+.version {
+  margin: 0;
+  color: var(--mc-color-texte-secondaire);
+}
+
+.close {
+  flex: none;
+  min-width: var(--mc-touch-min);
+  min-height: var(--mc-touch-min);
+  margin: calc(var(--mc-space-1) * -1) calc(var(--mc-space-1) * -1) 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: calc(var(--mc-text-min) * 2);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close:focus-visible,
+.chevron:focus-visible {
+  outline: medium solid var(--mc-color-nuit);
+  outline-offset: 2px;
+}
+
+/* Le texte défile dans son cadre s'il est long : la popup tient toujours dans l'écran. */
+.body {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  gap: var(--mc-space-1);
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.body p {
+  margin: 0;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--mc-font-title);
+  font-weight: 600;
+  font-size: calc(var(--mc-text-min) * 1.5);
+  line-height: 1.2;
+}
+
+.items {
+  margin: 0;
+  padding-left: var(--mc-space-3);
+}
+
+/* Place pour le relief de la vignette, qui dépasse vers le bas. */
+.tile {
+  padding: var(--mc-space-1) 0 var(--mc-elevation-m);
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chevron {
+  min-width: var(--mc-touch-min);
+  min-height: var(--mc-touch-min);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: calc(var(--mc-text-min) * 2);
+  cursor: pointer;
+}
+
+.chevron:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--mc-space-1);
+}
+
+.dot,
+.dotActive {
+  width: calc(var(--mc-text-min) * 0.625);
+  height: calc(var(--mc-text-min) * 0.625);
+  border-radius: 50%;
+  background: var(--mc-color-bordure);
+}
+
+.dotActive {
+  background: var(--mc-color-nuit);
+}
+
+.actions {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--mc-space-2);
+  /* Le relief du dernier bouton dépasse vers le bas. */
+  padding-bottom: var(--mc-elevation-m);
+}

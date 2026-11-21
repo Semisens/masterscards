@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "prepare": "git config core.hooksPath .githooks || true",
+    "version": "node scripts/stamp-changelog.ts && git add src/content/changelog.yaml",
     "tokens": "node scripts/gen-tokens.ts",
     "predev": "npm run tokens",
     "dev": "vite",

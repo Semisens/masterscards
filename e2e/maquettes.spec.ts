@@ -238,6 +238,8 @@ test.describe('fidélité aux maquettes', () => {
         ({ mode, party, history, game }) => {
           window.localStorage.clear()
           window.localStorage.setItem('masterscards:welcomed', '1')
+          // Nouveautés déjà vues : pas de popup par-dessus l'écran testé.
+          window.localStorage.setItem('masterscards:news-seen', '9999.0.0')
           if (mode) window.localStorage.setItem('masterscards:mode', mode)
           if (party) window.localStorage.setItem(`masterscards:session:${game}`, JSON.stringify(party))
           if (history) window.localStorage.setItem('masterscards:history', JSON.stringify(history))

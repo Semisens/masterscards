@@ -229,6 +229,7 @@ Premier lancement, liste vide, jeu / groupe / page introuvable (avec retour), pa
 | Dos de carte : pile, éventail ou carte seule à la couleur de dos du jeu, au lieu de la carte pleine bleu nuit | Nouveau principe « dos de carte » (`card_back_color`, `layout`). Maquettes de Trio 05 (mise en place) et Love Letter 08 refaites ; **Trio 06 et Love Letter 09** gagnent un schéma sous le titre ; **Trio 08 et Love Letter 10** une pioche de dos. Les maquettes de Trio, validées, ont été modifiées à la demande de l'utilisateur. |
 | Mode Connaisseur : cartes d'origine au lieu de la carte en pointillés ; vue à balayer : rangée des cartes d'origine | Demande de l'utilisateur. **Trio : 12 images découpées de la planche fournie** (`npm run planche`, `src/content/games/trio/carte-NN.webp`) ; l'utilisateur les dit être des dessins qui lui appartiennent (la règle du projet interdit les illustrations officielles : à lui d'en répondre). **Love Letter : dessinées en code** (valeur sur couleur relevée sur la planche, sans portrait ni texte officiel). Maquettes Trio 03 et 04, Love Letter 06 et 07 refaites. Trois couleurs de Trio (4, 8, 9) légèrement assombries pour la valeur blanche des cartes dessinées. |
 | Réglages : pas de bloc Compte ni « Se déconnecter » ; pas de bloc « Tutoriels passés » ; note « English et Español arrivent bientôt » ; « À propos » à la place | Pas de compte en v1. « Jouer » suit le même chemin pour tous les jeux, à chaque fois : il n'y a donc rien à réactiver. Les sources de la maquette 15 sont retouchées de même. |
+| Réglages : bouton « Nouveautés » au-dessus de « À propos » | Popup des nouveautés (§10.6), demandée par l'utilisateur. Source de la maquette 15 retouchée de même. Le bouton n'apparaît que s'il existe au moins une note publiée. |
 | Accueil : la troisième vignette « [JEU 3] » de la maquette devient **6 qui prend**, en tête (ordre alphabétique) | Nouveau jeu. Maquette 02 de Love Letter refaite (6 qui prend, Love Letter, Trio), plus de masque dans le test. |
 | Podium : l'écran n'a pas de « ‹ Retour » | Fidèle à la maquette : on en sort par « Voir l'historique » ou « Retour aux jeux ». |
 | « Terminer la partie » de **Trio** mène aussi au podium (partie interrompue) et à l'historique | Cohérence des jeux ; la maquette de Trio n'a pas ce cas. |
@@ -363,6 +364,7 @@ Via `src/core/storage.ts` : `@capacitor/preferences` dans les apps natives (non 
 - **Message de bienvenue** déjà vu.
 - **Partie en cours**, par jeu (`session:<id>`) : joueurs, scores, manche et marque `unnamed` (partie sans prénoms). Relue avec validation stricte : une donnée abîmée est ignorée, l'app démarre normalement ; l'ancien format (`trios`, sans manche) est relu. « Terminer la partie » l'efface.
 - **Historique** (`history`) : les 100 dernières parties (jeu, date, statut, scores). Les entrées abîmées sont ignorées une à une.
+- **Nouveautés vues** (`news-seen`) : la dernière version dont la popup des nouveautés a été fermée. Absente au premier lancement : la version en cours y est écrite, sans popup ; absente alors que le mot de bienvenue a été vu (utilisateur d'avant cette fonction) : les notes en attente s'affichent.
 
 Aucune donnée n'est indispensable au fonctionnement : sans stockage, l'app reste utilisable.
 
@@ -446,6 +448,7 @@ Aucune collecte en v1, aucun compte, pas de tracking. Si des statistiques sont a
 ### 10.6 Hors ligne et mises à jour
 - Le service worker précache tout le build (code, polices, JSON des jeux, icônes). L'app démarre sans réseau dès la deuxième visite.
 - Mise à jour automatique : une nouvelle version est téléchargée en arrière-plan et prend effet au prochain lancement.
+- **Nouveautés** : après une mise à jour annoncée, l'accueil ouvre une popup (une note par version, à balayer s'il y en a plusieurs, la plus récente d'abord, 5 au plus). Seules les versions écrites dans `src/content/changelog.yaml` ont une note : c'est l'auteur qui choisit. Une note s'écrit avec `version: prochaine` ; `npm version` (lancé par l'action Pages) y écrit le numéro (`scripts/stamp-changelog.ts`). Une note peut nommer un jeu (`game`) : sa vignette et « Voir le jeu ». Réglages → « Nouveautés » relit toutes les notes.
 - Dans les apps natives, le build web est **embarqué dans le binaire** : le hors ligne fonctionne dès l'installation, sans service worker.
 
 ### 10.7 Distribution

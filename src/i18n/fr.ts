@@ -50,6 +50,17 @@ export const fr = {
     language: 'Langue de l’app',
     languageSoon: 'English et Español arrivent bientôt.',
     about: 'À propos',
+    news: 'Nouveautés',
+  },
+  news: {
+    title: 'Nouveautés',
+    version: (version: string) => `Version ${version}`,
+    close: 'Fermer',
+    done: 'C’est compris',
+    seeGame: 'Voir le jeu',
+    previous: 'Nouveauté précédente',
+    next: 'Nouveauté suivante',
+    counter: (n: number, total: number) => `Nouveauté ${n} sur ${total}`,
   },
   mode: {
     legend: 'Mode de lecture',

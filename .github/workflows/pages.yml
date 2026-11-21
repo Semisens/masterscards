@@ -41,6 +41,8 @@ jobs:
           git config core.hooksPath /dev/null
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      # `npm version` lance aussi le script « version » de package.json : les notes `version: prochaine` de
+      # src/content/changelog.yaml reçoivent le numéro, dans le même commit.
       - name: Nouvelle version (${{ inputs.version }})
         id: version
         run: |

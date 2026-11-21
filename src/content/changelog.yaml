@@ -1,0 +1,19 @@
+# Nouveautés : une note par version annoncée, la plus récente en haut.
+# Une version absente d'ici ne montre rien. Mode d'emploi : CLAUDE.md, « Annoncer une version ».
+#
+#   version  `prochaine` tant que la version n'est pas publiée : `npm version` (action Pages) écrit le numéro.
+#   title    le titre de la note, court.
+#   text     une ou deux phrases.
+#   items    facultatif : quelques puces.
+#   game     facultatif : l'id d'un jeu (dossier de src/content/games/) : sa vignette et « Voir le jeu ».
+#
+# Pièges YAML : un texte avec « : » ou « # », ou qui commence par un chiffre, se met entre apostrophes droites.
+
+- version: prochaine
+  title: 'Nouveau jeu : 6 qui prend'
+  text: Tout le monde joue en même temps. Ne pose pas la sixième carte !
+  items:
+    - '54 cartes : le paquet et les 2 jokers.'
+    - De 2 à 5 joueurs, 30 minutes.
+    - Le moins de points gagne.
+  game: 6-qui-prend

@@ -4,11 +4,13 @@ import { Chips } from '../../components/Chips/Chips.tsx'
 import { EmptyState } from '../../components/EmptyState/EmptyState.tsx'
 import { GameTile } from '../../components/GameTile/GameTile.tsx'
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx'
+import { NewsDialog } from '../../components/NewsDialog/NewsDialog.tsx'
 import { Panel } from '../../components/Panel/Panel.tsx'
 import { Screen } from '../../components/Screen/Screen.tsx'
 import { filterGames, type GameFilter } from '../../data/filters.ts'
 import { games } from '../../data/games.ts'
 import { fr } from '../../i18n/fr.ts'
+import { useNews } from '../../state/useNews.ts'
 import { useStoredFlag } from '../../state/useStoredFlag.ts'
 import styles from './HomePage.module.css'
 
@@ -22,6 +24,8 @@ const FILTERS = [
 export function HomePage() {
   // Premier lancement : un mot de bienvenue, une seule fois. `null` = pas encore lu, on n'affiche rien.
   const [welcomed, setWelcomed] = useStoredFlag('welcomed')
+  // Après une mise à jour annoncée : la popup des nouveautés (src/content/changelog.yaml), une seule fois.
+  const [news, dismissNews] = useNews()
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<GameFilter>('all')
   const shown = filterGames(games, filter, query)
@@ -67,6 +71,8 @@ export function HomePage() {
           ))}
         </ul>
       )}
+
+      {news.length > 0 && <NewsDialog notes={news} onClose={dismissNews} />}
     </Screen>
   )
 }
