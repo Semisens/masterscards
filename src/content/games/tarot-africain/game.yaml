@@ -1,0 +1,147 @@
+# yaml-language-server: $schema=../../game.schema.json
+# Tarot africain : configuration complète du jeu. Modèle commenté : docs/modele-jeu.yaml.
+# Cahier des charges : build_ressources/MasterCards/TarotAfricain/CAHIER_DES_CHARGES.md.
+#
+# Le jeu d'origine se joue avec les 22 atouts du tarot. Version MastersCards : 22 cartes d'un paquet classique.
+# Valeurs : pique as à 10 = 1 à 10, cœur as à 10 = 11 à 20, roi de cœur = 21, joker (l'Excuse) = 0 ou 22, au choix.
+# Manches à 5, 4, 3, 2 puis 1 carte, et on recommence. 1 point par pli d'écart avec l'annonce. Fin à 13, le moins gagne.
+
+id: tarot-africain
+name: Tarot africain
+main_color: '#A4471E' # terre cuite, texte blanc ; le fond des écrans reste le bleu de l'app
+tagline: Annonce tes plis, et tiens parole !
+description: >-
+  Chaque manche, annonce combien de plis tu vas faire. Chaque pli d’écart te coûte un point. À la dernière manche, ta
+  carte est sur ton front : tu vois celles des autres, pas la tienne.
+players: { min: 2, max: 4 }
+duration_min: 20
+classic_forbidden_terms: [atout, atouts, Excuse, Petit]
+
+# Cartes à garder (22) : une ligne de « Tes cartes » par tranche de valeurs.
+card_groups:
+  - label: Pique, 1 à 10
+    cards:
+      - { ranks: [A, 2, 3, 4, 5, 6, 7, 8, 9, 10], suits: [spades] }
+    short: Valent 1 à 10.
+    detail:
+      title: Les piques valent leur chiffre.
+      text: L’as vaut 1. Ce sont les cartes les plus faibles.
+    expert:
+      original: '1–10'
+      name: Atouts
+      power: le 1 s’appelle le Petit
+
+  - label: Cœur, 11 à 20
+    cards:
+      - { ranks: [A, 2, 3, 4, 5, 6, 7, 8, 9, 10], suits: [hearts] }
+    short: Valent 11 à 20.
+    detail:
+      title: Ajoute 10 au chiffre.
+      text: L’as de cœur vaut 11, le 10 de cœur vaut 20. Elles battent tous les piques.
+    expert:
+      original: '11–20'
+      name: Atouts
+
+  - label: Roi de cœur
+    cards:
+      - { ranks: [K], suits: [hearts] }
+    short: Vaut 21. La plus forte.
+    badge: Spécial
+    detail:
+      title: Le roi de cœur vaut 21.
+      text: Il bat toutes les cartes, sauf le joker joué à 22.
+    expert:
+      original: '21'
+      name: Le 21
+
+  - label: Joker
+    jokers: 1
+    display: { joker: true }
+    short: Vaut 0 ou 22, au choix.
+    badge: Spécial
+    detail:
+      title: Tu choisis sa valeur en le posant.
+      text: À 0, il perd le pli. À 22, il le gagne.
+    expert:
+      original: Excuse
+      power: vaut 0 ou 22, au choix de qui la joue
+
+# Partie en manches : chacun note ses plis d'écart. Dès qu'un joueur atteint 13, la partie s'arrête ; le plus petit
+# score gagne.
+scoring:
+  unit: point
+  party_label: Manche {round}
+  title: Fin de la manche {round}
+  question: Combien de plis d’écart pour chacun ?
+  validate: Valider la manche
+  target: 13
+  lowest_wins: true
+
+tutorial:
+  setup:
+    title: Mise en place
+    hand: { label: 'Ta main, 5 cartes', layout: spread }
+    center:
+      - label: Cartes de côté
+        layout: pile
+    steps:
+      - Mélange les {cards} cartes. Le donneur change à chaque manche.
+      - Donne 5 cartes à chacun. Aux manches suivantes, 4, puis 3, 2 et 1.
+      - Mets le reste de côté, face cachée.
+  turn:
+    title: Une manche
+    reveal: # ta main de face, et le pli en cours : la carte que chacun vient de poser, toi compris
+      hand: [{ rank: 3, suit: spades }, { rank: 7, suit: hearts }, { rank: K, suit: hearts }]
+      played:
+        across: { rank: 9, suit: spades }
+        left: { rank: 4, suit: hearts }
+        right: { rank: 2, suit: spades }
+        you: { rank: 8, suit: hearts }
+    steps:
+      - label: Annonce.
+        text: Dis combien de plis tu vas faire. Le donneur parle en dernier.
+      - label: Pas d’égalité.
+        text: Le total des annonces ne doit pas égaler le nombre de plis. Le donneur doit l’éviter.
+      - label: Joue.
+        text: Chacun pose une carte. La plus forte gagne le pli.
+      - label: Compte.
+        text: Tu prends un point par pli d’écart avec ton annonce.
+      - label: Une seule carte ?
+        text: Ne la regarde pas. Pose-la sur ton front, face vers les autres.
+    win:
+      title: Gagner
+      text: La partie s’arrête dès qu’un joueur atteint 13 points. Le moins de points gagne.
+
+full_rules:
+  - title: But
+    text: Fais autant de plis que tu en as annoncé. La partie s’arrête à 13 points. Le moins de points gagne.
+  - title: Mise en place
+    text: '{cards} cartes, joker compris. De 2 à 4 joueurs. Le donneur change à chaque manche.'
+  - title: Manches
+    text: >-
+      Donne 5 cartes à chacun, puis 4, 3, 2 et 1 aux manches suivantes. Ensuite, recommence à 5. Le reste est mis de
+      côté, face cachée.
+  - title: Force des cartes
+    text: >-
+      Les piques valent 1 à 10, l’as compris. Les cœurs valent 11 à 20. Le roi de cœur vaut 21. Le joker vaut 0 ou 22.
+  - title: Annonces
+    text: >-
+      Chacun annonce ses plis, une fois, à partir de la gauche du donneur. Zéro est permis. Le donneur parle en
+      dernier.
+  - title: Règle du donneur
+    text: >-
+      Le total des annonces ne doit pas égaler le nombre de plis. Ex. 5 cartes, annonces 2, 1 et 1 : le donneur ne
+      peut pas dire 1.
+  - title: Plis
+    text: >-
+      La gauche du donneur commence. Chacun pose la carte de son choix. La plus forte gagne le pli et ouvre le
+      suivant.
+  - title: Joker
+    text: En le posant, dis s’il vaut 0 ou 22. À 0, il perd le pli. À 22, il le gagne.
+  - title: Manche à 1 carte
+    text: >-
+      Ne regarde pas ta carte. Pose-la sur ton front, face vers les autres. Tu vois leurs cartes, pas la tienne.
+      Annonce, puis joue.
+  - title: Points
+    text: >-
+      Tu prends un point par pli d’écart entre ton annonce et tes plis. Note-les, puis redonne.
