@@ -19,78 +19,64 @@
   color: var(--mc-text-on-soleil);
 }
 
-.podium {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--mc-space-1);
-  margin: var(--mc-space-2) 0 0;
+/* Tous les joueurs, du premier au dernier : médaille (ou rang), prénom, score. */
+.list {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.column {
-  flex: 1;
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--mc-space-2);
+  padding: var(--mc-space-1) 0;
+  border-top: calc(var(--mc-space-1) / 4) solid var(--game-edge, var(--mc-color-bordure));
+}
+
+.row:first-child {
+  border-top: 0;
+}
+
+/* La médaille (🥇 🥈 🥉) ou le rang (« 4e ») : une colonne de même largeur, les prénoms restent alignés. */
+.medal,
+.place {
+  flex: none;
+  width: var(--mc-space-5);
   text-align: center;
 }
 
-/* Marches : 160, 110 et 70 px de haut. La plus haute est celle du premier. */
-.step {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  margin-top: var(--mc-space-1);
-  padding-top: var(--mc-space-1);
-  border-radius: var(--mc-radius-ligne) var(--mc-radius-ligne) 0 0;
-  color: var(--mc-color-encre);
-  font-family: var(--mc-font-title);
-  font-weight: 700;
+.medal {
   font-size: calc(var(--mc-text-min) * 1.75);
+  line-height: 1;
 }
 
-.first {
-  height: 10rem;
-  background: var(--mc-color-soleil);
-}
-
-.second {
-  height: 6.875rem;
-  background: var(--mc-card-face);
-}
-
-.third {
-  height: 4.375rem;
-  background: var(--mc-color-azur);
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  padding: calc(var(--mc-space-1) * 1.5) 0;
-  border-top: calc(var(--mc-space-1) / 4) solid var(--game-edge, var(--mc-color-bordure));
+.place {
+  color: var(--mc-color-texte-secondaire);
 }
 
 /* Le prénom se coupe par « … » plutôt que de pousser le score. */
 .name {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Plus de 6 joueurs : les suivants sur deux colonnes, lignes serrées. */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: var(--mc-space-2);
+.score {
+  flex: none;
+  font-family: var(--mc-font-title);
+  font-size: calc(var(--mc-text-min) * 1.25);
 }
 
-.grid > .row {
-  gap: var(--mc-space-1);
-  padding: calc(var(--mc-space-1) / 2) 0;
+/* Plus de 6 joueurs : lignes serrées, pour tenir sans défilement. */
+.crowded .row {
+  padding: calc(var(--mc-space-1) / 4) 0;
 }
 
-.grid .name {
-  flex: 1;
-  min-width: 0;
+.crowded .medal {
+  font-size: calc(var(--mc-text-min) * 1.375);
 }
 
 .spacer {

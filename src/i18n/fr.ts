@@ -131,8 +131,10 @@ export const fr = {
     finished: 'Partie terminée',
     interrupted: 'Partie interrompue',
     title: 'Podium',
-    /** Rang de la liste sous le podium : « 4e ». */
+    /** Rang d'un joueur : « 1er », « 4e » (lecteurs d'écran, et la liste après les médailles). */
     place: (rank: number) => (rank === 1 ? '1er' : `${rank}e`),
+    /** Médaille des trois premiers (ex aequo : la même), le rang ensuite (« 4e »). */
+    medal: (rank: number) => ['🥇', '🥈', '🥉'][rank - 1] ?? (rank === 1 ? '1er' : `${rank}e`),
     seeHistory: 'Voir l’historique',
     backToGames: 'Retour aux jeux',
     notFound: 'Cette partie est introuvable.',

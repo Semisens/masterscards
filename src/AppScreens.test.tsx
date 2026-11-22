@@ -325,7 +325,7 @@ describe('Loup-garou : de 6 à 12 joueurs', () => {
 })
 
 describe('podium', () => {
-  it('place le premier au centre, le deuxième à gauche, le troisième à droite, puis la liste', async () => {
+  it('liste tous les joueurs dans l’ordre, avec une médaille pour les trois premiers', async () => {
     store('masterscards:history', [
       ENTRY('1', {
         players: [
@@ -340,7 +340,9 @@ describe('podium', () => {
     expect(await screen.findByText('Partie terminée')).toBeInTheDocument()
     const podium = screen.getByRole('list', { name: 'Podium des joueurs' })
     const names = Array.from(podium.querySelectorAll('li')).map((li) => li.getAttribute('aria-label'))
-    expect(names).toEqual(['2e : Tom, 2', '1er : Léa, 3', '3e : Inès, 1'])
+    expect(names).toEqual(['1er : Léa, 3', '2e : Tom, 2', '3e : Inès, 1', '4e : Sam, 0'])
+    expect(podium).toHaveTextContent('🥇')
+    expect(podium).toHaveTextContent('🥉')
     expect(screen.getByText('4e')).toBeInTheDocument()
     expect(screen.getByText('Sam')).toBeInTheDocument()
   })

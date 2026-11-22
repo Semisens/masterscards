@@ -11,15 +11,9 @@ import { useHistory } from '../../state/useHistory.ts'
 import { NotFoundPage } from '../not-found/NotFoundPage.tsx'
 import styles from './ResultsPage.module.css'
 
-/** Les marches du podium, dans l'ordre d'affichage : le 2e à gauche, le 1er au centre, le 3e à droite. */
-const STEPS = [
-  { place: 1, className: styles.second },
-  { place: 0, className: styles.first },
-  { place: 2, className: styles.third },
-]
-
 /**
- * Podium d'une partie terminée ou interrompue : les trois premiers sur des marches, les suivants en liste.
+ * Podium d'une partie terminée ou interrompue : tous les joueurs en liste, du premier au dernier, avec leur score.
+ * Les trois premiers ont une médaille (🥇 🥈 🥉 ; ex aequo, la même), les suivants leur rang (« 4e »).
  * La partie est lue dans l'historique : elle y a été archivée au moment de la terminer.
  */
 export function ResultsPage() {
@@ -33,11 +27,7 @@ export function ResultsPage() {
   if (!entry) return <NotFoundPage message={fr.results.notFound} />
 
   const ranked = rankPlayers(entry.players, game.scoring.lowest_wins)
-  const steps = STEPS.map(({ place, className }) => ({ player: ranked[place], className })).filter(
-    (step) => step.player,
-  )
-  const others = ranked.slice(3)
-  // Beaucoup de joueurs (Loup-garou) : les suivants sur deux colonnes, lignes serrées.
+  // Beaucoup de joueurs (Loup-garou) : lignes serrées, blocs serrés.
   const crowded = isCrowded(ranked.length)
 
   return (
@@ -47,34 +37,27 @@ export function ResultsPage() {
       </span>
       <PageTitle>{fr.results.title}</PageTitle>
 
-      <ol className={styles.podium} aria-label={fr.results.podium}>
-        {steps.map(({ player, className }) => (
-          <li
-            key={className}
-            className={styles.column}
-            aria-label={`${fr.results.place(player.rank)} : ${player.name}, ${player.score}`}
-          >
-            {player.name}
-            <div className={`${styles.step} ${className}`} aria-hidden="true">
-              {player.rank}
-            </div>
-          </li>
-        ))}
-      </ol>
-
-      {others.length > 0 && (
-        <Panel>
-          <div className={crowded ? styles.grid : undefined}>
-            {others.map((player, i) => (
-              <div key={i} className={styles.row}>
-                <span>{fr.results.place(player.rank)}</span>
-                <span className={styles.name}>{player.name}</span>
-                <b>{player.score}</b>
-              </div>
-            ))}
-          </div>
-        </Panel>
-      )}
+      <Panel>
+        <ol className={crowded ? `${styles.list} ${styles.crowded}` : styles.list} aria-label={fr.results.podium}>
+          {ranked.map((player, i) => (
+            <li
+              key={i}
+              className={styles.row}
+              aria-label={`${fr.results.place(player.rank)} : ${player.name}, ${player.score}`}
+            >
+              <span className={player.rank <= 3 ? styles.medal : styles.place} aria-hidden="true">
+                {fr.results.medal(player.rank)}
+              </span>
+              <span className={styles.name} aria-hidden="true">
+                {player.name}
+              </span>
+              <b className={styles.score} aria-hidden="true">
+                {player.score}
+              </b>
+            </li>
+          ))}
+        </ol>
+      </Panel>
 
       <div className={styles.spacer} />
       <ButtonLink block to={paths.history()}>
