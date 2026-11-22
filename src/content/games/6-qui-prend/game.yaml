@@ -6,8 +6,12 @@
 # Points : 5 = 2, 10 = 3, roi = 5, dame de pique = 7, les autres (jokers compris) = 1. Fin à 66, le moins de points gagne.
 
 id: 6-qui-prend
-name: '6 qui prend'
-main_color: '#6B3FA0' # violet, texte blanc ; le fond des écrans reste le bleu de l'app
+name: '6 qui prend !'
+name_accent: { text: '6', color: '#2B3A8F', outline: '#FFFFFF' } # le 6 en bleu, contour blanc, comme sur la boîte
+name_outline: '#2B3A8F' # contour bleu fin autour du reste du titre
+font: { file: grenze-gotisch.woff2, family: Grenze Gotisch, weight: 900 } # Grenze Gotisch Black, licence libre (OFL.txt)
+main_color: '#C4302B' # le rouge de la boîte, texte blanc ; le fond des écrans reste le bleu de l'app
+logo: logo.png # tête de taureau bleue (#2B3A8F), silhouette fournie par l'utilisateur
 tagline: Ne pose pas la sixième carte !
 description: >-
   Tout le monde joue en même temps et pose une carte au bout d’une rangée. Si c’est la sixième, tu ramasses la rangée
@@ -27,8 +31,12 @@ card_groups:
       title: Le trèfle vaut de 1 à 13.
       text: 'L’as de trèfle vaut 1 : c’est la carte la plus faible. Le roi de trèfle vaut 13.'
     expert:
-      original: '1–104'
+      original: '1–13'
       power: les 104 cartes deviennent 54 forces, de l’as de trèfle aux jokers
+      cards:
+        - { value: '1', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
+        - { value: '7', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
+        - { value: '13', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
 
   - label: Pique
     cards:
@@ -38,8 +46,12 @@ card_groups:
       title: Le pique vaut de 14 à 26.
       text: L’as de pique vaut 14, juste après le roi de trèfle. Le roi de pique vaut 26.
     expert:
-      original: '1–104'
+      original: '14–26'
       power: les 104 cartes deviennent 54 forces, de l’as de trèfle aux jokers
+      cards:
+        - { value: '15', color: '#86B5D5', figure: taureau.png, figure_color: '#2F5A8E', value_color: '#339D96' }
+        - { value: '19', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
+        - { value: '22', color: '#C42F3B', figure: taureau.png, figure_color: '#2A62A2', value_color: '#8CB367' }
 
   - label: Carreau
     cards:
@@ -49,8 +61,12 @@ card_groups:
       title: Le carreau vaut de 27 à 39.
       text: L’as de carreau vaut 27, juste après le roi de pique. Le roi de carreau vaut 39.
     expert:
-      original: '1–104'
+      original: '27–39'
       power: les 104 cartes deviennent 54 forces, de l’as de trèfle aux jokers
+      cards:
+        - { value: '30', color: '#88B763', figure: taureau.png, figure_color: '#218D53', value_color: '#DACB64' }
+        - { value: '35', color: '#86B5D5', figure: taureau.png, figure_color: '#2F5A8E', value_color: '#339D96' }
+        - { value: '39', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
 
   - label: Cœur
     cards:
@@ -60,8 +76,12 @@ card_groups:
       title: Le cœur vaut de 40 à 52.
       text: L’as de cœur vaut 40, juste après le roi de carreau. Le roi de cœur vaut 52.
     expert:
-      original: '1–104'
+      original: '40–52'
       power: les 104 cartes deviennent 54 forces, de l’as de trèfle aux jokers
+      cards:
+        - { value: '40', color: '#88B763', figure: taureau.png, figure_color: '#218D53', value_color: '#DACB64' }
+        - { value: '46', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
+        - { value: '52', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
 
   - label: Jokers
     jokers: 2
@@ -74,11 +94,16 @@ card_groups:
         Ils valent 53 et 54, après le roi de cœur. Deux jokers au même tour, et l’un doit ramasser ? Chi-fou-prend : le
         perdant ramasse.
     expert:
-      original: Aucune
-      power: nouveauté de cette version, sans équivalent dans le jeu d’origine
+      original: '53–54'
+      power: les cartes 53 et 54 du jeu d’origine, les plus fortes de cette version
+      cards:
+        - { value: '53', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
+        - { value: '54', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
 
 # « Compter les points » : après « Un tour », et depuis la saisie des scores. Chaque carte a une valeur, une seule.
-# Mode Connaisseur : la carte d'origine dessinée (`expert_card` : nombre de têtes sur la couleur de la carte d'origine).
+# Mode Connaisseur : une carte d'origine dessinée par valeur (`expert_card`), aux couleurs d'origine (fond, tête de
+# taureau, chiffre) : les cartes 1 (1 tête), 5 (2), 20 (3), 77 (5) et 55 (7). Tête de taureau : taureau.png (silhouette
+# fournie par l'utilisateur, pas l'illustration officielle).
 points:
   intro: À la fin de la manche, compte les cartes que tu as ramassées.
   rows:
@@ -88,28 +113,48 @@ points:
       short: La plus piégeuse.
       points: 7
       expert: 7 têtes
-      expert_card: { value: '7', color: '#6B3FA0' }
+      expert_card:
+        value: '55'
+        color: '#F0DA47'
+        figure: taureau.png
+        figure_color: '#41478A'
+        value_color: '#BC3457'
     - label: Les rois
       cards:
         - { ranks: [K], suits: all }
       display: { rank: K, suit: hearts }
       points: 5
       expert: 5 têtes
-      expert_card: { value: '5', color: '#C62828' }
+      expert_card:
+        value: '77'
+        color: '#C42F3B'
+        figure: taureau.png
+        figure_color: '#2A62A2'
+        value_color: '#8CB367'
     - label: Les 10
       cards:
         - { ranks: [10], suits: all }
       display: { rank: 10, suit: clubs }
       points: 3
       expert: 3 têtes
-      expert_card: { value: '3', color: '#E8A33D' }
+      expert_card:
+        value: '20'
+        color: '#88B763'
+        figure: taureau.png
+        figure_color: '#218D53'
+        value_color: '#DACB64'
     - label: Les 5
       cards:
         - { ranks: [5], suits: all }
       display: { rank: 5, suit: hearts }
       points: 2
       expert: 2 têtes
-      expert_card: { value: '2', color: '#1565C0' }
+      expert_card:
+        value: '5'
+        color: '#86B5D5'
+        figure: taureau.png
+        figure_color: '#2F5A8E'
+        value_color: '#339D96'
     - label: Toutes les autres
       cards:
         - { ranks: [A, 2, 3, 4, 6, 7, 8, 9, J], suits: all }
@@ -118,7 +163,12 @@ points:
       short: Jokers compris.
       points: 1
       expert: 1 tête
-      expert_card: { value: '1', color: '#D9D2E9' }
+      expert_card:
+        value: '1'
+        color: '#FAFBFB'
+        figure: taureau.png
+        figure_color: '#4C457E'
+        value_color: '#B59DBC'
 
 # Partie en manches : chacun note les points ramassés. Dès qu'un joueur atteint 66, la partie s'arrête ; le plus petit
 # score gagne.

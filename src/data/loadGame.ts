@@ -13,6 +13,7 @@ import type {
   DisplayCard,
   Game,
   GameConfig,
+  OriginalCard,
   PointsRow,
   PointsRowConfig,
   TurnReveal,
@@ -83,10 +84,19 @@ export function loadCardSet(set: CardSetConfig): CardSet {
   return { cards, jokers, ranks, count: cards.length + jokers, display }
 }
 
+/** Une carte d'origine prête à l'emploi : adresses de son image et de sa forme (`figure`), fichiers du dossier du jeu. */
+function loadOriginalCard(card: OriginalCard, assetUrl: (file: string) => string | undefined): OriginalCard {
+  return {
+    ...card,
+    ...(card.image ? { imageUrl: assetUrl(card.image) } : {}),
+    ...(card.figure ? { figureUrl: assetUrl(card.figure) } : {}),
+  }
+}
+
 /** Une ligne de « Compter les points » prête à l’emploi. */
 function loadPointsRow(row: PointsRowConfig, assetUrl: (file: string) => string | undefined): PointsRow {
   const card = row.expert_card
-  const expertCard = card ? { ...card, ...(card.image ? { imageUrl: assetUrl(card.image) } : {}) } : undefined
+  const expertCard = card ? loadOriginalCard(card, assetUrl) : undefined
   return { ...row, ...(expertCard ? { expert_card: expertCard } : {}), ...loadCardSet(row) }
 }
 
@@ -95,10 +105,7 @@ export function loadCardGroup(
   group: CardGroupConfig,
   assetUrl: (file: string) => string | undefined = () => undefined,
 ): CardGroup {
-  const originals = group.expert.cards?.map((card) => ({
-    ...card,
-    ...(card.image ? { imageUrl: assetUrl(card.image) } : {}),
-  }))
+  const originals = group.expert.cards?.map((card) => loadOriginalCard(card, assetUrl))
   const expert = originals ? { ...group.expert, cards: originals } : group.expert
   return { ...group, expert, ...loadCardSet(group) }
 }

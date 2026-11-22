@@ -1,0 +1,22 @@
+.colored {
+  color: var(--name-color);
+}
+
+/*
+ * Un fin contour autour des lettres (le « 6 » blanc, le reste bleu, pour 6 qui prend !).
+ * Son épaisseur : `--name-outline-w` (1px). Plus épais : 2px ; au-delà, le contour fait des marches.
+ */
+.outlined {
+  --name-outline-w: 2px;
+  --w: var(--name-outline-w);
+  --n: calc(-1 * var(--name-outline-w));
+  text-shadow:
+    var(--n) var(--n) 0 var(--name-outline),
+    var(--w) var(--n) 0 var(--name-outline),
+    var(--n) var(--w) 0 var(--name-outline),
+    var(--w) var(--w) 0 var(--name-outline),
+    0 var(--n) 0 var(--name-outline),
+    0 var(--w) 0 var(--name-outline),
+    var(--n) 0 0 var(--name-outline),
+    var(--w) 0 0 var(--name-outline);
+}

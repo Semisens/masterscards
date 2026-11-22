@@ -17,7 +17,9 @@ export interface OriginalCardProps {
 /**
  * Une carte du jeu d'origine. Avec une image (`image`, découpée d'une planche : `npm run planche`), la carte EST l'image,
  * chiffre compris. Sans image, elle est dessinée : un fond de sa couleur et sa valeur, en blanc ou en encre selon le
- * contraste (pas de portrait ni de texte officiel).
+ * contraste (pas de portrait ni de texte officiel). Une carte dessinée peut porter une forme en grand sous la valeur
+ * (`figure`, recolorée en `figure_color` : un masque) et la couleur de chiffre de la carte d'origine (`value_color`,
+ * avec un fin contour).
  * Décorative : la légende ou le titre de la ligne disent la même chose.
  */
 export function OriginalCard({ card, variant = 'list' }: OriginalCardProps) {
@@ -29,11 +31,16 @@ export function OriginalCard({ card, variant = 'list' }: OriginalCardProps) {
       </span>
     )
   }
-  const text = pickTextColor(card.color)?.color ?? tokens.colors.encre
-  const style = { '--original-bg': card.color, '--original-fg': text } as CSSProperties
+  const text = card.value_color ?? pickTextColor(card.color)?.color ?? tokens.colors.encre
+  const style = {
+    '--original-bg': card.color,
+    '--original-fg': text,
+    ...(card.figureUrl ? { '--figure': `url("${card.figureUrl}")`, '--figure-color': card.figure_color ?? text } : {}),
+  } as CSSProperties
   return (
     <span className={`${styles.card} ${size}`} style={style} aria-hidden="true">
-      <span className={styles.value}>{card.value}</span>
+      {card.figureUrl && <span className={styles.figure} />}
+      <span className={card.value_color ? `${styles.value} ${styles.outlined}` : styles.value}>{card.value}</span>
     </span>
   )
 }

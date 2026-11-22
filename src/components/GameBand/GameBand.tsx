@@ -3,6 +3,7 @@ import { fr } from '../../i18n/fr.ts'
 import type { Game } from '../../data/types.ts'
 import { resolveGameTheme } from '../../data/theme.ts'
 import { themeStyle } from '../../data/themeStyle.ts'
+import { GameName } from '../GameName/GameName.tsx'
 import styles from './GameBand.module.css'
 
 export interface GameBandProps {
@@ -19,7 +20,9 @@ export function GameBand({ game, backTo }: GameBandProps) {
         <span aria-hidden="true">‹ </span>
         {fr.nav.back}
       </Link>
-      <h1 className={styles.name}>{game.name}</h1>
+      <h1 className={styles.name}>
+        <GameName game={game} />
+      </h1>
       <p className={styles.facts}>{fr.game.facts(game.players.min, game.players.max, game.duration_min)}</p>
     </header>
   )

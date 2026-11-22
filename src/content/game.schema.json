@@ -76,6 +76,38 @@
       "description": "Couleur du dos des cartes (pioche, cartes posées de dos). Absent : `main_color`.",
       "$ref": "#/$defs/color"
     },
+    "card_back_stripe_color": {
+      "description": "Facultatif : couleur des rayures du dos des cartes, qui deviennent alors fines. Ex. un dos blanc à fines rayures bleues. Absent : rayures blanches translucides.",
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "name_accent": {
+      "description": "Facultatif : un morceau du nom écrit dans une autre couleur (sa première occurrence), sur le bandeau du jeu et l'historique (la tuile de l'accueil garde le nom tel quel). Ex. le « 6 » de « 6 qui prend ! » en bleu.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "color"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "outline": {
+          "description": "Facultatif : un fin contour de cette couleur autour de ce morceau.",
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        }
+      }
+    },
+    "name_outline": {
+      "description": "Facultatif : un fin contour de cette couleur autour du nom (hors du morceau `name_accent`, qui a le sien). Ex. le titre de 6 qui prend !, contour bleu.",
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
     "shadow_color": {
       "description": "Couleur du relief (ombre) de `main_color` : bandeau du jeu, tuiles et boutons de la partie. Absent : `main_color` assombri (celui de la charte pour un tapis nommé).",
       "type": "string",
@@ -501,6 +533,21 @@
           "description": "Facultatif : fichier du dossier du jeu, montré dans la carte. Une image dont tu as les droits (jamais une illustration officielle).",
           "type": "string",
           "pattern": "^[A-Za-z0-9_-]+\\.(svg|png|webp)$"
+        },
+        "figure": {
+          "description": "Facultatif, carte dessinée : une forme (fichier png ou svg du dossier du jeu, sur fond transparent) posée en grand sur la carte, sous la valeur, à la couleur `figure_color`. Ex. une tête de taureau.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+\\.(svg|png)$"
+        },
+        "figure_color": {
+          "description": "Couleur de la forme `figure`, `#RRGGBB`. Absent : la couleur de la valeur.",
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "value_color": {
+          "description": "Facultatif : couleur de la valeur, `#RRGGBB`, celle de la carte d'origine. Décorative (la ligne dit la même chose) : un fin contour l'aide à se lire. Absent : blanc ou encre, choisi pour le contraste.",
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
         }
       }
     },

@@ -29,6 +29,8 @@ export interface GameTheme {
   screen?: ScreenTheme
   /** Couleur du dos des cartes. */
   cardBack: string
+  /** Couleur des rayures du dos, alors fines. Absent : rayures blanches translucides de la charte. */
+  cardBackStripe?: string
   font: FontStyle
 }
 
@@ -79,7 +81,17 @@ function resolveText(label: string, backgrounds: string[], wanted: string | unde
 }
 
 type ThemeInput = Pick<Game, 'main_color' | 'font'> &
-  Partial<Pick<Game, 'shadow_color' | 'text_color' | 'background_color' | 'background_text_color' | 'card_back_color'>>
+  Partial<
+    Pick<
+      Game,
+      | 'shadow_color'
+      | 'text_color'
+      | 'background_color'
+      | 'background_text_color'
+      | 'card_back_color'
+      | 'card_back_stripe_color'
+    >
+  >
 
 /**
  * Thème d'un jeu : `main_color` (avec son texte et son ombre, calculés ou donnés par `text_color` et `shadow_color`),
@@ -104,6 +116,7 @@ export function resolveGameTheme(game: ThemeInput): GameTheme {
         }
       : undefined,
     cardBack: game.card_back_color ? colorHex(game.card_back_color) : main,
+    ...(game.card_back_stripe_color ? { cardBackStripe: game.card_back_stripe_color.toUpperCase() } : {}),
     font: gameFontStyle(game.font),
   }
 }

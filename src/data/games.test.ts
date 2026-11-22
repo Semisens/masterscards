@@ -189,6 +189,10 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
     expect(game.players.min).toBeLessThanOrEqual(game.players.max)
   })
 
+  it('colore un morceau de son nom qui y figure bien, s’il en donne un (`name_accent`)', () => {
+    if (game.name_accent) expect(game.name).toContain(game.name_accent.text)
+  })
+
   it('a un logo qui existe, s’il en déclare un', () => {
     if (game.logo) expect(logoUrl(game), `logo ${game.logo} introuvable`).toBeTruthy()
   })
@@ -246,6 +250,7 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
         if (!card) continue
         expect(pickTextColor(card.color), `${row.label} ${card.color}`).not.toBeNull()
         if (card.image) expect(card.imageUrl, `image ${card.image}`).toBeTruthy()
+        if (card.figure) expect(card.figureUrl, `forme ${card.figure}`).toBeTruthy()
       }
     })
 
@@ -284,8 +289,9 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
       for (const card of originals) expect(pickTextColor(card.color), `${card.value} ${card.color}`).not.toBeNull()
     })
 
-    it('ont une image qui existe, s’il y en a une', () => {
+    it('ont une image et une forme (`figure`) qui existent, s’il y en a', () => {
       for (const card of originals) if (card.image) expect(card.imageUrl, `image ${card.image}`).toBeTruthy()
+      for (const card of originals) if (card.figure) expect(card.figureUrl, `forme ${card.figure}`).toBeTruthy()
     })
 
     it('ne repètent aucune valeur d’un groupe à l’autre', () => {

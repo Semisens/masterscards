@@ -8,6 +8,7 @@ import type { Game } from '../../data/types.ts'
 import { fr } from '../../i18n/fr.ts'
 import { summary, type HistoryEntry } from '../../state/history.ts'
 import { useHistory } from '../../state/useHistory.ts'
+import { GameName } from '../../components/GameName/GameName.tsx'
 import styles from './HistoryPage.module.css'
 
 const dateFormat = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short' })
@@ -58,7 +59,9 @@ export function HistoryPage() {
                   aria-controls={panelId}
                   onClick={() => setChosen(open ? '' : game.id)}
                 >
-                  <span>{game.name}</span>
+                  <span>
+                    <GameName game={game} />
+                  </span>
                   <span>
                     {fr.history.games(parties.length)}
                     {!open && <span aria-hidden="true"> ›</span>}

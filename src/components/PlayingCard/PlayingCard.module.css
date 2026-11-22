@@ -45,12 +45,17 @@
 }
 
 /* Dos de pioche : couleur du jeu, liseré clair et motif en diagonale. */
+/*
+ * Dos : des rayures en biais sur la couleur de dos du jeu. Par défaut, des rayures blanches translucides, moitié de la
+ * bande ; un jeu peut donner leur couleur (`card_back_stripe_color`), elles sont alors fines (un quart de la bande).
+ */
 .back {
+  --stripe-from: calc(var(--card-w) * 0.16 * (1 - var(--game-card-back-stripe-share, 0.5)));
   background:
     repeating-linear-gradient(
       45deg,
-      transparent 0 calc(var(--card-w) * 0.08),
-      var(--mc-card-back-stripe) calc(var(--card-w) * 0.08) calc(var(--card-w) * 0.16)
+      transparent 0 var(--stripe-from),
+      var(--game-card-back-stripe, var(--mc-card-back-stripe)) var(--stripe-from) calc(var(--card-w) * 0.16)
     ),
     var(--back-color);
   border: calc(var(--card-w) * 0.06) solid var(--mc-card-face);

@@ -24,6 +24,7 @@ export function GameTile({ game }: GameTileProps) {
         {url ? <img className={styles.image} src={url} alt="" /> : game.name.charAt(0).toUpperCase()}
       </span>
       <span className={styles.text}>
+        {/* Le nom tel quel, sans la couleur ni le contour du bandeau : l'accueil reste sobre. */}
         <span className={styles.name}>{game.name}</span>
         <span className={styles.meta}>{fr.game.facts(game.players.min, game.players.max, game.duration_min)}</span>
       </span>

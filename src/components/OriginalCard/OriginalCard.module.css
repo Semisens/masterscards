@@ -48,3 +48,21 @@
 .value {
   position: relative;
 }
+
+/* La forme de la carte d'origine (`figure`, ex. une tête de taureau), en grand sous la valeur, à sa couleur. */
+.figure {
+  position: absolute;
+  inset: 3%;
+  background: var(--figure-color);
+  -webkit-mask: var(--figure) center / contain no-repeat;
+  mask: var(--figure) center / contain no-repeat;
+}
+
+/* La couleur de chiffre de la carte d'origine (décorative) : un fin contour encre l'aide à se lire sur la forme. */
+.outlined {
+  text-shadow:
+    -1px -1px 0 var(--mc-color-encre),
+    1px -1px 0 var(--mc-color-encre),
+    -1px 1px 0 var(--mc-color-encre),
+    1px 1px 0 var(--mc-color-encre);
+}

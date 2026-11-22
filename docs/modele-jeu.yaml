@@ -44,6 +44,9 @@ main_color: bleu
 
 # Dos des cartes (pioche, cartes posées de dos) : un nom de la charte ou '#RRGGBB'. Défaut : main_color.
 # card_back_color: '#E57979'
+# card_back_stripe_color: '#2B3A8F' # rayures du dos dans cette couleur, alors fines
+# name_accent: { text: '6', color: '#2B3A8F', outline: '#FFFFFF' } # un morceau du nom dans une autre couleur, contour facultatif
+# name_outline: '#2B3A8F' # un fin contour autour du reste du nom (bandeau et historique ; la tuile de l'accueil garde le nom tel quel)
 
 # logo: logo.svg # facultatif ; défaut : l'initiale du nom dans un rond blanc
 
@@ -137,6 +140,9 @@ scoring:
 #       points: 5
 #       expert: 5 têtes # mode Connaisseur : la valeur d'origine, en titre à la place de label ; facultatif
 #       expert_card: { value: '5', color: '#C62828' } # mode Connaisseur : la carte d'origine dessinée, comme expert.cards ; facultatif
+#       # Une carte dessinée (ici comme dans expert.cards) peut aussi porter une forme en grand sous la valeur et les couleurs
+#       # de la carte d'origine : figure: taureau.png (png ou svg du dossier, fond transparent), figure_color: '#2A62A2',
+#       # value_color: '#8CB367' (chiffre décoratif, avec un fin contour). Ex. 6 qui prend.
 #     - label: Toutes les autres
 #       cards:
 #         - { ranks: [2, 3, 4, 5, 6], suits: [spades, hearts] }

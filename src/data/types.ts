@@ -138,6 +138,13 @@ export interface OriginalCard {
   image?: string
   /** Adresse du fichier `image`, résolue au chargement du jeu. */
   imageUrl?: string
+  /** Carte dessinée : une forme en grand sous la valeur (fichier du dossier du jeu), à la couleur `figure_color`. */
+  figure?: string
+  figure_color?: string
+  /** Couleur de la valeur, celle de la carte d'origine (décorative). Absent : blanc ou encre. */
+  value_color?: string
+  /** Adresse du fichier `figure`, résolue au chargement du jeu. */
+  figureUrl?: string
 }
 
 /** Une carte telle qu'on l'écrit en YAML : `{ rank: 5, suit: hearts }`. */
@@ -221,6 +228,12 @@ interface GameBase {
   background_text_color?: string
   /** Couleur du dos des cartes. Absent : `main_color`. */
   card_back_color?: GameColor
+  /** Couleur `#RRGGBB` des rayures du dos, alors fines. Absent : rayures blanches translucides. */
+  card_back_stripe_color?: string
+  /** Un morceau du nom dans une autre couleur (« 6 » de « 6 qui prend ! »), avec un fin contour facultatif. */
+  name_accent?: { text: string; color: string; outline?: string }
+  /** Un fin contour de cette couleur autour du reste du nom. */
+  name_outline?: string
   /** Couleur libre `#RRGGBB` du relief du tapis. Absent : le tapis assombri. */
   shadow_color?: string
   /** Couleur libre `#RRGGBB` du texte sur le tapis (contraste ≥ 4,5). Absent : blanc ou encre, choisi seul. */

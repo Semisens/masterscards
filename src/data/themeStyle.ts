@@ -22,6 +22,10 @@ export function themeStyle(theme: GameTheme): CSSProperties {
 export function scopeVariables(theme: GameTheme): Record<string, string> {
   return {
     '--game-card-back': theme.cardBack,
+    // Rayures d'une couleur propre : fines (un quart de la bande au lieu de la moitié).
+    ...(theme.cardBackStripe
+      ? { '--game-card-back-stripe': theme.cardBackStripe, '--game-card-back-stripe-share': '0.25' }
+      : {}),
     ...(theme.screen
       ? {
           '--game-pill-bg': theme.main,
