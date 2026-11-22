@@ -135,7 +135,8 @@ scoring:
 #       cards: [{ ranks: [A], suits: all }]
 #       short: Les plus précieux. # ligne 2 ; facultatif
 #       points: 5
-#       expert: 5 têtes # mode Connaisseur : la valeur d'origine, à la place de short ; facultatif
+#       expert: 5 têtes # mode Connaisseur : la valeur d'origine, en titre à la place de label ; facultatif
+#       expert_card: { value: '5', color: '#C62828' } # mode Connaisseur : la carte d'origine dessinée, comme expert.cards ; facultatif
 #     - label: Toutes les autres
 #       cards:
 #         - { ranks: [2, 3, 4, 5, 6], suits: [spades, hearts] }

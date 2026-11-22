@@ -240,6 +240,15 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
       expect(rows.reduce((sum, row) => sum + row.jokers, 0)).toBe(deckPlan(game).keptJokers)
     })
 
+    it('dessine ses cartes d’origine (mode connaisseur) avec une valeur lisible, et une image qui existe', () => {
+      for (const row of rows) {
+        const card = row.expert_card
+        if (!card) continue
+        expect(pickTextColor(card.color), `${row.label} ${card.color}`).not.toBeNull()
+        if (card.image) expect(card.imageUrl, `image ${card.image}`).toBeTruthy()
+      }
+    })
+
     it('a des lignes aux noms différents, qui montrent une de leurs cartes', () => {
       expect(new Set(rows.map((row) => row.label)).size).toBe(rows.length)
       for (const row of rows) {

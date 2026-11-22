@@ -173,10 +173,22 @@ describe('Love Letter : tutoriel', () => {
     expect(screen.getByRole('link', { name: 'Jouer' })).toHaveAttribute('href', '/jeu/6-qui-prend/joueurs')
   })
 
-  it('donne la valeur d’origine en mode connaisseur (6 qui prend)', async () => {
+  it('donne la valeur et la carte d’origine en mode connaisseur (6 qui prend)', async () => {
     window.localStorage.setItem('masterscards:mode', 'expert')
     renderApp('/jeu/6-qui-prend/tutoriel/points')
+    const rows = within(await screen.findByRole('list', { name: 'Points de chaque carte' })).getAllByRole('listitem')
+    expect(rows[0]).toHaveTextContent('7 têtes')
+    expect(rows[0]).toHaveTextContent('7 points')
+    // La carte d'origine dessinée, sa flèche, puis la dame de pique du paquet.
+    expect(rows[0]).toHaveTextContent('→')
+  })
+
+  it('a la bascule Classique / Connaisseur sur « Compter les points », partagée avec « Tes cartes »', async () => {
+    renderApp('/jeu/6-qui-prend/tutoriel/points')
+    await userEvent.click(await screen.findByRole('radio', { name: 'Connaisseur' }))
     expect(await screen.findByText('7 têtes')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('radio', { name: 'Classique' }))
+    expect(await screen.findByText('Dame de pique')).toBeInTheDocument()
   })
 
   it('ramène à la saisie des scores quand on y a ouvert « Compter les points »', async () => {

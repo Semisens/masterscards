@@ -106,8 +106,10 @@ export interface PointsRowConfig extends CardSetConfig {
   short?: string
   /** Points rapportés par chacune de ces cartes. */
   points: number
-  /** Mode connaisseur : la valeur d'origine (« 5 têtes »). Remplace `short`. */
+  /** Mode connaisseur : la valeur d'origine (« 5 têtes »), titre de la ligne à la place de `label`. */
   expert?: string
+  /** Mode connaisseur : la carte d'origine, dessinée, devant une flèche et les cartes du paquet. */
+  expert_card?: OriginalCard
 }
 
 /** Une ligne de « Compter les points » : ses cartes et ce qu'elles rapportent. */

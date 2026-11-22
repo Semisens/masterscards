@@ -16,6 +16,12 @@
   box-shadow: none;
 }
 
+/* Une ligne qui n'est pas un lien (« Compter les points ») ne s'enfonce pas sous le doigt. */
+.static:active {
+  transform: none;
+  box-shadow: 0 var(--mc-elevation-s) 0 var(--game-edge, var(--mc-color-bordure));
+}
+
 .row:focus-visible {
   outline: medium solid var(--game-screen-fg, var(--mc-color-blanc-carte));
   outline-offset: 2px;

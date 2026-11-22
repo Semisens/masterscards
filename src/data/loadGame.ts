@@ -84,8 +84,10 @@ export function loadCardSet(set: CardSetConfig): CardSet {
 }
 
 /** Une ligne de « Compter les points » prête à l’emploi. */
-function loadPointsRow(row: PointsRowConfig): PointsRow {
-  return { ...row, ...loadCardSet(row) }
+function loadPointsRow(row: PointsRowConfig, assetUrl: (file: string) => string | undefined): PointsRow {
+  const card = row.expert_card
+  const expertCard = card ? { ...card, ...(card.image ? { imageUrl: assetUrl(card.image) } : {}) } : undefined
+  return { ...row, ...(expertCard ? { expert_card: expertCard } : {}), ...loadCardSet(row) }
 }
 
 /** Un groupe de cartes prêt à l’emploi : cartes exactes, jokers, rangs, nombre de cartes, carte montrée. */
@@ -116,7 +118,7 @@ export function loadGame(config: GameConfig, assetUrl: (file: string) => string 
     ...rest,
     ...(font ? { font: { ...font, url: font.file ? assetUrl(font.file) : undefined } } : {}),
     card_groups: card_groups.map((group) => fillTexts(group, { cards: total })),
-    ...(points ? { points: { ...points, rows: points.rows.map(loadPointsRow) } } : {}),
+    ...(points ? { points: { ...points, rows: points.rows.map((row) => loadPointsRow(row, assetUrl)) } } : {}),
     tutorial: {
       ...rest.tutorial,
       setup: {

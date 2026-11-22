@@ -726,10 +726,14 @@
           "maximum": 99
         },
         "expert": {
-          "description": "Facultatif. Mode connaisseur : la valeur d’origine, ex. « 7 têtes ». Remplace `short`.",
+          "description": "Facultatif. Mode connaisseur : la valeur d’origine, ex. « 7 têtes ». Titre de la ligne, à la place de `label`.",
           "type": "string",
           "minLength": 1,
           "maxLength": 40
+        },
+        "expert_card": {
+          "description": "Facultatif. Mode connaisseur : la carte d’origine, dessinée (valeur sur sa couleur), devant une flèche et les cartes du paquet, comme dans « Tes cartes ». Absent : une carte en pointillés avec `expert`.",
+          "$ref": "#/$defs/originalCard"
         }
       }
     }

@@ -78,6 +78,7 @@ card_groups:
       power: nouveauté de cette version, sans équivalent dans le jeu d’origine
 
 # « Compter les points » : après « Un tour », et depuis la saisie des scores. Chaque carte a une valeur, une seule.
+# Mode Connaisseur : la carte d'origine dessinée (`expert_card` : nombre de têtes sur la couleur de la carte d'origine).
 points:
   intro: À la fin de la manche, compte les cartes que tu as ramassées.
   rows:
@@ -87,24 +88,28 @@ points:
       short: La plus piégeuse.
       points: 7
       expert: 7 têtes
+      expert_card: { value: '7', color: '#6B3FA0' }
     - label: Les rois
       cards:
         - { ranks: [K], suits: all }
       display: { rank: K, suit: hearts }
       points: 5
       expert: 5 têtes
+      expert_card: { value: '5', color: '#C62828' }
     - label: Les 10
       cards:
         - { ranks: [10], suits: all }
       display: { rank: 10, suit: clubs }
       points: 3
       expert: 3 têtes
+      expert_card: { value: '3', color: '#E8A33D' }
     - label: Les 5
       cards:
         - { ranks: [5], suits: all }
       display: { rank: 5, suit: hearts }
       points: 2
       expert: 2 têtes
+      expert_card: { value: '2', color: '#1565C0' }
     - label: Toutes les autres
       cards:
         - { ranks: [A, 2, 3, 4, 6, 7, 8, 9, J], suits: all }
@@ -113,6 +118,7 @@ points:
       short: Jokers compris.
       points: 1
       expert: 1 tête
+      expert_card: { value: '1', color: '#D9D2E9' }
 
 # Partie en manches : chacun note les points ramassés. Dès qu'un joueur atteint 66, la partie s'arrête ; le plus petit
 # score gagne.
