@@ -30,6 +30,7 @@
 
 Le flux : Jeremy demande → tu développes vite → Jeremy valide avec `npm run dev` → commit → plusieurs commits → push. Les tests sont lancés **par les hooks git** (`.githooks/`, installés par `npm install` via `prepare`), jamais par toi.
 
+- **Commence toujours par `git pull --rebase`**, avant toute demande : l'action de déploiement pousse sur `main` un commit « Version x.y.z » que tu n'as pas en local.
 - On travaille **directement sur `main`** : pas de branche ni de PR par demande.
 - **Ne lance aucun test** : ni `npm test`, ni `npm run test:visual` / Playwright, ni lint, ni typecheck. Écris le code et laisse Jeremy le regarder.
 - **Commit** (seulement quand Jeremy le demande) : le hook `pre-commit` lance les tests unitaires (`npm test`).
@@ -43,6 +44,8 @@ Le flux : Jeremy demande → tu développes vite → Jeremy valide avec `npm run
 
 Jeremy note de petites évolutions dans `PATCHES.md` (racine, dans `.gitignore`). Quand il dit « dépile les patches » :
 
+0. **Avant toute chose, `git pull --rebase`** : l'action de déploiement pousse sur `main` un commit « Version x.y.z ».
+   Quoi qu'il arrive, commence par là (et de même avant toute autre demande).
 1. Prends **le premier patch du haut**, un seul par cycle.
 2. Passe en **mode plan** et pose tes questions ; il valide le plan.
 3. Développe. Il teste à la main (`npm run dev`).
