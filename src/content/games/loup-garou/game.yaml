@@ -137,9 +137,8 @@ tutorial:
     center:
       - { label: Cartes en trop, layout: pile }
     steps:
-      - Choisis un meneur. Il ne prend pas de carte.
-      - Prends 2 rois (3 à 12 joueurs), la dame de cœur et des rôles au choix.
-      - Complète avec des cœurs, une carte par joueur.
+      - Choisis un meneur, sans carte.
+      - 'Une carte par joueur : 2 rois (3 à 12 joueurs), la dame de cœur, d’autres rôles et des cœurs.'
       - Mélange. Donne une carte à chacun, face cachée.
   turn:
     title: Une nuit, un jour
