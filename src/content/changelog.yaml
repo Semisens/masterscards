@@ -10,13 +10,35 @@
 #
 # Pièges YAML : un texte avec « : » ou « # », ou qui commence par un chiffre, se met entre apostrophes droites.
 
-- id: loup-garou-et-6-qui-prend # annoncée en 0.3.0
+- id: six-qui-prend-peau-neuve
+  popup: true
+  listed: true
+  title: '6 qui prend ! fait peau neuve'
+  text: Il prend les couleurs de sa boîte. En mode Connaisseur, découvre les cartes d’origine, têtes de taureau comprises.
+  items:
+    - 'Dans « Tes cartes » : chaque couleur et ses cartes d’origine.'
+    - 'Dans « Compter les points » : 1, 2, 3, 5 ou 7 têtes, d’un coup d’œil.'
+    - Un nouveau titre, et le taureau sur l’accueil.
+  game: 6-qui-prend
+
+- id: nouveau-jeu-loup-garou
   popup: false
   listed: true
-  title: 'Deux nouveaux jeux : Loup-garou et 6 qui prend'
-  text: La nuit, les loups attaquent, le jour, le village vote. Et dans 6 qui prend, ne pose pas la sixième carte !
+  title: 'Nouveau jeu : Loup-garou'
+  text: La nuit, les loups attaquent. Le jour, le village vote pour les démasquer.
   items:
-    - 'Loup-garou : 7 rôles, 16 cartes, de 6 à 12 joueurs, plus un meneur.'
-    - 'Loup-garou : chaque joueur du camp gagnant marque 1 point.'
-    - '6 qui prend : 54 cartes, de 2 à 5 joueurs. Le moins de points gagne.'
+    - '7 rôles, joués avec 16 cartes du paquet.'
+    - De 6 à 12 joueurs, plus un meneur.
+    - Chaque joueur du camp gagnant marque 1 point.
   game: loup-garou
+
+- id: nouveau-jeu-tarot-africain
+  popup: false
+  listed: true
+  title: 'Nouveau jeu : Tarot africain'
+  text: Annonce combien de plis tu vas faire, puis tiens parole.
+  items:
+    - '22 cartes : piques, cœurs, le roi de cœur et un joker.'
+    - De 2 à 4 joueurs, 20 minutes.
+    - À une carte, pose-la sur ton front sans la regarder.
+  game: tarot-africain
