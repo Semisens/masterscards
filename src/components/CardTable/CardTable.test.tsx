@@ -57,6 +57,20 @@ describe('CardTable', () => {
     expect(screen.getAllByText('Au centre, cachées')).toHaveLength(1)
   })
 
+  it('pose les cartes mises de côté dans le coin, hors du centre, et garde les autres au centre', () => {
+    const center = [
+      { label: 'Pioche', layout: 'pile' as const },
+      { label: 'Cartes de côté', layout: 'pile' as const, aside: true },
+    ]
+    const { container } = render(<CardTable hand={{ label: 'Ta main' }} center={center} />)
+    // Au centre, la pioche a le reflet de sa légende ; dans le coin, la légende est seule, sous les cartes.
+    expect(container.querySelector('[data-label="Pioche"]')).not.toBeNull()
+    expect(container.querySelector('[data-label="Cartes de côté"]')).toBeNull()
+    expect(screen.getAllByText('Cartes de côté')).toHaveLength(1)
+    // 4 mains d'une carte et deux piles de 3 dos : rien ne disparaît.
+    expect(container.querySelectorAll('[role="img"]')).toHaveLength(4 + 3 + 3)
+  })
+
   it('retourne la carte du bord de la main d’en face et une carte du centre (un tour)', () => {
     const reveal = {
       across: { rank: 'A' as const, suit: 'spades' as const },

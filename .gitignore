@@ -29,3 +29,6 @@ test-results
 
 # Ressources
 build_ressources
+
+# Patches à dépiler (local)
+PATCHES.md

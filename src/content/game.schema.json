@@ -438,6 +438,10 @@
             "$ref": "#/$defs/cardRef"
           }
         },
+        "aside": {
+          "description": "Cartes mises de côté (le reste du paquet, une carte écartée) : posées dans le coin en bas à droite de la table, pas au centre. Absent : au centre.",
+          "type": "boolean"
+        },
         "slots": {
           "description": "Avec `cards` : le nombre de places de chaque rangée. La carte occupe la première, les autres sont des emplacements vides en pointillés. Absent : la carte seule.",
           "type": "integer",

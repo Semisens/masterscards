@@ -84,6 +84,7 @@ tutorial:
     center:
       - label: Cartes de côté
         layout: pile
+        aside: true # dans le coin en bas à droite, pas au centre
     steps:
       - Mélange les {cards} cartes. Le donneur change à chaque manche.
       - Donne 5 cartes à chacun. Aux manches suivantes, 4, puis 3, 2 et 1.

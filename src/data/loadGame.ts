@@ -30,13 +30,14 @@ function fillTexts<T>(value: T, values: Record<string, number>): T {
 const loadCard = ({ rank, suit }: DeckCardConfig): DeckCard => ({ rank: toRank(rank), suit })
 
 /** Un élément de la table prêt à l'emploi : les cartes visibles (si elles sont données) ont un vrai rang. */
-function loadDiagramItem({ label, layout, card, cards, slots }: DiagramItemConfig): DiagramItem {
+function loadDiagramItem({ label, layout, card, cards, slots, aside }: DiagramItemConfig): DiagramItem {
   return {
     label,
     ...(layout ? { layout } : {}),
     ...(card ? { card: loadCard(card) } : {}),
     ...(cards ? { cards: cards.map(loadCard) } : {}),
     ...(slots ? { slots } : {}),
+    ...(aside ? { aside } : {}),
   }
 }
 

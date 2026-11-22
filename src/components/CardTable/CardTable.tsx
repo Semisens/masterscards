@@ -74,6 +74,10 @@ function Played({ card }: { card?: DeckCard }) {
 export function CardTable({ hand, center, reveal }: CardTableProps) {
   const layout = hand.card ? 'single' : hand.layout
   const yourHand = reveal?.hand
+  // Chaque élément garde son rang dans `center` : `reveal.center` les désigne dans cet ordre.
+  const indexed = center.map((item, index) => ({ item, index }))
+  const middle = indexed.filter(({ item }) => !item.aside)
+  const corner = indexed.filter(({ item }) => item.aside)
   return (
     <div className={styles.table}>
       <div className={`${styles.seat} ${styles.top}`}>
@@ -89,17 +93,33 @@ export function CardTable({ hand, center, reveal }: CardTableProps) {
         <Played card={reveal?.played?.right} />
       </div>
 
-      <div className={styles.center}>
-        {center.map((item, index) => (
-          // Le reflet invisible de la légende (data-label) place les cartes au milieu exact de leur case.
-          <div key={item.label} className={styles.item} data-label={item.label}>
-            <div className={styles.visual}>
-              <Cards {...item} reveal={reveal?.center?.[index]} width="var(--center-card-w)" />
+      {middle.length > 0 && (
+        <div className={styles.center}>
+          {middle.map(({ item, index }) => (
+            // Le reflet invisible de la légende (data-label) place les cartes au milieu exact de leur case.
+            <div key={item.label} className={styles.item} data-label={item.label}>
+              <div className={styles.visual}>
+                <Cards {...item} reveal={reveal?.center?.[index]} width="var(--center-card-w)" />
+              </div>
+              <span className={styles.label}>{item.label}</span>
             </div>
-            <span className={styles.label}>{item.label}</span>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {/* Les cartes mises de côté (`aside`) : dans le coin en bas à droite, hors du jeu. */}
+      {corner.length > 0 && (
+        <div className={styles.aside}>
+          {corner.map(({ item, index }) => (
+            <div key={item.label} className={styles.asideItem}>
+              <div className={styles.visual}>
+                <Cards {...item} reveal={reveal?.center?.[index]} width="var(--center-card-w)" />
+              </div>
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className={`${styles.seat} ${styles.bottom}`}>
         {/* Ta main et, sur un tour, la carte que tu viens de poser à sa droite (hors du flux : la légende ne bouge pas). */}

@@ -27,7 +27,7 @@
   grid-template-areas:
     '. top .'
     'left center right'
-    '. bottom .';
+    '. bottom aside';
   align-items: center;
   justify-items: center;
   row-gap: var(--table-gap);
@@ -162,6 +162,20 @@
   padding: calc(var(--mc-space-1) / 2) 0;
   /* Une carte du centre, plus les deux décalages de la pile. */
   min-height: calc(var(--center-card-w) * var(--mc-card-ratio) + var(--mc-space-1) * 1.5);
+}
+
+/* Les cartes mises de côté (`aside`) : dans la case libre en bas à droite, à côté de ta main, légende dessous. */
+.aside {
+  grid-area: aside;
+  display: flex;
+  gap: var(--mc-space-1);
+  align-self: start;
+}
+
+.asideItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Les rangées (6 qui prend) : une ligne par carte, bien séparées ; chaque carte suivie de ses emplacements vides. */

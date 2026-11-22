@@ -156,6 +156,9 @@ tutorial:
         layout: pile # single (une carte, défaut) | pile (la pioche) | spread (un éventail) | grid (des cartes alignées, 3 x 2)
       - label: Défausse
         card: { rank: 5, suit: hearts }
+      # Des cartes mises de côté (le reste du paquet, une carte écartée) : `aside: true` les pose dans le coin en bas à
+      # droite de la table, pas au centre. Ex. le Tarot africain :
+      # - { label: Cartes de côté, layout: pile, aside: true }
       # Des rangées de cartes visibles, l'une sous l'autre (2 à 5) : `cards`, sans `layout` ni `card`. `slots` (facultatif) :
       # les places de chaque rangée, la carte puis des emplacements vides en pointillés. Ex. les rangées de 6 qui prend :
       # - label: '4 rangées'

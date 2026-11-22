@@ -154,6 +154,8 @@ export interface DiagramItem<Card = DeckCard> {
   card?: Card
   cards?: Card[]
   slots?: number
+  /** Cartes mises de côté : dans le coin en bas à droite de la table, pas au centre. */
+  aside?: boolean
 }
 
 export type DiagramItemConfig = DiagramItem<DeckCardConfig>
