@@ -137,10 +137,10 @@ tutorial:
     center:
       - { label: Cartes en trop, layout: pile }
     steps:
-      - 'Choisis un meneur. Il ne prend pas de carte : il raconte et mène la partie.'
-      - Prends 2 rois, ou 3 rois à 12 joueurs. Ce sont les loups.
-      - Ajoute la dame de cœur et d’autres rôles au choix. Complète avec des cœurs, une carte par joueur.
-      - Mélange. Donne une carte à chacun, face cachée. Regarde la tienne en secret.
+      - Choisis un meneur. Il ne prend pas de carte.
+      - Prends 2 rois (3 à 12 joueurs), la dame de cœur et des rôles au choix.
+      - Complète avec des cœurs, une carte par joueur.
+      - Mélange. Donne une carte à chacun, face cachée.
   turn:
     title: Une nuit, un jour
     reveal: # ta carte de face, la victime de la nuit à gauche, le loup éliminé au vote en face

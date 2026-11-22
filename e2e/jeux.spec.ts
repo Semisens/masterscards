@@ -32,7 +32,11 @@ test.describe('parcours de chaque jeu', () => {
 
       // Tes cartes : le bandeau annonce le nombre de cartes calculé, une ligne par groupe.
       await expect(page.getByRole('heading', { level: 1, name: 'Tes cartes' })).toBeVisible()
-      await expect(page.getByText(new RegExp(`${deckPlan(game).keptTotal} cartes`))).toBeVisible()
+      // Rien à retirer (6 qui prend) : « Garde tout le paquet… », sans nombre.
+      const plan = deckPlan(game)
+      await expect(
+        page.getByText(plan.removedTotal === 0 ? /Garde tout le paquet/ : new RegExp(`${plan.keptTotal} cartes`)),
+      ).toBeVisible()
       for (const group of groups) await expect(page.getByText(group.short).first()).toBeVisible()
 
       // La vue à balayer, groupe par groupe, jusqu'au dernier.
