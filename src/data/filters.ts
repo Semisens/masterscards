@@ -1,18 +1,20 @@
 import { normalizeText } from '../core/text.ts'
+import { deckPlan } from './deck.ts'
 import type { Game } from './types.ts'
 
-export type GameFilter = 'all' | 'small' | 'quick'
+export type GameFilter = 'all' | 'two' | 'quick' | 'noJoker'
 
+/** Jeu « 2 joueurs » : il se joue à deux (2 est entre son minimum et son maximum). */
+export const TWO_PLAYERS = 2
 /** Jeu « rapide » : une partie dure 15 minutes ou moins. */
 export const QUICK_MAX_MINUTES = 15
-/** Jeu « 2–4 joueurs » : il se joue en petit groupe, c'est-à-dire avec au moins un nombre de joueurs de 2 à 4. */
-export const SMALL_MIN_PLAYERS = 2
-export const SMALL_MAX_PLAYERS = 4
 
 const matches: Record<GameFilter, (game: Game) => boolean> = {
   all: () => true,
-  small: (game) => game.players.min <= SMALL_MAX_PLAYERS && game.players.max >= SMALL_MIN_PLAYERS,
+  two: (game) => game.players.min <= TWO_PLAYERS && game.players.max >= TWO_PLAYERS,
   quick: (game) => game.duration_min <= QUICK_MAX_MINUTES,
+  // « Sans joker » : le jeu se joue avec le paquet de 52 seul, aucun joker gardé.
+  noJoker: (game) => deckPlan(game).keptJokers === 0,
 }
 
 /** Les jeux qui répondent au filtre choisi et contiennent le texte cherché dans leur nom (sans casse ni accents). */

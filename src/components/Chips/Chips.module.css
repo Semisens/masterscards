@@ -1,10 +1,26 @@
+/* Le cadre va jusqu'aux bords de l'écran (il sort de la marge de 24) ; `min-width: 0` : un fieldset ne rétrécit pas sinon. */
 .chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--mc-space-1);
-  margin: 0;
+  min-width: 0;
+  margin: 0 calc(-1 * var(--mc-space-3));
   padding: 0;
   border: 0;
+}
+
+/*
+ * Une seule ligne qui défile au doigt, sans barre : la dernière pastille, coupée au bord, montre qu'on peut glisser.
+ * La marge de 24 revient à l'intérieur ; un peu d'air en haut et en bas (compensé) pour le contour du focus.
+ */
+.row {
+  display: flex;
+  gap: var(--mc-space-1);
+  margin: calc(-1 * var(--mc-space-1) / 2) 0;
+  padding: calc(var(--mc-space-1) / 2) var(--mc-space-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.row::-webkit-scrollbar {
+  display: none;
 }
 
 /* La légende reste pour les lecteurs d'écran, sans prendre de place. */
@@ -20,6 +36,7 @@
 .option {
   position: relative;
   display: block;
+  flex: none;
 }
 
 .input {
@@ -34,6 +51,7 @@
 
 .label {
   display: inline-flex;
+  white-space: nowrap;
   align-items: center;
   box-sizing: border-box;
   min-height: var(--mc-touch-min);

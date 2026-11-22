@@ -46,11 +46,14 @@ describe('accueil « Tes jeux »', () => {
     expect(screen.queryByRole('link', { name: /Trio/ })).not.toBeInTheDocument()
   })
 
-  it('filtre : « 2–4 joueurs » puis « Rapide »', async () => {
+  it('filtre : « 2 joueurs », « Sans joker » puis « Rapide »', async () => {
     renderApp('/')
-    await userEvent.click(await screen.findByRole('radio', { name: '2–4 joueurs' }))
+    await userEvent.click(await screen.findByRole('radio', { name: '2 joueurs' }))
     expect(screen.getByRole('link', { name: /Love Letter/ })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Trio/ })).not.toBeInTheDocument()
+    await userEvent.click(screen.getByRole('radio', { name: 'Sans joker' }))
     expect(screen.getByRole('link', { name: /Trio/ })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Love Letter/ })).not.toBeInTheDocument()
     await userEvent.click(screen.getByRole('radio', { name: 'Rapide' }))
     expect(screen.getByRole('link', { name: /Trio/ })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /Love Letter/ })).not.toBeInTheDocument()

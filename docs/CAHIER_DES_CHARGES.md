@@ -165,7 +165,7 @@ Trois écrans racines ont la **barre d'onglets** Jeux / Scores / Réglages : l'a
 - Format des maquettes : 390 × 844, marges 48 / 24 / 24, blocs espacés de 16.
 
 ### 7.1 Accueil « Tes jeux » (maquette *Games* de Love Letter)
-Titre, **recherche** (« Un jeu, un titre… », filtre sur le nom, sans casse ni accents), **filtres** en pastilles (Tous ; « 2–4 joueurs » : se joue avec 2, 3 ou 4 joueurs (au moins un nombre de joueurs de 2 à 4 convient) ; « Rapide » : 15 minutes ou moins), liste des jeux (carré aux couleurs du jeu avec son initiale, nom, « 2–6 joueurs · 20 min »), barre d'onglets. Mot de bienvenue au premier lancement. Aucun choix de mode ici. La liste défile dans son cadre, sans barre, s'il y a beaucoup de jeux.
+Titre, **recherche** (« Un jeu, un titre… », filtre sur le nom, sans casse ni accents), **filtres** en pastilles, sur une seule ligne qui défile au doigt jusqu'aux bords de l'écran (Tous ; « 2 joueurs » : se joue à deux ; « Rapide » : 15 minutes ou moins ; « Sans joker » : le paquet de 52 seul, aucun joker gardé), liste des jeux (carré aux couleurs du jeu avec son initiale, nom, « 2–6 joueurs · 20 min »), barre d'onglets. Mot de bienvenue au premier lancement. Aucun choix de mode ici. La liste défile dans son cadre, sans barre, s'il y a beaucoup de jeux.
 
 ### 7.2 Le jeu (maquette *GameDetail*)
 Bandeau plein cadre aux couleurs du jeu (« ‹ Retour », nom en grand, « 3–6 joueurs · 15 min »), carte blanche (phrase d'accroche en gras + texte), boutons **Jouer** et **Règles complètes**.
@@ -527,7 +527,7 @@ Hébergement web et nom de domaine, icône et écran de lancement natifs (`@capa
 11. ~~Love Letter : comment représenter les cartes avec un paquet de 52 ?~~ *Tranché : 6 Gardes = 4 valets + 2 rois noirs ; avec la règle de 2019 : Espionnes = jokers, Princesse = dame de cœur, 21 cartes (7.10).*
 12. Relecture éditoriale de Trio : les textes viennent des maquettes ; cinq textes de la vue à balayer (A, 2 à 6, 8 à 10, Valet, Dame) ont été rédigés sur le même modèle. « Un tour » (maquette) dit « puis une deuxième » alors qu'on peut retourner jusqu'à trois cartes : à confirmer.
 13. Durée de Trio : « environ 15 minutes » d'après l'éditeur et les revendeurs, une source indique 15 à 20 minutes.
-14. ~~Maquette de l'accueil~~ *Fournie avec la galerie Love Letter (« Tes jeux »), réalisée.* Reste à valider : les filtres « 2–4 joueurs » et « Rapide », que la maquette ne définit pas.
+14. ~~Maquette de l'accueil~~ *Fournie avec la galerie Love Letter (« Tes jeux »), réalisée.* Filtres définis par l'utilisateur : « Tous », « 2 joueurs », « Rapide », « Sans joker », sur une ligne qui défile.
 15. Écran **« Qui joue ? »** (ajouté, sans maquette) : à valider ou à remplacer par la maquette.
 16. ~~Maquettes d'un second jeu~~ *Reçues et réalisées (Love Letter).*
 17. Love Letter : relire les textes rédigés par nous (règles complètes, détails de groupe) ; confirmer les exemplaires par carte (2 Espionnes, 6 Gardes, 2 Prêtres, 2 Barons, 2 Servantes, 2 Princes, 2 Chanceliers, 1 Roi, 1 Comtesse, 1 Princesse : la page de règles ne les donne pas) ; le mode particulier à 2 joueurs (3 cartes visibles) est abandonné ; Roi = 7♥ et Comtesse = 8♠ validés par l'utilisateur. Le filtre « 2–4 joueurs » signifie désormais « se joue avec 2, 3 ou 4 joueurs » : Love Letter (2–6) et Trio (3–6) y répondent tous les deux.

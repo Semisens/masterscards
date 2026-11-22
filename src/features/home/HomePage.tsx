@@ -16,8 +16,9 @@ import styles from './HomePage.module.css'
 
 const FILTERS = [
   { value: 'all', label: fr.home.filterAll },
-  { value: 'small', label: fr.home.filterSmall },
+  { value: 'two', label: fr.home.filterTwo },
   { value: 'quick', label: fr.home.filterQuick },
+  { value: 'noJoker', label: fr.home.filterNoJoker },
 ] as const
 
 /** Accueil « Tes jeux » : recherche, filtres, vignettes des jeux. Le mode de lecture se choisit ensuite, sur « Tes cartes ». */
