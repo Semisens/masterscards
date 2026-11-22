@@ -9,7 +9,7 @@
 #
 # Pièges YAML : un texte avec « : » ou « # », ou qui commence par un chiffre, se met entre apostrophes droites.
 
-- version: prochaine
+- version: '0.3.0'
   title: 'Deux nouveaux jeux : Loup-garou et 6 qui prend'
   text: La nuit, les loups attaquent, le jour, le village vote. Et dans 6 qui prend, ne pose pas la sixième carte !
   items:
