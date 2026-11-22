@@ -117,7 +117,7 @@ describe('Love Letter : tutoriel', () => {
     expect(await screen.findByText('Carte 3 / 10')).toBeInTheDocument()
     expect(screen.getByText('Choisis un rival. Il te montre sa carte. Ne la répète à personne.')).toBeInTheDocument()
     expect(
-      screen.getByText('Mode connaisseur : Prêtre. Pouvoir d’origine : voir la main d’un joueur.'),
+      screen.getByText('Connaisseur : Prêtre. Pouvoir d’origine : voir la main d’un joueur.'),
     ).toBeInTheDocument()
   })
 

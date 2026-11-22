@@ -102,7 +102,7 @@ export const fr = {
     nextGroup: 'Groupe suivant',
     /** Ligne grise de la vue à balayer en mode connaisseur. */
     expertNote: (original: string, several: boolean, power?: string, name?: string) =>
-      `Mode connaisseur : ${name ?? `${several ? 'cartes' : 'carte'} ${original} du jeu d’origine`}.${power ? ` Pouvoir d’origine : ${power}${/[.!?]$/.test(power) ? '' : '.'}` : ''}`,
+      `Connaisseur : ${name ?? `${several ? 'cartes' : 'carte'} ${original} du jeu d’origine`}.${power ? ` Pouvoir d’origine : ${power}${/[.!?]$/.test(power) ? '' : '.'}` : ''}`,
     dots: 'Position dans les groupes de cartes',
   },
   rules: {

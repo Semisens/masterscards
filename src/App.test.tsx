@@ -195,7 +195,7 @@ describe('vue à balayer', () => {
   it('mode classique : pas de ligne « connaisseur »', async () => {
     renderApp('/jeu/trio/tutoriel/cartes/3')
     await screen.findByText('Groupe 3 / 6')
-    expect(screen.queryByText(/Mode connaisseur/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Connaisseur :/)).not.toBeInTheDocument()
   })
 
   it('mode connaisseur : ajoute la carte d’origine et son pouvoir', async () => {
@@ -203,7 +203,7 @@ describe('vue à balayer', () => {
     renderApp('/jeu/trio/tutoriel/cartes/3')
     expect(
       await screen.findByText(
-        /Mode connaisseur : carte 7 du jeu d’origine\. Pouvoir d’origine : le trio de 7 donne la victoire immédiate\./,
+        /Connaisseur : carte 7 du jeu d’origine\. Pouvoir d’origine : le trio de 7 donne la victoire immédiate\./,
       ),
     ).toBeInTheDocument()
   })
@@ -211,7 +211,7 @@ describe('vue à balayer', () => {
   it('mode connaisseur : accorde « cartes » quand le groupe en réunit plusieurs', async () => {
     window.localStorage.setItem('masterscards:mode', 'expert')
     renderApp('/jeu/trio/tutoriel/cartes/2')
-    expect(await screen.findByText(/Mode connaisseur : cartes 2–6 du jeu d’origine\./)).toBeInTheDocument()
+    expect(await screen.findByText(/Connaisseur : cartes 2–6 du jeu d’origine\./)).toBeInTheDocument()
   })
 
   it('avance avec « Suivant » et revient avec la flèche, dans l’adresse', async () => {
