@@ -21,10 +21,13 @@
   --dy: 0px;
 }
 
-/* La dernière carte est dessus : elle est en haut de la pile, à droite de l'éventail. */
+/*
+ * La dernière carte est dessus : elle est en haut de la pile, à droite de l'éventail. Une carte qui dépasse de la main
+ * (`--lift: 1`, ta carte prête à jouer) remonte d'un tiers de sa hauteur.
+ */
 .root .card {
   position: absolute;
-  top: calc((var(--n) - 1 - var(--i)) * var(--dy));
+  top: calc((var(--n) - 1 - var(--i)) * var(--dy) - var(--lift, 0) * var(--pile-card-w) * var(--mc-card-ratio) / 3);
   left: calc(var(--i) * var(--dx));
 }
 

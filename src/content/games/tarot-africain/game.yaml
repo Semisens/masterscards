@@ -92,7 +92,7 @@ tutorial:
   turn:
     title: Une manche
     # Jeu de plis : en face et à droite ont joué (leur carte dans le pli, 3 cartes en main), toi tu vas jouer le 8 de
-    # cœur (au-dessus de ta main de 3), à gauche n'a pas encore joué (4 cartes).
+    # cœur (le dernier de ta main, qui en dépasse), à gauche n'a pas encore joué (4 cartes).
     reveal:
       hand: [{ rank: 3, suit: spades }, { rank: 7, suit: hearts }, { rank: K, suit: hearts }]
       trick:

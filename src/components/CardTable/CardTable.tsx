@@ -103,7 +103,7 @@ function Trick({ trick }: { trick: Partial<Record<Seat, DeckCard>> }) {
  */
 export function CardTable({ hand, center, reveal }: CardTableProps) {
   const layout = hand.card ? 'single' : hand.layout
-  const yourHand = reveal?.hand
+  const yourHand = reveal?.next && reveal.hand ? [...reveal.hand, reveal.next] : reveal?.hand
   const trick = reveal?.trick
   // Jeux de plis : qui a posé sa carte dans le pli a la main de la disposition (3), qui n'a pas encore joué une de plus.
   const handCount = (seat: Seat) => (trick && !trick[seat] ? CARDS_IN_LAYOUT[layout ?? 'single'] + 1 : undefined)
@@ -159,10 +159,12 @@ export function CardTable({ hand, center, reveal }: CardTableProps) {
         {/* Ta main et, sur un tour, la carte que tu viens de poser à sa droite (hors du flux : la légende ne bouge pas). */}
         <span className={styles.yours}>
           {yourHand ? (
-            // Ta main pendant le tour, de face : en éventail si elle a plusieurs cartes.
+            // Ta main pendant le tour, de face : en éventail si elle a plusieurs cartes. Jeux de plis : ta carte prête
+            // à jouer (`next`) est la dernière de la main, et en dépasse.
             <CardPile
               layout={yourHand.length > 1 ? 'spread' : 'single'}
               faces={yourHand}
+              raised={reveal?.next ? yourHand.length - 1 : undefined}
               width="var(--hand-card-w)"
               className={styles.hand}
             />
@@ -170,18 +172,8 @@ export function CardTable({ hand, center, reveal }: CardTableProps) {
             <Cards layout={layout} width="var(--hand-card-w)" />
           )}
           <Played card={reveal?.played?.you} />
-          {/* Jeux de plis : ta carte prête à jouer, au-dessus de ta main, vers le pli. */}
-          {reveal?.next && (
-            <PlayingCard
-              rank={reveal.next.rank}
-              suit={reveal.next.suit}
-              variant="table"
-              width="var(--hand-card-w)"
-              className={styles.next}
-            />
-          )}
         </span>
-        {hand.label}
+        <span className={styles.handLabel}>{hand.label}</span>
       </div>
     </div>
   )

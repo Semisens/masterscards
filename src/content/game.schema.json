@@ -319,7 +319,7 @@
                   }
                 },
                 "next": {
-                  "description": "Jeux de plis : ta carte prête à jouer, posée au-dessus de ta main, vers le pli. Avec `hand`.",
+                  "description": "Jeux de plis : ta carte prête à jouer, la dernière de ta main, qui en dépasse. Avec `hand`.",
                   "$ref": "#/$defs/cardRef"
                 },
                 "played": {

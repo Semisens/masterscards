@@ -95,6 +95,9 @@ describe('CardTable', () => {
       'Roi de cœur',
       '8 de cœur',
     ])
+    // Ta carte prête à jouer est la dernière de ta main : 4 cartes de face, en bas.
+    const yours = container.querySelectorAll('[aria-label="8 de cœur"]')[0]?.parentElement
+    expect(yours?.children).toHaveLength(4)
     // Dos : en face 3, à gauche 4 (pas encore joué), à droite 3, plus la pile de côté (3).
     expect(container.querySelectorAll('[aria-label="Dos de carte"]')).toHaveLength(3 + 4 + 3 + 3)
   })
