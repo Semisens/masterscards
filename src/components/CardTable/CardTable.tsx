@@ -1,5 +1,6 @@
 import type { CardLayout, DeckCard, DiagramItem, TurnReveal } from '../../data/types.ts'
 import { CardPile } from '../CardPile/CardPile.tsx'
+import { CARDS_IN_LAYOUT } from '../CardPile/layouts.ts'
 import { PlayingCard } from '../PlayingCard/PlayingCard.tsx'
 import styles from './CardTable.module.css'
 
@@ -19,6 +20,8 @@ interface CardsProps {
   slots?: number
   label?: string
   reveal?: DeckCard
+  /** Nombre de dos, à la place de celui de la disposition (un joueur qui a posé sa carte dans le pli). */
+  count?: number
   width: string
 }
 
@@ -45,10 +48,10 @@ function CardRows({ cards, slots = 1 }: { cards: DeckCard[]; slots?: number }) {
  * Les cartes d'un emplacement : une carte visible si le jeu en donne une, des rangées de cartes visibles (`cards`),
  * sinon des dos (dont une peut être retournée).
  */
-function Cards({ layout, card, cards, slots, label, reveal, width }: CardsProps) {
+function Cards({ layout, card, cards, slots, label, reveal, count, width }: CardsProps) {
   if (card) return <PlayingCard rank={card.rank} suit={card.suit} variant="table" width={width} label={label} />
   if (cards) return <CardRows cards={cards} slots={slots} />
-  return <CardPile layout={layout} reveal={reveal} width={width} className={styles.hand} />
+  return <CardPile layout={layout} reveal={reveal} count={count} width={width} className={styles.hand} />
 }
 
 /** La carte découverte posée à côté de la main d'un joueur (un tour) : hors du flux, rien ne bouge. */
@@ -65,6 +68,33 @@ function Played({ card }: { card?: DeckCard }) {
   )
 }
 
+type Seat = 'across' | 'left' | 'right'
+
+/**
+ * Jeux de plis : le pli en cours, en croix au milieu de la table, chaque carte décalée vers le joueur qui l'a posée.
+ * Décoratif, comme le reste de la table.
+ */
+function Trick({ trick }: { trick: Partial<Record<Seat, DeckCard>> }) {
+  return (
+    <span className={styles.trick} aria-hidden="true">
+      {/* Dans l'ordre de jeu (en face, droite, gauche) : la dernière carte posée est dessus. */}
+      {(['across', 'right', 'left'] as const).map((seat) => {
+        const card = trick[seat]
+        return card ? (
+          <PlayingCard
+            key={seat}
+            rank={card.rank}
+            suit={card.suit}
+            variant="table"
+            width="var(--hand-card-w)"
+            className={styles[`trick-${seat}`]}
+          />
+        ) : null
+      })}
+    </span>
+  )
+}
+
 /**
  * La table vue de haut, la même sur la mise en place et sur un tour : quatre mains de dos (en face, à gauche, à droite,
  * et la tienne en bas, légendée) autour de ce que le jeu pose au centre. Sur un tour, quelques cartes sont de face
@@ -74,27 +104,31 @@ function Played({ card }: { card?: DeckCard }) {
 export function CardTable({ hand, center, reveal }: CardTableProps) {
   const layout = hand.card ? 'single' : hand.layout
   const yourHand = reveal?.hand
+  const trick = reveal?.trick
+  // Jeux de plis : qui a posé sa carte dans le pli a la main de la disposition (3), qui n'a pas encore joué une de plus.
+  const handCount = (seat: Seat) => (trick && !trick[seat] ? CARDS_IN_LAYOUT[layout ?? 'single'] + 1 : undefined)
   // Chaque élément garde son rang dans `center` : `reveal.center` les désigne dans cet ordre.
   const indexed = center.map((item, index) => ({ item, index }))
   const middle = indexed.filter(({ item }) => !item.aside)
   const corner = indexed.filter(({ item }) => item.aside)
   return (
-    <div className={styles.table}>
+    <div className={trick ? `${styles.table} ${styles.tricks}` : styles.table}>
       <div className={`${styles.seat} ${styles.top}`}>
-        <Cards layout={layout} reveal={reveal?.across} width="var(--hand-card-w)" />
+        <Cards layout={layout} reveal={reveal?.across} count={handCount('across')} width="var(--hand-card-w)" />
         <Played card={reveal?.played?.across} />
       </div>
       <div className={`${styles.seat} ${styles.left}`}>
-        <Cards layout={layout} width="var(--hand-card-w)" />
+        <Cards layout={layout} count={handCount('left')} width="var(--hand-card-w)" />
         <Played card={reveal?.played?.left} />
       </div>
       <div className={`${styles.seat} ${styles.right}`}>
-        <Cards layout={layout} width="var(--hand-card-w)" />
+        <Cards layout={layout} count={handCount('right')} width="var(--hand-card-w)" />
         <Played card={reveal?.played?.right} />
       </div>
 
-      {middle.length > 0 && (
+      {(middle.length > 0 || trick) && (
         <div className={styles.center}>
+          {trick && <Trick trick={trick} />}
           {middle.map(({ item, index }) => (
             // Le reflet invisible de la légende (data-label) place les cartes au milieu exact de leur case.
             <div key={item.label} className={styles.item} data-label={item.label}>
@@ -136,6 +170,16 @@ export function CardTable({ hand, center, reveal }: CardTableProps) {
             <Cards layout={layout} width="var(--hand-card-w)" />
           )}
           <Played card={reveal?.played?.you} />
+          {/* Jeux de plis : ta carte prête à jouer, au-dessus de ta main, vers le pli. */}
+          {reveal?.next && (
+            <PlayingCard
+              rank={reveal.next.rank}
+              suit={reveal.next.suit}
+              variant="table"
+              width="var(--hand-card-w)"
+              className={styles.next}
+            />
+          )}
         </span>
         {hand.label}
       </div>

@@ -42,7 +42,7 @@ function loadDiagramItem({ label, layout, card, cards, slots, aside }: DiagramIt
 }
 
 /** Les cartes retournées d'« Un tour », avec un vrai rang. */
-function loadTurnReveal({ hand, across, center, played }: TurnReveal<DeckCardConfig>): TurnReveal {
+function loadTurnReveal({ hand, across, center, played, trick, next }: TurnReveal<DeckCardConfig>): TurnReveal {
   return {
     ...(hand ? { hand: hand.map(loadCard) } : {}),
     ...(across ? { across: loadCard(across) } : {}),
@@ -57,6 +57,16 @@ function loadTurnReveal({ hand, across, center, played }: TurnReveal<DeckCardCon
           },
         }
       : {}),
+    ...(trick
+      ? {
+          trick: {
+            ...(trick.across ? { across: loadCard(trick.across) } : {}),
+            ...(trick.left ? { left: loadCard(trick.left) } : {}),
+            ...(trick.right ? { right: loadCard(trick.right) } : {}),
+          },
+        }
+      : {}),
+    ...(next ? { next: loadCard(next) } : {}),
   }
 }
 

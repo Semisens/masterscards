@@ -175,6 +175,11 @@ tutorial:
       across: { rank: A, suit: spades } # la carte du bord de la main d'en face
       center: [{ rank: 4, suit: hearts }] # une carte par élément du centre, dans l'ordre
       played: { left: { rank: 2, suit: hearts } } # la carte découverte à côté de la main d'un joueur (across, left, right ; you : la tienne)
+      # Jeux de plis, à la place de `played` : le pli au milieu, cartes superposées, chacune vers son joueur (across,
+      # left, right ; qui a joué garde 3 cartes en main, les autres 4), et ta carte prête à jouer, au-dessus de ta main
+      # (donne alors 3 cartes dans `hand`). Ex. le Tarot africain :
+      # trick: { across: { rank: 9, suit: spades }, right: { rank: 2, suit: spades } }
+      # next: { rank: 8, suit: hearts }
     steps:
       - label: Pioche.
         text: Prends la carte du dessus.

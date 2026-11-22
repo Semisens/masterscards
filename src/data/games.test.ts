@@ -310,6 +310,13 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
       })
       if (turn.reveal?.hand) expect(setup.hand.card).toBeUndefined()
     })
+
+    it('jeux de plis : ta carte prête à jouer va avec ta main, et une carte du pli n’est pas aussi posée à côté', () => {
+      const reveal = game.tutorial.turn.reveal
+      if (reveal?.next) expect(reveal.hand, 'next sans hand').toBeDefined()
+      for (const seat of ['across', 'left', 'right'] as const)
+        if (reveal?.trick?.[seat]) expect(reveal.played?.[seat], seat).toBeUndefined()
+    })
   })
 
   describe('vocabulaire', () => {

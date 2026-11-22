@@ -91,13 +91,14 @@ tutorial:
       - Mets le reste de côté, face cachée.
   turn:
     title: Une manche
-    reveal: # ta main de face, et le pli en cours : la carte que chacun vient de poser, toi compris
+    # Jeu de plis : en face et à droite ont joué (leur carte dans le pli, 3 cartes en main), toi tu vas jouer le 8 de
+    # cœur (au-dessus de ta main de 3), à gauche n'a pas encore joué (4 cartes).
+    reveal:
       hand: [{ rank: 3, suit: spades }, { rank: 7, suit: hearts }, { rank: K, suit: hearts }]
-      played:
+      trick:
         across: { rank: 9, suit: spades }
-        left: { rank: 4, suit: hearts }
         right: { rank: 2, suit: spades }
-        you: { rank: 8, suit: hearts }
+      next: { rank: 8, suit: hearts }
     steps:
       - label: Annonce.
         text: Dis combien de plis tu vas faire. Le donneur parle en dernier.

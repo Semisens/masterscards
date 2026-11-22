@@ -71,6 +71,34 @@ describe('CardTable', () => {
     expect(container.querySelectorAll('[role="img"]')).toHaveLength(4 + 3 + 3)
   })
 
+  it('jeux de plis : le pli au milieu, 3 cartes pour qui a joué, 4 pour les autres, ta carte prête à jouer', () => {
+    const hand = { label: 'Ta main, 5 cartes', layout: 'spread' as const }
+    const center = [{ label: 'Cartes de côté', layout: 'pile' as const, aside: true }]
+    const reveal = {
+      hand: [
+        { rank: '3' as const, suit: 'spades' as const },
+        { rank: '7' as const, suit: 'hearts' as const },
+        { rank: 'K' as const, suit: 'hearts' as const },
+      ],
+      trick: {
+        across: { rank: '9' as const, suit: 'spades' as const },
+        right: { rank: '2' as const, suit: 'spades' as const },
+      },
+      next: { rank: '8' as const, suit: 'hearts' as const },
+    }
+    const { container } = render(<CardTable hand={hand} center={center} reveal={reveal} />)
+    expect(faceUp(container)).toEqual([
+      '9 de pique',
+      '2 de pique',
+      '3 de pique',
+      '7 de cœur',
+      'Roi de cœur',
+      '8 de cœur',
+    ])
+    // Dos : en face 3, à gauche 4 (pas encore joué), à droite 3, plus la pile de côté (3).
+    expect(container.querySelectorAll('[aria-label="Dos de carte"]')).toHaveLength(3 + 4 + 3 + 3)
+  })
+
   it('retourne la carte du bord de la main d’en face et une carte du centre (un tour)', () => {
     const reveal = {
       across: { rank: 'A' as const, suit: 'spades' as const },

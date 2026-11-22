@@ -301,6 +301,27 @@
                     "$ref": "#/$defs/cardRef"
                   }
                 },
+                "trick": {
+                  "description": "Jeux de plis : le pli en train de se former, au milieu de la table : les cartes se superposent, chacune décalée vers le joueur qui l'a posée (`across`, `left`, `right`). Qui a joué garde une main de 3 cartes, qui n'a pas encore joué en a 4.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "minProperties": 1,
+                  "properties": {
+                    "across": {
+                      "$ref": "#/$defs/cardRef"
+                    },
+                    "left": {
+                      "$ref": "#/$defs/cardRef"
+                    },
+                    "right": {
+                      "$ref": "#/$defs/cardRef"
+                    }
+                  }
+                },
+                "next": {
+                  "description": "Jeux de plis : ta carte prête à jouer, posée au-dessus de ta main, vers le pli. Avec `hand`.",
+                  "$ref": "#/$defs/cardRef"
+                },
                 "played": {
                   "type": "object",
                   "additionalProperties": false,

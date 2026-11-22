@@ -14,6 +14,8 @@ export interface CardPileProps {
   reveal?: DeckCard
   /** Toutes les cartes de face, dans cet ordre (ta main pendant un tour) : leur nombre remplace celui de la disposition. */
   faces?: DeckCard[]
+  /** Nombre de cartes, à la place de celui de la disposition (jeux de plis : 4 pour qui n'a pas encore joué). */
+  count?: number
   /** Largeur d'une carte : toute longueur CSS. Défaut : 3,5 rem, comme les cartes des schémas. */
   width?: string
   className?: string
@@ -24,9 +26,9 @@ export interface CardPileProps {
  * dos du jeu (`card_back_color`) ; l'une d'elles peut être retournée (`reveal`), ou toutes (`faces`). Décoratif : la légende et les étapes
  * disent la même chose, les lecteurs d'écran passent.
  */
-export function CardPile({ layout = 'single', reveal, faces, width, className }: CardPileProps) {
-  const count = faces?.length ?? CARDS_IN_LAYOUT[layout]
-  const revealed = reveal ? REVEALED_IN_LAYOUT[layout] : -1
+export function CardPile({ layout = 'single', reveal, faces, count: cards, width, className }: CardPileProps) {
+  const count = faces?.length ?? cards ?? CARDS_IN_LAYOUT[layout]
+  const revealed = reveal ? Math.min(REVEALED_IN_LAYOUT[layout], count - 1) : -1
   const faceOf = (index: number) => faces?.[index] ?? (index === revealed ? reveal : undefined)
   const style = { '--n': count, ...(width ? { '--pile-card-w': width } : {}) } as CSSProperties
   return (

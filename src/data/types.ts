@@ -165,13 +165,17 @@ export type DiagramItemConfig = DiagramItem<DeckCardConfig>
  * - `hand` : ta main pendant le tour, de face (en éventail si elle a plusieurs cartes) ;
  * - `across` : la carte du bord de la main d'en face ;
  * - `center` : une carte par élément du centre, dans l'ordre ;
- * - `played` : la carte découverte posée à côté de la main d'un joueur (`you` : la tienne).
+ * - `played` : la carte découverte posée à côté de la main d'un joueur (`you` : la tienne) ;
+ * - `trick` (jeux de plis) : le pli au milieu, cartes superposées vers leur joueur (3 cartes en main ; 4 sinon) ;
+ * - `next` (jeux de plis) : ta carte prête à jouer, au-dessus de ta main.
  */
 export interface TurnReveal<Card = DeckCard> {
   hand?: Card[]
   across?: Card
   center?: Card[]
   played?: { across?: Card; left?: Card; right?: Card; you?: Card }
+  trick?: { across?: Card; left?: Card; right?: Card }
+  next?: Card
 }
 
 export interface Tutorial<Item = DiagramItem, Card = DeckCard> {
