@@ -84,10 +84,7 @@ export function NewsDialog({ notes, onClose }: NewsDialogProps) {
         onKeyDown={onKeyDown}
       >
         <div className={styles.header}>
-          <div>
-            <p className={styles.kicker}>{fr.news.title}</p>
-            <p className={styles.version}>{fr.news.version(note.version)}</p>
-          </div>
+          <p className={styles.kicker}>{fr.news.title}</p>
           <button type="button" className={styles.close} aria-label={fr.news.close} onClick={onClose}>
             ×
           </button>
@@ -126,7 +123,7 @@ export function NewsDialog({ notes, onClose }: NewsDialogProps) {
             </button>
             <div className={styles.dots} role="img" aria-label={fr.news.counter(index + 1, notes.length)}>
               {notes.map((n, i) => (
-                <span key={n.version} className={i === index ? styles.dotActive : styles.dot} />
+                <span key={n.id} className={i === index ? styles.dotActive : styles.dot} />
               ))}
             </div>
             <button

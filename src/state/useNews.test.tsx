@@ -4,32 +4,34 @@ import type { NewsNote } from '../data/news.ts'
 import { useNews } from './useNews.ts'
 
 const NOTES: NewsNote[] = [
-  { version: '0.3.0', title: 'Nouveau', text: 'Texte.' },
-  { version: '0.2.0', title: 'Ancien', text: 'Texte.' },
+  { id: 'nouveau', popup: true, listed: true, title: 'Nouveau', text: 'Texte.' },
+  { id: 'ancien', popup: true, listed: true, title: 'Ancien', text: 'Texte.' },
+  { id: 'archive', popup: false, listed: true, title: 'Archive', text: 'Texte.' },
 ]
-const seen = () => window.localStorage.getItem('masterscards:news-seen')
+const seen = () => JSON.parse(window.localStorage.getItem('masterscards:news-seen') ?? 'null')
 
 describe('useNews', () => {
   beforeEach(() => window.localStorage.clear())
 
-  it('premier lancement : rien à montrer, la version en cours est notée vue', async () => {
-    const { result } = renderHook(() => useNews(NOTES, '0.3.0'))
-    await waitFor(() => expect(seen()).toBe('0.3.0'))
+  it('premier lancement : rien à montrer, les notes actuelles sont notées vues', async () => {
+    const { result } = renderHook(() => useNews(NOTES))
+    await waitFor(() => expect(seen()).toEqual(['nouveau', 'ancien']))
     expect(result.current[0]).toEqual([])
   })
 
-  it('utilisateur d’avant cette fonction : toutes les notes en attente', async () => {
+  it('utilisateur existant (ancien numéro de version) : toutes les notes `popup`', async () => {
     window.localStorage.setItem('masterscards:welcomed', '1')
-    const { result } = renderHook(() => useNews(NOTES, '0.3.0'))
-    await waitFor(() => expect(result.current[0].map((n) => n.version)).toEqual(['0.3.0', '0.2.0']))
+    window.localStorage.setItem('masterscards:news-seen', '0.3.0')
+    const { result } = renderHook(() => useNews(NOTES))
+    await waitFor(() => expect(result.current[0].map((n) => n.id)).toEqual(['nouveau', 'ancien']))
   })
 
-  it('montre les notes plus récentes que la dernière vue, puis les marque vues', async () => {
-    window.localStorage.setItem('masterscards:news-seen', '0.2.0')
-    const { result } = renderHook(() => useNews(NOTES, '0.3.1'))
-    await waitFor(() => expect(result.current[0].map((n) => n.version)).toEqual(['0.3.0']))
+  it('montre les notes pas encore vues, une seule fois', async () => {
+    window.localStorage.setItem('masterscards:news-seen', JSON.stringify(['ancien']))
+    const { result } = renderHook(() => useNews(NOTES))
+    await waitFor(() => expect(result.current[0].map((n) => n.id)).toEqual(['nouveau']))
     act(() => result.current[1]())
     expect(result.current[0]).toEqual([])
-    await waitFor(() => expect(seen()).toBe('0.3.1'))
+    await waitFor(() => expect(seen()).toEqual(['ancien', 'nouveau']))
   })
 })

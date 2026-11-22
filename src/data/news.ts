@@ -1,16 +1,19 @@
 import changelog from '../content/changelog.yaml'
 
 // Notes de nouveautés (src/content/changelog.yaml), la plus récente en haut. Validées par src/data/news.test.ts.
+// Jeremy choisit, note par note, si elle s'affiche au lancement (`popup`, une fois par utilisateur) et si elle est
+// disponible dans Réglages → Nouveautés (`listed`). Aucun lien avec les numéros de version.
 
-/** Note pas encore publiée : `npm version` y écrit le numéro (scripts/stamp-changelog.ts). */
-export const NEXT_VERSION = 'prochaine'
-
-/** Nombre maximum de notes montrées d'un coup au démarrage. */
+/** Nombre maximum de notes montrées d'un coup au lancement. */
 export const MAX_PENDING = 5
 
 export interface NewsNote {
-  /** `x.y.z`, ou `prochaine` avant la publication. */
-  version: string
+  /** Identifiant unique (minuscules et tirets) : l'app retient les notes vues par leur `id`. */
+  id: string
+  /** Vrai : s'affiche au lancement, une fois par utilisateur. Faux : plus jamais en popup. */
+  popup: boolean
+  /** Vrai : disponible dans Réglages → Nouveautés. */
+  listed: boolean
   title: string
   text: string
   items?: string[]
@@ -18,36 +21,24 @@ export interface NewsNote {
   game?: string
 }
 
-/** Notes telles qu'écrites dans le fichier (pour les tests). */
+/** Notes telles qu'écrites dans le fichier, la plus récente d'abord. */
 export const newsNotes: NewsNote[] = Array.isArray(changelog) ? (changelog as NewsNote[]) : []
 
-const parts = (version: string) => version.split('.').map((n) => Number.parseInt(n, 10) || 0)
+/** Réglages → Nouveautés : les notes disponibles, dans l'ordre du fichier (la plus récente d'abord). */
+export const listedNotes = (notes: NewsNote[]): NewsNote[] => notes.filter((note) => note.listed)
 
-/** Compare deux versions `x.y.z` : négatif si `a` est plus ancienne, 0 si égales, positif sinon. */
-export function compareVersions(a: string, b: string): number {
-  const [pa, pb] = [parts(a), parts(b)]
-  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    const diff = (pa[i] ?? 0) - (pb[i] ?? 0)
-    if (diff !== 0) return diff
+/** Au lancement : les notes `popup` pas encore vues, dans l'ordre du fichier, 5 au plus. */
+export function pendingNotes(notes: NewsNote[], seen: readonly string[]): NewsNote[] {
+  return notes.filter((note) => note.popup && !seen.includes(note.id)).slice(0, MAX_PENDING)
+}
+
+/** Les `id` vus, relus du stockage : une liste JSON ; toute autre valeur (ancien numéro de version) vaut aucune. */
+export function parseSeen(raw: string | null): string[] {
+  if (!raw) return []
+  try {
+    const value: unknown = JSON.parse(raw)
+    return Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string') : []
+  } catch {
+    return []
   }
-  return 0
-}
-
-/** Une note pas encore publiée vaut la version en cours : on la voit en développement avant de publier. */
-export function resolveNotes(notes: NewsNote[], current: string): NewsNote[] {
-  return notes.map((note) => (note.version === NEXT_VERSION ? { ...note, version: current } : note))
-}
-
-/** Toutes les notes jusqu'à la version en cours, la plus récente d'abord (Réglages → Nouveautés). */
-export function publishedNotes(notes: NewsNote[], current: string): NewsNote[] {
-  return resolveNotes(notes, current)
-    .filter((note) => compareVersions(note.version, current) <= 0)
-    .sort((a, b) => compareVersions(b.version, a.version))
-}
-
-/** Notes pas encore vues : plus récentes que `seen`, jusqu'à la version en cours, la plus récente d'abord. */
-export function pendingNotes(notes: NewsNote[], current: string, seen: string): NewsNote[] {
-  return publishedNotes(notes, current)
-    .filter((note) => compareVersions(note.version, seen) > 0)
-    .slice(0, MAX_PENDING)
 }

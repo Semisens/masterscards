@@ -375,7 +375,7 @@ Via `src/core/storage.ts` : `@capacitor/preferences` dans les apps natives (non 
 - **Message de bienvenue** déjà vu.
 - **Partie en cours**, par jeu (`session:<id>`) : joueurs, scores, manche et marque `unnamed` (partie sans prénoms). Relue avec validation stricte : une donnée abîmée est ignorée, l'app démarre normalement ; l'ancien format (`trios`, sans manche) est relu. « Terminer la partie » l'efface.
 - **Historique** (`history`) : les 100 dernières parties (jeu, date, statut, scores). Les entrées abîmées sont ignorées une à une.
-- **Nouveautés vues** (`news-seen`) : la dernière version dont la popup des nouveautés a été fermée. Absente au premier lancement : la version en cours y est écrite, sans popup ; absente alors que le mot de bienvenue a été vu (utilisateur d'avant cette fonction) : les notes en attente s'affichent.
+- **Nouveautés vues** (`news-seen`) : la liste des `id` des nouveautés déjà montrées en popup. Absente au premier lancement : les notes actuelles y sont écrites, sans popup ; absente (ou ancien numéro de version) alors que le mot de bienvenue a été vu : les notes `popup` s'affichent.
 
 Aucune donnée n'est indispensable au fonctionnement : sans stockage, l'app reste utilisable.
 
@@ -460,7 +460,7 @@ Aucune collecte en v1, aucun compte, pas de tracking. Si des statistiques sont a
 ### 10.6 Hors ligne et mises à jour
 - Le service worker précache tout le build (code, polices, JSON des jeux, icônes). L'app démarre sans réseau dès la deuxième visite.
 - Mise à jour automatique : une nouvelle version est téléchargée en arrière-plan et prend effet au prochain lancement.
-- **Nouveautés** : après une mise à jour annoncée, l'accueil ouvre une popup (une note par version, à balayer s'il y en a plusieurs, la plus récente d'abord, 5 au plus). Seules les versions écrites dans `src/content/changelog.yaml` ont une note : c'est l'auteur qui choisit. Une note s'écrit avec `version: prochaine` ; `npm version` (lancé par l'action Pages) y écrit le numéro (`scripts/stamp-changelog.ts`). Une note peut nommer un jeu (`game`) : sa vignette et « Voir le jeu ». Réglages → « Nouveautés » relit toutes les notes.
+- **Nouveautés** : l'auteur choisit, note par note (`src/content/changelog.yaml`, la plus récente en tête, un `id` chacune, sans numéro de version), si elle s'affiche au lancement (`popup` : une fois par utilisateur, à balayer s'il y en a plusieurs, 5 au plus) et si elle est disponible dans Réglages → « Nouveautés » (`listed`, à balayer, de la plus récente à la plus ancienne). Une note peut nommer un jeu (`game`) : sa vignette et « Voir le jeu ».
 - Dans les apps natives, le build web est **embarqué dans le binaire** : le hors ligne fonctionne dès l'installation, sans service worker.
 
 ### 10.7 Distribution

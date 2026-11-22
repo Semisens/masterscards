@@ -6,9 +6,9 @@ import type { NewsNote } from '../../data/news.ts'
 import { NewsDialog } from './NewsDialog.tsx'
 
 const NOTES: NewsNote[] = [
-  { version: '0.4.0', title: 'Troisième', text: 'Texte 3.', items: ['Une puce'] },
-  { version: '0.3.0', title: 'Deuxième', text: 'Texte 2.', game: 'trio' },
-  { version: '0.2.0', title: 'Première', text: 'Texte 1.' },
+  { id: 'troisieme', popup: true, listed: true, title: 'Troisième', text: 'Texte 3.', items: ['Une puce'] },
+  { id: 'deuxieme', popup: true, listed: true, title: 'Deuxième', text: 'Texte 2.', game: 'trio' },
+  { id: 'premiere', popup: true, listed: true, title: 'Première', text: 'Texte 1.' },
 ]
 
 function renderDialog(notes: NewsNote[], onClose = vi.fn()) {
@@ -27,7 +27,6 @@ describe('NewsDialog', () => {
   it('montre une note seule, sans points ni chevrons', () => {
     renderDialog([NOTES[2]])
     expect(screen.getByRole('dialog', { name: 'Première' })).toBeInTheDocument()
-    expect(screen.getByText('Version 0.2.0')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Nouveauté suivante' })).toBeNull()
     expect(screen.getByRole('button', { name: 'C’est compris' })).toBeInTheDocument()
   })

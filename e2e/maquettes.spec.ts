@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import pixelmatch from 'pixelmatch'
 import { PNG } from 'pngjs'
+import { NEWS_SEEN } from './games.ts'
 
 // Fidélité aux maquettes : chaque écran de l'app est comparé, pixel par pixel, à l'image de sa maquette
 // (maquettes/<jeu>/*.png, produites par `npm run maquettes`). Les images d'écart sont écrites dans
@@ -235,16 +236,16 @@ test.describe('fidélité aux maquettes', () => {
     const label = `${game}/${screen.name}`
     test(label, async ({ page }, testInfo) => {
       await page.addInitScript(
-        ({ mode, party, history, game }) => {
+        ({ mode, party, history, game, newsSeen }) => {
           window.localStorage.clear()
           window.localStorage.setItem('masterscards:welcomed', '1')
           // Nouveautés déjà vues : pas de popup par-dessus l'écran testé.
-          window.localStorage.setItem('masterscards:news-seen', '9999.0.0')
+          window.localStorage.setItem('masterscards:news-seen', newsSeen)
           if (mode) window.localStorage.setItem('masterscards:mode', mode)
           if (party) window.localStorage.setItem(`masterscards:session:${game}`, JSON.stringify(party))
           if (history) window.localStorage.setItem('masterscards:history', JSON.stringify(history))
         },
-        { mode: screen.mode, party: screen.party, history: screen.history, game },
+        { mode: screen.mode, party: screen.party, history: screen.history, game, newsSeen: NEWS_SEEN },
       )
       await page.goto(screen.url)
       await ready(page)

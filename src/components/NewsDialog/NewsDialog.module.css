@@ -46,11 +46,6 @@
   font-size: calc(var(--mc-text-min) * 1.125);
 }
 
-.version {
-  margin: 0;
-  color: var(--mc-color-texte-secondaire);
-}
-
 .close {
   flex: none;
   min-width: var(--mc-touch-min);

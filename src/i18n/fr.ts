@@ -55,7 +55,6 @@ export const fr = {
   },
   news: {
     title: 'Nouveautés',
-    version: (version: string) => `Version ${version}`,
     close: 'Fermer',
     done: 'C’est compris',
     seeGame: 'Voir le jeu',

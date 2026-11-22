@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import type { Game } from '../src/data/types.ts'
-import { GAMES, party, unnamedParty, type Party } from './games.ts'
+import { GAMES, NEWS_SEEN, party, unnamedParty, type Party } from './games.ts'
 
 // Remplace les « golden tests » : captures de la page de visite du design system à 390 × 844.
 // Première exécution ou changement voulu : `npm run test:visual -- --update-snapshots`, puis relire les images.
@@ -222,11 +222,11 @@ test.describe('aucun défilement vertical', () => {
       for (const screen of SCREENS) {
         test(screen.name, async ({ page }) => {
           await page.addInitScript(
-            ({ mode, party, game, history }) => {
+            ({ mode, party, game, history, newsSeen }) => {
               window.localStorage.clear()
               window.localStorage.setItem('masterscards:welcomed', '1')
               // Nouveautés déjà vues : pas de popup par-dessus l'écran testé.
-              window.localStorage.setItem('masterscards:news-seen', '9999.0.0')
+              window.localStorage.setItem('masterscards:news-seen', newsSeen)
               if (mode) window.localStorage.setItem('masterscards:mode', mode)
               if (party) window.localStorage.setItem(`masterscards:session:${game}`, JSON.stringify(party))
               if (history) window.localStorage.setItem('masterscards:history', JSON.stringify(history))
@@ -236,6 +236,7 @@ test.describe('aucun défilement vertical', () => {
               party: screen.party,
               game: screen.game,
               history: screen.history,
+              newsSeen: NEWS_SEEN,
             },
           )
           await page.goto(screen.url)

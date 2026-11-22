@@ -39,4 +39,12 @@ export function unnamedParty(count: number): Party {
 /** Les `count` premiers prénoms de test. */
 export const namesOf = (count: number) => NAMES.slice(0, count)
 
+/**
+ * Toutes les nouveautés vues (liste JSON de leurs `id`, src/content/changelog.yaml) : à mettre dans
+ * `masterscards:news-seen` pour qu'aucune popup ne recouvre l'écran testé.
+ */
+export const NEWS_SEEN = JSON.stringify(
+  (parse(readFileSync('src/content/changelog.yaml', 'utf8')) as Array<{ id: string }>).map((note) => note.id),
+)
+
 export { fill, winTarget }

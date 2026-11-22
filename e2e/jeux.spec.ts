@@ -1,20 +1,20 @@
 import { expect, test } from '@playwright/test'
 import { deckPlan } from '../src/data/deck.ts'
-import { GAMES, namesOf, fill, winTarget } from './games.ts'
+import { GAMES, NEWS_SEEN, namesOf, fill, winTarget } from './games.ts'
 
 // Le même parcours pour chaque jeu de src/content/games/ : un jeu ajouté par sa seule configuration y passe
 // sans qu'on touche à ce fichier. Sur le build de production (service worker inclus).
 test.describe('parcours de chaque jeu', () => {
   test.beforeEach(async ({ page }) => {
     // Une seule fois par test : sans cette garde, chaque navigation effacerait ce que l'app a mémorisé.
-    await page.addInitScript(() => {
+    await page.addInitScript((newsSeen) => {
       if (window.sessionStorage.getItem('test-init')) return
       window.sessionStorage.setItem('test-init', '1')
       window.localStorage.clear()
       window.localStorage.setItem('masterscards:welcomed', '1')
       // Nouveautés déjà vues : pas de popup par-dessus l'écran testé.
-      window.localStorage.setItem('masterscards:news-seen', '9999.0.0')
-    })
+      window.localStorage.setItem('masterscards:news-seen', newsSeen)
+    }, NEWS_SEEN)
   })
 
   for (const game of GAMES) {

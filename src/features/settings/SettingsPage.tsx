@@ -5,7 +5,7 @@ import { NewsDialog } from '../../components/NewsDialog/NewsDialog.tsx'
 import { PageTitle } from '../../components/PageTitle/PageTitle.tsx'
 import { Screen } from '../../components/Screen/Screen.tsx'
 import { Segmented } from '../../components/Segmented/Segmented.tsx'
-import { newsNotes, publishedNotes } from '../../data/news.ts'
+import { listedNotes, newsNotes } from '../../data/news.ts'
 import { fr } from '../../i18n/fr.ts'
 import { paths } from '../../routes.ts'
 import styles from './SettingsPage.module.css'
@@ -17,8 +17,8 @@ const LANGUAGES = [
   { value: 'es', label: 'Español', disabled: true },
 ]
 
-// Toutes les nouveautés publiées, la plus récente d'abord.
-const NOTES = publishedNotes(newsNotes, __APP_VERSION__)
+// Les nouveautés disponibles dans les réglages (`listed`), la plus récente d'abord.
+const NOTES = listedNotes(newsNotes)
 
 /** Réglages : la langue, les nouveautés et le lien « À propos ». Aucun compte en v1. */
 export function SettingsPage() {

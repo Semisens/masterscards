@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
+import { NEWS_SEEN } from './games.ts'
 
 /** Balayage tactile simulé sur la zone qui porte le geste (celle qui a `tabindex="-1"`). */
 async function swipe(page: Page, from: number, to: number) {
@@ -210,14 +211,14 @@ test.describe('hors ligne', () => {
 test.describe('parcours Love Letter', () => {
   test.beforeEach(async ({ page }) => {
     // Une seule fois par test : sans cette garde, chaque navigation effacerait ce que l'app a mémorisé.
-    await page.addInitScript(() => {
+    await page.addInitScript((newsSeen) => {
       if (window.sessionStorage.getItem('test-init')) return
       window.sessionStorage.setItem('test-init', '1')
       window.localStorage.clear()
       window.localStorage.setItem('masterscards:welcomed', '1')
       // Nouveautés déjà vues : pas de popup par-dessus l'écran testé.
-      window.localStorage.setItem('masterscards:news-seen', '9999.0.0')
-    })
+      window.localStorage.setItem('masterscards:news-seen', newsSeen)
+    }, NEWS_SEEN)
   })
 
   test('du choix du jeu au podium, en manches, puis l’historique et les réglages', async ({ page }) => {

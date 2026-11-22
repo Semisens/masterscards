@@ -1,7 +1,8 @@
-# Nouveautés : une note par version annoncée, la plus récente en haut.
-# Une version absente d'ici ne montre rien. Mode d'emploi : CLAUDE.md, « Annoncer une version ».
+# Nouveautés : une note par annonce, la plus récente en haut. Mode d'emploi : CLAUDE.md, « Annoncer une nouveauté ».
 #
-#   version  `prochaine` tant que la version n'est pas publiée : `npm version` (action Pages) écrit le numéro.
+#   id       unique, minuscules et tirets (ex. six-qui-prend-peau-neuve) : l'app retient les notes vues par leur id.
+#   popup    true : s'affiche au lancement, une fois par utilisateur. false : plus jamais en popup.
+#   listed   true : disponible dans Réglages → Nouveautés (à balayer, de la plus récente à la plus ancienne).
 #   title    le titre de la note, court.
 #   text     une ou deux phrases.
 #   items    facultatif : quelques puces.
@@ -9,7 +10,9 @@
 #
 # Pièges YAML : un texte avec « : » ou « # », ou qui commence par un chiffre, se met entre apostrophes droites.
 
-- version: '0.3.0'
+- id: loup-garou-et-6-qui-prend # annoncée en 0.3.0
+  popup: false
+  listed: true
   title: 'Deux nouveaux jeux : Loup-garou et 6 qui prend'
   text: La nuit, les loups attaquent, le jour, le village vote. Et dans 6 qui prend, ne pose pas la sixième carte !
   items:
