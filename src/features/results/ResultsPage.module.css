@@ -69,6 +69,30 @@
   border-top: calc(var(--mc-space-1) / 4) solid var(--game-edge, var(--mc-color-bordure));
 }
 
+/* Le prénom se coupe par « … » plutôt que de pousser le score. */
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Plus de 6 joueurs : les suivants sur deux colonnes, lignes serrées. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--mc-space-2);
+}
+
+.grid > .row {
+  gap: var(--mc-space-1);
+  padding: calc(var(--mc-space-1) / 2) 0;
+}
+
+.grid .name {
+  flex: 1;
+  min-width: 0;
+}
+
 .spacer {
   flex: 1;
 }

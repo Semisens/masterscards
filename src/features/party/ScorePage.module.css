@@ -10,3 +10,10 @@
 .spacer {
   flex: 1;
 }
+
+/* Plus de 6 joueurs : les compteurs sur deux colonnes. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--mc-space-2);
+}

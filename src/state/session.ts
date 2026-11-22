@@ -20,6 +20,16 @@ export interface Session {
 export const MAX_SCORE = 99
 export const MAX_ROUND = 99
 
+/**
+ * Au-delà de ce nombre de joueurs (Loup-garou : jusqu'à 12), « Qui joue ? », la partie, la saisie des scores et le
+ * podium passent en mise en page compacte (deux colonnes, blocs serrés) pour tenir sans défilement.
+ * Jusqu'à 6 joueurs, rien ne change : c'est la mise en page des maquettes.
+ */
+export const CROWDED_PLAYERS = 6
+
+/** La partie a-t-elle trop de joueurs pour la mise en page des maquettes ? */
+export const isCrowded = (playerCount: number) => playerCount > CROWDED_PLAYERS
+
 /** Clé de stockage de la partie d'un jeu. */
 export const sessionKey = (gameId: string) => `session:${gameId}`
 

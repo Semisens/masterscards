@@ -49,6 +49,17 @@
   border-top: calc(var(--mc-space-1) / 4) solid var(--game-edge, var(--mc-color-bordure));
 }
 
+/* Plus de 6 joueurs : les prénoms sur deux colonnes, lignes resserrées. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--mc-space-1);
+}
+
+.grid > .field {
+  padding: calc(var(--mc-space-1) / 2) 0;
+}
+
 .input {
   box-sizing: border-box;
   width: 100%;

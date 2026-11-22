@@ -264,6 +264,51 @@ describe('Love Letter : partie en manches', () => {
   })
 })
 
+describe('Loup-garou : de 6 à 12 joueurs', () => {
+  const LG_KEY = 'masterscards:session:loup-garou'
+  const NAMES = ['Léa', 'Tom', 'Inès', 'Sam', 'Maé', 'Noé', 'Lou', 'Max', 'Zoé', 'Eli', 'Ana', 'Jo']
+  const TWELVE = { players: NAMES.map((name) => ({ name, score: 0 })), round: 1 }
+
+  it('garde une réserve de 16 cartes, un rôle par ligne', async () => {
+    renderApp('/jeu/loup-garou/tutoriel/cartes')
+    expect(await screen.findByText(/Garde (ces )?16 cartes/)).toBeInTheDocument()
+    expect(screen.getByText('Les loups-garous.')).toBeInTheDocument()
+    expect(screen.getByText('Les villageois.')).toBeInTheDocument()
+  })
+
+  it('numérote la vue à balayer « Rôle 1 / 7 »', async () => {
+    renderApp('/jeu/loup-garou/tutoriel/cartes/1')
+    expect(await screen.findByText('Rôle 1 / 7')).toBeInTheDocument()
+  })
+
+  it('« Qui joue ? » part de 6 prénoms et monte jusqu’à 12, pas plus', async () => {
+    renderApp('/jeu/loup-garou/joueurs')
+    expect(await screen.findAllByRole('textbox')).toHaveLength(6)
+    expect(screen.getByRole('button', { name: 'Un joueur de moins' })).toBeDisabled()
+    for (let i = 0; i < 6; i++) await userEvent.click(screen.getByRole('button', { name: 'Un joueur de plus' }))
+    expect(screen.getAllByRole('textbox')).toHaveLength(12)
+    expect(screen.getByRole('button', { name: 'Un joueur de plus' })).toBeDisabled()
+  })
+
+  it('montre les 12 jetons et un compteur par joueur à 12 joueurs', async () => {
+    store(LG_KEY, TWELVE)
+    renderApp('/jeu/loup-garou/partie')
+    expect(await screen.findByRole('img', { name: 'Jo : 0' })).toBeInTheDocument()
+    expect(within(screen.getByRole('group', { name: 'Joueurs de la partie' })).getAllByRole('img')).toHaveLength(12)
+  })
+
+  it('note les points du camp gagnant, joueur par joueur, à 12 joueurs', async () => {
+    store(LG_KEY, TWELVE)
+    const app = renderApp('/jeu/loup-garou/partie/scores')
+    expect(await screen.findByText('Qui était dans le camp gagnant ?')).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /^Un point de plus pour / })).toHaveLength(12)
+    await userEvent.click(screen.getByRole('button', { name: 'Un point de plus pour Jo' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Valider la manche' }))
+    await waitFor(() => expect(app.location()).toBe('/jeu/loup-garou/partie'))
+    expect(stored(LG_KEY).players[11]).toEqual({ name: 'Jo', score: 1 })
+  })
+})
+
 describe('podium', () => {
   it('place le premier au centre, le deuxième à gauche, le troisième à droite, puis la liste', async () => {
     store('masterscards:history', [

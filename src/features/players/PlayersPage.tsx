@@ -8,7 +8,7 @@ import { StepHeader } from '../../components/StepHeader/StepHeader.tsx'
 import { getGame } from '../../data/games.ts'
 import { fr } from '../../i18n/fr.ts'
 import { paths } from '../../routes.ts'
-import { newSession } from '../../state/session.ts'
+import { isCrowded, newSession } from '../../state/session.ts'
 import { useSession } from '../../state/useSession.ts'
 import { NotFoundPage } from '../not-found/NotFoundPage.tsx'
 import { useFromParty } from '../tutorial/useFlow.ts'
@@ -38,6 +38,8 @@ export function PlayersPage() {
   if (status !== 'ready') return null
 
   const { min, max } = game.players
+  // Beaucoup de joueurs (Loup-garou) : les prénoms sur deux colonnes, pour tenir sans défilement.
+  const crowded = isCrowded(names.length)
   const setCount = (count: number) => setNames((current) => Array.from({ length: count }, (_, i) => current?.[i] ?? ''))
 
   // Les noms vides reçoivent « Joueur n » : passer l'étape, c'est démarrer sans aucun prénom.
@@ -49,7 +51,7 @@ export function PlayersPage() {
   }
 
   return (
-    <Screen>
+    <Screen tight={crowded}>
       <StepHeader
         backTo={fromParty ? paths.party(game.id) : game.points ? paths.points(game.id) : paths.turn(game.id)}
         onSkip={fromParty ? undefined : () => void start(names.map(() => ''))}
@@ -81,22 +83,24 @@ export function PlayersPage() {
             +
           </button>
         </div>
-        {names.map((name, index) => (
-          <div key={index} className={styles.field}>
-            <input
-              className={styles.input}
-              type="text"
-              value={name}
-              maxLength={20}
-              autoComplete="off"
-              placeholder={fr.players.defaultName(index + 1)}
-              aria-label={fr.players.nameLabel(index + 1)}
-              onChange={(event) =>
-                setNames((current) => current?.map((n, i) => (i === index ? event.target.value : n)) ?? null)
-              }
-            />
-          </div>
-        ))}
+        <div className={crowded ? styles.grid : undefined}>
+          {names.map((name, index) => (
+            <div key={index} className={styles.field}>
+              <input
+                className={styles.input}
+                type="text"
+                value={name}
+                maxLength={20}
+                autoComplete="off"
+                placeholder={fr.players.defaultName(index + 1)}
+                aria-label={fr.players.nameLabel(index + 1)}
+                onChange={(event) =>
+                  setNames((current) => current?.map((n, i) => (i === index ? event.target.value : n)) ?? null)
+                }
+              />
+            </div>
+          ))}
+        </div>
       </Panel>
       <div className={styles.spacer} />
       <Button block disabled={!hasName} onClick={() => void start(names)}>

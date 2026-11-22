@@ -10,10 +10,10 @@
 # Pièges YAML : un texte avec « : » ou « # », ou qui commence par un chiffre, se met entre apostrophes droites.
 
 - version: prochaine
-  title: 'Nouveau jeu : 6 qui prend'
-  text: Tout le monde joue en même temps. Ne pose pas la sixième carte !
+  title: 'Deux nouveaux jeux : Loup-garou et 6 qui prend'
+  text: La nuit, les loups attaquent, le jour, le village vote. Et dans 6 qui prend, ne pose pas la sixième carte !
   items:
-    - '54 cartes : le paquet et les 2 jokers.'
-    - De 2 à 5 joueurs, 30 minutes.
-    - Le moins de points gagne.
-  game: 6-qui-prend
+    - 'Loup-garou : 7 rôles, 16 cartes, de 6 à 12 joueurs, plus un meneur.'
+    - 'Loup-garou : chaque joueur du camp gagnant marque 1 point.'
+    - '6 qui prend : 54 cartes, de 2 à 5 joueurs. Le moins de points gagne.'
+  game: loup-garou

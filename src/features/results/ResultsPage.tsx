@@ -6,7 +6,7 @@ import { Screen } from '../../components/Screen/Screen.tsx'
 import { getGame } from '../../data/games.ts'
 import { fr } from '../../i18n/fr.ts'
 import { paths } from '../../routes.ts'
-import { rankPlayers } from '../../state/session.ts'
+import { isCrowded, rankPlayers } from '../../state/session.ts'
 import { useHistory } from '../../state/useHistory.ts'
 import { NotFoundPage } from '../not-found/NotFoundPage.tsx'
 import styles from './ResultsPage.module.css'
@@ -37,9 +37,11 @@ export function ResultsPage() {
     (step) => step.player,
   )
   const others = ranked.slice(3)
+  // Beaucoup de joueurs (Loup-garou) : les suivants sur deux colonnes, lignes serrées.
+  const crowded = isCrowded(ranked.length)
 
   return (
-    <Screen>
+    <Screen tight={crowded}>
       <span className={`${styles.status} ${entry.status === 'finished' ? styles.finished : styles.interrupted}`}>
         {entry.status === 'finished' ? fr.results.finished : fr.results.interrupted}
       </span>
@@ -62,13 +64,15 @@ export function ResultsPage() {
 
       {others.length > 0 && (
         <Panel>
-          {others.map((player, i) => (
-            <div key={i} className={styles.row}>
-              <span>{fr.results.place(player.rank)}</span>
-              <span>{player.name}</span>
-              <b>{player.score}</b>
-            </div>
-          ))}
+          <div className={crowded ? styles.grid : undefined}>
+            {others.map((player, i) => (
+              <div key={i} className={styles.row}>
+                <span>{fr.results.place(player.rank)}</span>
+                <span className={styles.name}>{player.name}</span>
+                <b>{player.score}</b>
+              </div>
+            ))}
+          </div>
         </Panel>
       )}
 

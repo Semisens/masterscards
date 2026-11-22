@@ -11,6 +11,7 @@ import { getGame } from '../../data/games.ts'
 import { resolveGameTheme } from '../../data/theme.ts'
 import { fr } from '../../i18n/fr.ts'
 import { paths } from '../../routes.ts'
+import { isCrowded } from '../../state/session.ts'
 import { useSession } from '../../state/useSession.ts'
 import { NotFoundPage } from '../not-found/NotFoundPage.tsx'
 import { playerColor } from './playerColors.ts'
@@ -33,9 +34,11 @@ export function PartyPage() {
   const { scoring } = game
   // Les mots du jeu : « Manche 3 », « Trios gagnés »…
   const aside = fill(scoring.party_label, { round: session.round })
+  // Beaucoup de joueurs (Loup-garou) : petits jetons, quatre par ligne, blocs serrés.
+  const crowded = isCrowded(session.players.length)
 
   return (
-    <Screen solid={theme.main} solidText={theme.text}>
+    <Screen solid={theme.main} solidText={theme.text} tight={crowded}>
       <div className={styles.top}>
         <Link to={paths.game(game.id)} className={styles.quit}>
           <span aria-hidden="true">‹ </span>
@@ -47,10 +50,23 @@ export function PartyPage() {
 
       {/* Sans prénoms, pas de jetons : « Joueur 1 » ne dit rien. Ils apparaissent quand on les renseigne. */}
       {!session.unnamed && (
-        <div className={styles.players} role="group" aria-label={fr.party.players}>
+        <div
+          className={crowded ? `${styles.players} ${styles.crowded}` : styles.players}
+          role="group"
+          aria-label={fr.party.players}
+        >
           {session.players.map((player, index) => {
             const { color, text } = playerColor(index)
-            return <PlayerChip key={index} name={player.name} score={player.score} color={color} textColor={text} />
+            return (
+              <PlayerChip
+                key={index}
+                name={player.name}
+                score={player.score}
+                color={color}
+                textColor={text}
+                small={crowded}
+              />
+            )
           })}
         </div>
       )}

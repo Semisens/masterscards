@@ -23,3 +23,18 @@
   font-weight: 700;
   font-size: calc(var(--mc-text-min) * 1.375);
 }
+
+/* Petit jeton (plus de 6 joueurs) : 3 rem, prénom coupé par « … ». */
+.small .chip {
+  width: 3rem;
+  height: 3rem;
+  border-width: calc(var(--mc-space-1) / 2);
+  font-size: calc(var(--mc-text-min) * 1.125);
+}
+
+.small > span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

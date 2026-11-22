@@ -11,7 +11,7 @@ import { fill } from '../../core/format.ts'
 import { getGame } from '../../data/games.ts'
 import { fr } from '../../i18n/fr.ts'
 import { paths } from '../../routes.ts'
-import { endRound, hasWinner, MAX_SCORE } from '../../state/session.ts'
+import { endRound, hasWinner, isCrowded, MAX_SCORE } from '../../state/session.ts'
 import { useSession } from '../../state/useSession.ts'
 import { NotFoundPage } from '../not-found/NotFoundPage.tsx'
 import { useEndGame } from './useEndGame.ts'
@@ -39,6 +39,8 @@ export function ScorePage() {
 
   const { scoring } = game
   const values = edited ?? session.players.map(() => 0)
+  // Beaucoup de joueurs (Loup-garou) : les compteurs sur deux colonnes, pour tenir sans défilement.
+  const crowded = isCrowded(session.players.length)
 
   const validate = async () => {
     const next = endRound(session, values)
@@ -50,7 +52,7 @@ export function ScorePage() {
   }
 
   return (
-    <Screen>
+    <Screen tight={crowded}>
       <StepHeader backTo={paths.party(game.id)} />
       <PageTitle>{fill(scoring.title, { round: session.round })}</PageTitle>
       <p className={styles.question}>{scoring.question}</p>
@@ -61,16 +63,19 @@ export function ScorePage() {
         </div>
       )}
       <Panel>
-        {session.players.map((player, index) => (
-          <ScoreStepper
-            key={index}
-            name={player.name}
-            value={values[index] ?? 0}
-            max={MAX_SCORE}
-            unit={scoring.unit}
-            onChange={(value) => setEdited(values.map((v, i) => (i === index ? value : v)))}
-          />
-        ))}
+        <div className={crowded ? styles.grid : undefined}>
+          {session.players.map((player, index) => (
+            <ScoreStepper
+              key={index}
+              name={player.name}
+              value={values[index] ?? 0}
+              max={MAX_SCORE}
+              unit={scoring.unit}
+              compact={crowded}
+              onChange={(value) => setEdited(values.map((v, i) => (i === index ? value : v)))}
+            />
+          ))}
+        </div>
       </Panel>
       <div className={styles.spacer} />
       <Button block onClick={() => void validate()}>

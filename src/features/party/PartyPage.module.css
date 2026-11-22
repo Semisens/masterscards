@@ -36,6 +36,15 @@
   flex: 1 1 28%;
 }
 
+/* Plus de 6 joueurs : quatre petits jetons par ligne (douze joueurs sur trois lignes). */
+.crowded {
+  padding: var(--mc-space-1) 0;
+}
+
+.crowded > * {
+  flex-basis: 20%;
+}
+
 .tiles {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -42,3 +42,23 @@
   font-size: calc(var(--mc-text-min) * 1.5);
   text-align: center;
 }
+
+/* Compact : le prénom sur sa ligne (coupé par « … »), les boutons centrés dessous. */
+.compact {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(var(--mc-space-1) / 2) var(--mc-space-1);
+  padding: calc(var(--mc-space-1) / 2) 0;
+}
+
+.compact .name {
+  flex: 1 0 100%;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compact .value {
+  width: var(--mc-space-3);
+}

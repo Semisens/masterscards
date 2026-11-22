@@ -1,0 +1,231 @@
+# yaml-language-server: $schema=../../game.schema.json
+# Loup-garou : configuration complète du jeu. Modèle commenté : docs/modele-jeu.yaml.
+#
+# Règles de base, 7 rôles, de 6 à 12 joueurs, plus un meneur qui ne prend pas de carte.
+# Réserve de 16 cartes : on en prend une par joueur. Rois (pique, trèfle, carreau) = loups-garous ;
+# 2 à 9 de cœur = villageois ; dame de cœur = voyante ; dame de pique = sorcière ; valet de pique = chasseur ;
+# as de cœur = cupidon ; dame de carreau = petite fille.
+# Le mode Classique parle en cartes, le mode Connaisseur donne le nom du rôle d'origine.
+# Pas de score dans le jeu : à chaque manche, chaque joueur du camp gagnant marque 1 point. Pas de fin automatique.
+
+id: loup-garou
+name: Loup-garou
+main_color: '#2E3466' # indigo de nuit, texte blanc ; le fond des écrans reste le bleu de l'app
+tagline: La nuit, les loups attaquent. Le jour, le village vote.
+description: >-
+  Chacun reçoit une carte secrète. Les loups-garous se cachent parmi les villageois et frappent chaque nuit. Le jour,
+  tout le village débat et vote pour les démasquer. Un meneur raconte la partie.
+players: { min: 6, max: 12 }
+duration_min: 30
+group_word: Rôle
+classic_forbidden_terms: [Voyante, Sorcière, Chasseur, Cupidon, Petite Fille]
+
+# Cartes à garder (16) : une ligne de « Tes cartes » par rôle.
+card_groups:
+  - label: Rois
+    cards:
+      - { ranks: [K], suits: [spades, clubs, diamonds] }
+    display: { rank: K, suit: spades }
+    short: Les loups-garous.
+    badge: Loups
+    detail:
+      title: Les rois sont les loups-garous.
+      text: >-
+        Chaque nuit, ils se réveillent et choisissent ensemble une victime. Le jour, ils font semblant d’être des
+        villageois. 2 rois de 6 à 11 joueurs, 3 rois à 12.
+    expert:
+      original: Loup-Garou
+      name: Loup-Garou
+      power: dévorer un villageois chaque nuit, et se faire passer pour un villageois le jour
+
+  - label: '2 à 9 de cœur'
+    cards:
+      - { ranks: [2, 3, 4, 5, 6, 7, 8, 9], suits: [hearts] }
+    short: Les villageois.
+    detail:
+      title: Les cœurs sont les villageois.
+      text: >-
+        Tu n’as aucun pouvoir la nuit. Le jour, tu débats et tu votes pour éliminer un loup. Prends autant de cœurs
+        qu’il en faut pour avoir une carte par joueur.
+    expert:
+      original: Villageois
+      name: Simple Villageois
+      power: aucun pouvoir la nuit, participer aux débats et aux votes le jour
+
+  - label: Dame de cœur
+    cards:
+      - { ranks: [Q], suits: [hearts] }
+    short: Regarde une carte chaque nuit.
+    detail:
+      title: Regarde une carte chaque nuit.
+      text: >-
+        Chaque nuit, montre un joueur au meneur. Il te montre sa carte, en secret. Aide le village sans te faire
+        repérer par les loups.
+    expert:
+      original: Voyante
+      name: Voyante
+      power: découvrir chaque nuit la carte d’un joueur de son choix
+
+  - label: Dame de pique
+    cards:
+      - { ranks: [Q], suits: [spades] }
+    short: Deux potions, une fois chacune.
+    detail:
+      title: Deux potions, une seule fois chacune.
+      text: >-
+        Chaque nuit, le meneur te montre la victime des loups. Tu peux la sauver une fois dans la partie. Tu peux
+        aussi éliminer un joueur, une fois.
+    expert:
+      original: Sorcière
+      name: Sorcière
+      power: une potion pour sauver la victime des loups, une pour éliminer un joueur, chacune une seule fois
+
+  - label: Valet de pique
+    cards:
+      - { ranks: [J], suits: [spades] }
+    short: Éliminé, il emporte un joueur.
+    detail:
+      title: Éliminé, il emporte un joueur.
+      text: >-
+        Quand tu es éliminé, de nuit comme de jour, désigne aussitôt un joueur. Il est éliminé avec toi.
+    expert:
+      original: Chasseur
+      name: Chasseur
+      power: s’il est éliminé, désigner aussitôt un joueur qui meurt avec lui
+
+  - label: As de cœur
+    cards:
+      - { ranks: [A], suits: [hearts] }
+    short: Désigne deux amoureux.
+    detail:
+      title: Désigne deux amoureux.
+      text: >-
+        La première nuit, désigne deux joueurs, toi compris si tu veux. Ils gagnent ensemble. Si l’un est éliminé,
+        l’autre le suit aussitôt.
+    expert:
+      original: Cupidon
+      name: Cupidon
+      power: désigner la première nuit deux amoureux, qui gagnent ensemble et meurent ensemble
+
+  - label: Dame de carreau
+    cards:
+      - { ranks: [Q], suits: [diamonds] }
+    short: Espionne les loups.
+    detail:
+      title: Espionne les loups.
+      text: >-
+        Pendant que les loups choisissent leur victime, tu peux entrouvrir les yeux. Si un loup te surprend, tu es
+        éliminé à la place de la victime.
+    expert:
+      original: Petite Fille
+      name: Petite Fille
+      power: entrouvrir les yeux pendant le tour des loups, au risque de se faire repérer
+
+# Partie en manches : chaque joueur du camp gagnant marque 1 point, éliminés compris. Pas de fin automatique :
+# on arrête avec « Terminer la partie ».
+scoring:
+  unit: point
+  party_label: Manche {round}
+  title: Fin de la manche {round}
+  question: Qui était dans le camp gagnant ?
+  validate: Valider la manche
+
+tutorial:
+  setup:
+    title: Mise en place
+    hand: { label: 'Ta carte, en secret', layout: single }
+    center:
+      - { label: Cartes en trop, layout: pile }
+    steps:
+      - 'Choisis un meneur. Il ne prend pas de carte : il raconte et mène la partie.'
+      - Prends 2 rois, ou 3 rois à 12 joueurs. Ce sont les loups.
+      - Ajoute la dame de cœur et d’autres rôles au choix. Complète avec des cœurs, une carte par joueur.
+      - Mélange. Donne une carte à chacun, face cachée. Regarde la tienne en secret.
+  turn:
+    title: Une nuit, un jour
+    reveal: # ta carte de face, la victime de la nuit à gauche, le loup éliminé au vote en face
+      hand: [{ rank: Q, suit: hearts }]
+      played:
+        left: { rank: 5, suit: hearts }
+        across: { rank: K, suit: clubs }
+    steps:
+      - label: La nuit.
+        text: Tout le monde ferme les yeux. Le meneur appelle les cartes une à une.
+      - label: As de cœur.
+        text: La première nuit seulement, il désigne deux amoureux.
+      - label: Dame de cœur.
+        text: Elle montre un joueur. Le meneur lui montre sa carte.
+      - label: Les rois.
+        text: Les loups choisissent une victime. La dame de carreau peut entrouvrir les yeux.
+      - label: Dame de pique.
+        text: Le meneur lui montre la victime. Elle peut la sauver, ou éliminer un joueur.
+      - label: Le jour.
+        text: Tout le monde se réveille. Chaque victime retourne sa carte et sort.
+      - label: Le vote.
+        text: Débattez, puis votez. Le joueur le plus désigné retourne sa carte et sort.
+    win:
+      title: Gagner
+      text: >-
+        Le village gagne quand le dernier loup est éliminé. Les loups gagnent quand le dernier villageois est
+        éliminé.
+
+full_rules:
+  - title: But
+    text: >-
+      Villageois, démasque les loups et élimine-les. Loup, élimine les villageois sans te faire prendre. À chaque
+      manche, chaque joueur du camp gagnant marque 1 point, éliminés compris.
+  - title: Le meneur
+    text: >-
+      Il ne prend pas de carte. Il connaît toutes les cartes, appelle chaque rôle la nuit et compte les votes. Il ne
+      révèle rien.
+  - title: Mise en place
+    text: >-
+      {cards} cartes au plus, une par joueur. Prends 2 rois, ou 3 à 12 joueurs. Ajoute la dame de cœur, puis
+      d’autres rôles au choix. Complète avec des cœurs. Mélange, donne une carte à chacun, face cachée.
+  - title: Première partie
+    text: Joue avec les rois, la dame de cœur et des cœurs. Ensuite, ajoute un rôle à la fois.
+  - title: Rois
+    text: >-
+      Les loups-garous. Chaque nuit, ils ouvrent les yeux, se reconnaissent et désignent ensemble une victime, sans
+      un bruit.
+  - title: Cœurs de 2 à 9
+    text: Les villageois. Aucun pouvoir la nuit. Le jour, ils débattent et votent.
+  - title: Dame de cœur
+    text: Chaque nuit, elle montre un joueur au meneur. Il lui montre sa carte. Elle est du côté du village.
+  - title: Dame de pique
+    text: >-
+      Chaque nuit, le meneur lui montre la victime des loups. Une fois dans la partie, elle peut la sauver. Une fois
+      aussi, elle peut éliminer un joueur. Elle est du côté du village.
+  - title: Valet de pique
+    text: >-
+      Quand il est éliminé, de nuit comme de jour, il désigne aussitôt un joueur. Ce joueur est éliminé avec lui.
+  - title: As de cœur
+    text: >-
+      La première nuit, il désigne deux amoureux, lui compris s’il veut. Le meneur les touche : ils ouvrent les yeux
+      et se reconnaissent. Si l’un est éliminé, l’autre le suit.
+  - title: Amoureux
+    text: >-
+      Ils gagnent ensemble. Un loup et un villageois amoureux ? Ils jouent contre tous, et gagnent s’ils sont les
+      deux derniers en vie.
+  - title: Dame de carreau
+    text: >-
+      Pendant le tour des loups, elle peut entrouvrir les yeux pour les espionner. Si un loup la surprend, elle est
+      éliminée à la place de la victime.
+  - title: La nuit
+    text: >-
+      Tout le monde ferme les yeux. Le meneur appelle dans l’ordre : l’as de cœur (première nuit), les amoureux, la
+      dame de cœur, les rois, puis la dame de pique.
+  - title: Le jour
+    text: >-
+      Tout le monde ouvre les yeux. Le meneur annonce les victimes de la nuit. Chacune retourne sa carte et quitte
+      la partie.
+  - title: Le vote
+    text: >-
+      Le village débat, puis vote à main levée, loups compris. Le joueur le plus désigné retourne sa carte et sort.
+      Égalité : personne ne sort ce jour-là.
+  - title: Joueur éliminé
+    text: Tu ne parles plus et tu ne votes plus. Si ton camp gagne, tu gagnes avec lui.
+  - title: Fin de la manche
+    text: >-
+      Le village gagne quand le dernier loup est éliminé. Les loups gagnent quand le dernier villageois est éliminé.
+      Note le point de chaque gagnant, puis redistribue.
