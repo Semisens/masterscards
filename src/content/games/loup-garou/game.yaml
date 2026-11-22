@@ -142,11 +142,6 @@ tutorial:
       - Mélange. Donne une carte à chacun, face cachée.
   turn:
     title: Une nuit, un jour
-    reveal: # ta carte de face, la victime de la nuit à gauche, le loup éliminé au vote en face
-      hand: [{ rank: Q, suit: hearts }]
-      played:
-        left: { rank: 5, suit: hearts }
-        across: { rank: K, suit: clubs }
     steps:
       - label: La nuit.
         text: Tout le monde ferme les yeux. Le meneur appelle les cartes une à une.
