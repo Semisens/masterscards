@@ -91,11 +91,9 @@ card_groups:
     detail:
       title: Les deux cartes les plus fortes.
       text: >-
-        Ils valent 53 et 54, après le roi de cœur. Deux jokers au même tour, et l’un doit ramasser ? Chi-fou-prend : le
-        perdant ramasse.
+        Ils valent 53 et 54. Deux jokers au même tour, et l’un doit ramasser ? Chi-fou-prend : le perdant ramasse.
     expert:
       original: '53–54'
-      power: les cartes 53 et 54 du jeu d’origine, les plus fortes de cette version
       cards:
         - { value: '53', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
         - { value: '54', color: '#FAFBFB', figure: taureau.png, figure_color: '#4C457E', value_color: '#B59DBC' }
