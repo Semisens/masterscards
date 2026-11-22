@@ -116,9 +116,7 @@ describe('Love Letter : tutoriel', () => {
     renderApp('/jeu/love-letter/tutoriel/cartes/3')
     expect(await screen.findByText('Carte 3 / 10')).toBeInTheDocument()
     expect(screen.getByText('Choisis un rival. Il te montre sa carte. Ne la répète à personne.')).toBeInTheDocument()
-    expect(
-      screen.getByText('Connaisseur : Prêtre. Pouvoir d’origine : voir la main d’un joueur.'),
-    ).toBeInTheDocument()
+    expect(screen.getByText('Connaisseur : Prêtre. Pouvoir d’origine : voir la main d’un joueur.')).toBeInTheDocument()
   })
 
   it('dessine les cartes d’origine en mode connaisseur seulement', async () => {
