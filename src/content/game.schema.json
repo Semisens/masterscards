@@ -113,6 +113,11 @@
       "type": "string",
       "pattern": "^#[0-9A-Fa-f]{6}$"
     },
+    "tile_color": {
+      "description": "Fond du carré de la vignette sur l'accueil (derrière le logo ou l'initiale), quand `main_color` ne convient pas au logo. Absent : `main_color`. Le texte de l'initiale est choisi automatiquement (blanc ou encre, contraste d'au moins 4,5).",
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
     "text_color": {
       "description": "Couleur du texte sur `main_color` (bandeau, initiale ou logo, écran de partie). Contraste d'au moins 4,5 avec `main_color`, sinon refusée. Absent : blanc ou encre, choisi automatiquement.",
       "type": "string",

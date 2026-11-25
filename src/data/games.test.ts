@@ -267,6 +267,7 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
     it('a un contraste texte / fond d’au moins 4,5', () => {
       const theme = resolveGameTheme(game)
       expect(contrastRatio(theme.main, theme.text)).toBeGreaterThanOrEqual(MIN_CONTRAST)
+      expect(contrastRatio(theme.tile.bg, theme.tile.text), 'vignette').toBeGreaterThanOrEqual(MIN_CONTRAST)
     })
 
     it('a un texte lisible sur tout le fond des écrans, s’il en donne un', () => {
@@ -575,7 +576,7 @@ describe('Love Letter', () => {
     expect(ll.tutorial.setup.center.every((item) => !item.card)).toBe(true)
   })
 
-  it('prend la palette bordeaux : couleur du jeu, relief, texte et fond crème, dos corail, sceau de cire pour logo', () => {
+  it('prend la palette bordeaux : couleur du jeu, relief, texte et fond crème, dos corail, sceau de cire sur crème pour logo', () => {
     const theme = resolveGameTheme(ll)
     expect(theme.main).toBe('#812B2B')
     expect(theme.shadow).toBe('#400E0E')
@@ -583,8 +584,10 @@ describe('Love Letter', () => {
     expect(theme.screen?.base).toBe('#EEDDC8')
     expect(theme.screen?.text).toBe(tokens.colors.encre)
     expect(theme.cardBack).toBe('#E57979')
-    expect(ll.logo).toBe('logo.svg')
+    expect(ll.logo).toBe('logo.png')
     expect(logoUrl(ll)).toBeTruthy()
+    // Le sceau cramoisi se fondrait dans le bordeaux : la vignette est crème, l'initiale (inutile ici) en encre.
+    expect(theme.tile).toEqual({ bg: '#EEDDC8', text: tokens.colors.encre })
   })
 
   it('dessine les 10 cartes d’origine, de 0 à 9, avec leur nom', () => {

@@ -249,6 +249,8 @@ interface GameBase {
   text_color?: string
   /** Nom d'un fichier du dossier du jeu (svg ou png). Absent : initiale dans un rond blanc. */
   logo?: string
+  /** Couleur libre `#RRGGBB` du carré de la vignette sur l'accueil, derrière le logo. Absent : le tapis. */
+  tile_color?: string
   /** Phrase d'accroche en gras, sur la page du jeu. */
   tagline: string
   /** Texte qui suit la phrase d'accroche. */

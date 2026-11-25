@@ -10,7 +10,8 @@ shadow_color: '#400E0E'
 text_color: '#EEDDC8'
 background_color: '#EEDDC8'
 card_back_color: '#E57979'
-logo: logo.svg # sceau de cire
+logo: logo.png # sceau de cire cramoisi et enveloppe dorée (image fournie par l'utilisateur, détourée)
+tile_color: '#EEDDC8' # vignette de l'accueil en crème : le sceau se fondrait dans le bordeaux
 tagline: Une lettre. Une princesse. Un seul gagnant.
 description: >-
   Tu gardes une seule carte en main. Chaque tour, tu en piocheras une autre et tu joues l’une des deux. Devine,

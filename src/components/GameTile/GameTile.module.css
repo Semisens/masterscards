@@ -29,8 +29,8 @@
   align-items: center;
   justify-content: center;
   width: calc(var(--mc-space-5) * 1.75);
-  background: var(--game-bg);
-  color: var(--game-fg);
+  background: var(--tile-bg, var(--game-bg));
+  color: var(--tile-fg, var(--game-fg));
   font-family: var(--mc-font-title);
   font-weight: 700;
   font-size: calc(var(--mc-text-min) * 2.25);

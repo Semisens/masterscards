@@ -25,6 +25,8 @@ export interface GameTheme {
   text: string
   /** Ombre en relief de `main`. */
   shadow: string
+  /** Carré de la vignette sur l'accueil (`tile_color`, défaut `main`) et texte de l'initiale dessus. */
+  tile: { bg: string; text: string }
   /** Fond des écrans du jeu. Absent : le bleu de l'app. */
   screen?: ScreenTheme
   /** Couleur du dos des cartes. */
@@ -90,22 +92,26 @@ type ThemeInput = Pick<Game, 'main_color' | 'font'> &
       | 'background_text_color'
       | 'card_back_color'
       | 'card_back_stripe_color'
+      | 'tile_color'
     >
   >
 
 /**
  * Thème d'un jeu : `main_color` (avec son texte et son ombre, calculés ou donnés par `text_color` et `shadow_color`),
- * fond des écrans (`background_color`, avec son texte), dos des cartes (`card_back_color`, par défaut `main_color`).
+ * vignette de l'accueil (`tile_color`, défaut `main_color`), fond des écrans (`background_color`, avec son texte), dos des cartes (`card_back_color`, par défaut `main_color`).
  * Refuse tout texte sous 4,5 de contraste. Le test des jeux garantit qu'aucun jeu livré ne lève cette erreur.
  */
 export function resolveGameTheme(game: ThemeInput): GameTheme {
   const main = colorHex(game.main_color)
+  const text = resolveText('le tapis', [main], game.text_color, 'text_color')
+  const tile = game.tile_color?.toUpperCase()
   const base = game.background_color ? colorHex(game.background_color) : undefined
   const ends = base ? [base, tint(base, GRADIENT_TOP_KEEP), shade(base, GRADIENT_BOTTOM_KEEP)] : []
   return {
     main,
-    text: resolveText('le tapis', [main], game.text_color, 'text_color'),
+    text,
     shadow: game.shadow_color?.toUpperCase() ?? shadowOfMain(game.main_color, main),
+    tile: tile ? { bg: tile, text: resolveText('la vignette', [tile], undefined, 'tile_color') } : { bg: main, text },
     screen: base
       ? {
           base,

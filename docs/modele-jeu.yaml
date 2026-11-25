@@ -49,6 +49,7 @@ main_color: bleu
 # name_outline: '#2B3A8F' # un fin contour autour du reste du nom (bandeau et historique ; la tuile de l'accueil garde le nom tel quel)
 
 # logo: logo.svg # facultatif ; défaut : l'initiale du nom dans un rond blanc
+# tile_color: '#EEDDC8' # facultatif : fond du carré de la vignette de l'accueil, si le logo se fond dans main_color
 
 tagline: Une phrase d’accroche courte. # en gras sur la page du jeu
 description: >-
