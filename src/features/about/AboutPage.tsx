@@ -6,32 +6,27 @@ import { fr } from '../../i18n/fr.ts'
 import { paths } from '../../routes.ts'
 import styles from './AboutPage.module.css'
 
-/** Mentions légales, crédits, licences des polices et version. */
+/** Le principe de l'app (le même texte que le mot de bienvenue), mentions légales, données, version et polices. */
 export function AboutPage() {
   return (
     <Screen>
       <StepHeader backTo={paths.settings()} />
       <PageTitle>{fr.about.title}</PageTitle>
 
-      <Panel labelledBy="about-disclaimer" className={styles.panel}>
-        <h2 id="about-disclaimer" className={styles.heading}>
-          {fr.about.disclaimerTitle}
+      <Panel labelledBy="about-principle" className={styles.panel}>
+        <h2 id="about-principle" className={styles.heading}>
+          {fr.about.principleTitle}
+        </h2>
+        <p>{fr.about.principle}</p>
+      </Panel>
+
+      {/* Mentions légales et données personnelles réunies : la page tient sans défilement. */}
+      <Panel labelledBy="about-legal" className={styles.panel}>
+        <h2 id="about-legal" className={styles.heading}>
+          {fr.about.legalTitle}
         </h2>
         <p>{fr.about.disclaimer}</p>
         <p>{fr.about.namesNote}</p>
-      </Panel>
-
-      <Panel labelledBy="about-fonts" className={styles.panel}>
-        <h2 id="about-fonts" className={styles.heading}>
-          {fr.about.fontsTitle}
-        </h2>
-        <p>{fr.about.fonts}</p>
-      </Panel>
-
-      <Panel labelledBy="about-privacy" className={styles.panel}>
-        <h2 id="about-privacy" className={styles.heading}>
-          {fr.about.privacyTitle}
-        </h2>
         <p>{fr.about.privacy}</p>
       </Panel>
 
@@ -40,6 +35,7 @@ export function AboutPage() {
           {fr.about.versionTitle}
         </h2>
         <p>{__APP_VERSION__}</p>
+        <p>{fr.about.fonts}</p>
       </Panel>
     </Screen>
   )

@@ -3,6 +3,10 @@
 
 const plural = (n: number, one: string, many: string) => `${n} ${n > 1 ? many : one}`
 
+/** Le principe de l'app : mot de bienvenue au premier lancement, et premier panneau d'« À propos ». */
+const PRINCIPLE =
+  'Tu as oublié ton jeu de société favori ? Pas de panique : un jeu de 54 cartes suffit. Pour chaque jeu, MastersCards te dit quelles cartes garder, ce que chacune représente, et t’apprend à jouer pas à pas.'
+
 export const fr = {
   app: { name: 'MastersCards' },
   nav: {
@@ -34,8 +38,7 @@ export const fr = {
     noMatchTitle: 'Aucun jeu trouvé',
     noMatchText: 'Essaie un autre mot, ou choisis « Tous ».',
     welcomeTitle: 'Bienvenue !',
-    welcomeText:
-      'Choisis un jeu. Tu découvres ses cartes en mode Classique, ou en mode Connaisseur pour faire le lien avec le jeu d’origine.',
+    welcomeText: PRINCIPLE,
     welcomeDismiss: 'C’est compris',
   },
   history: {
@@ -152,15 +155,14 @@ export const fr = {
   },
   about: {
     title: 'À propos',
-    disclaimerTitle: 'Application non officielle',
+    principleTitle: 'Le principe',
+    principle: PRINCIPLE,
+    legalTitle: 'Mentions',
     disclaimer: 'Application non officielle, sans lien avec les éditeurs des jeux cités.',
-    namesNote:
-      'Les noms de jeux sont cités à titre descriptif. Les règles sont expliquées avec nos propres mots, pour un paquet de 52 cartes.',
-    fontsTitle: 'Polices',
-    fonts: 'Fredoka, Nunito et Great Vibes, sous licence libre SIL Open Font License.',
+    namesNote: 'Leurs noms sont cités à titre descriptif, les règles dites avec nos propres mots.',
+    fonts: 'Polices : Fredoka, Nunito et Great Vibes, sous licence libre SIL Open Font License.',
     versionTitle: 'Version',
-    privacyTitle: 'Données personnelles',
-    privacy: 'Aucune donnée n’est collectée. L’app fonctionne sans compte et sans connexion.',
+    privacy: 'Aucune donnée n’est collectée : ni compte, ni connexion.',
   },
   errors: {
     notFoundTitle: 'Oups, introuvable',

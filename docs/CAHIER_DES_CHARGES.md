@@ -165,7 +165,7 @@ Trois écrans racines ont la **barre d'onglets** Jeux / Scores / Réglages : l'a
 - Format des maquettes : 390 × 844, marges 48 / 24 / 24, blocs espacés de 16.
 
 ### 7.1 Accueil « Tes jeux » (maquette *Games* de Love Letter)
-Titre, **recherche** (« Un jeu, un titre… », filtre sur le nom, sans casse ni accents), **filtres** en pastilles, sur une seule ligne qui défile au doigt jusqu'aux bords de l'écran (Tous ; « 2 joueurs » : se joue à deux ; « Rapide » : 15 minutes ou moins ; « Sans joker » : le paquet de 52 seul, aucun joker gardé), liste des jeux (carré aux couleurs du jeu avec son initiale, nom, « 2–6 joueurs · 20 min »), barre d'onglets. Mot de bienvenue au premier lancement. Aucun choix de mode ici. La liste défile dans son cadre, sans barre, s'il y a beaucoup de jeux.
+Titre, **recherche** (« Un jeu, un titre… », filtre sur le nom, sans casse ni accents), **filtres** en pastilles, sur une seule ligne qui défile au doigt jusqu'aux bords de l'écran (Tous ; « 2 joueurs » : se joue à deux ; « Rapide » : 15 minutes ou moins ; « Sans joker » : le paquet de 52 seul, aucun joker gardé), liste des jeux (carré aux couleurs du jeu avec son initiale, nom, « 2–6 joueurs · 20 min »), barre d'onglets. Mot de bienvenue au premier lancement : le principe de l'app (le même texte ouvre « À propos »). Aucun choix de mode ici. La liste défile dans son cadre, sans barre, s'il y a beaucoup de jeux.
 
 ### 7.2 Le jeu (maquette *GameDetail*)
 Bandeau plein cadre aux couleurs du jeu (« ‹ Retour », nom en grand, « 3–6 joueurs · 15 min »), carte blanche (phrase d'accroche en gras + texte), boutons **Jouer** et **Règles complètes**.
@@ -201,7 +201,7 @@ Une carte blanche avec toutes les sections : But, Mise en place, Un tour, Trio, 
 - **Réglages** : langue (Français ; English et Español grisés, avec « arrivent bientôt »), lien « À propos ». Ni compte ni déconnexion.
 
 ### 7.8 Mentions / À propos
-Crédits, licences des polices, avertissement légal, version.
+Trois panneaux, sans défilement : **Le principe** (en premier, le même texte que le mot de bienvenue : un jeu de 54 cartes suffit pour jouer à un jeu de société, l'app dit quelles cartes garder, ce que chacune représente, et apprend à jouer pas à pas) ; **Mentions** (avertissement légal, noms cités à titre descriptif, aucune donnée collectée) ; **Version** (numéro, licences des polices).
 
 ### 7.9 États à prévoir
 Premier lancement, liste vide, jeu / groupe / page introuvable (avec retour), partie absente (on demande qui joue), donnée mémorisée abîmée (traitée comme « pas de partie »).
