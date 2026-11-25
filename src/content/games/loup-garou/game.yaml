@@ -83,7 +83,7 @@ card_groups:
     expert:
       original: Sorcière
       name: Sorcière
-      power: une potion pour sauver la victime des loups, une pour éliminer un joueur, chacune une seule fois
+      power: une potion de vie et une potion de mort, une seule fois chacune
       cards: [{ name: Sorcière, square: true, color: '#DE2609', image: carte-sorciere.webp }]
 
   - label: Valet de pique
