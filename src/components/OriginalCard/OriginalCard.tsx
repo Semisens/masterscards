@@ -19,11 +19,14 @@ export interface OriginalCardProps {
  * chiffre compris. Sans image, elle est dessinée : un fond de sa couleur et sa valeur, en blanc ou en encre selon le
  * contraste (pas de portrait ni de texte officiel). Une carte dessinée peut porter une forme en grand sous la valeur
  * (`figure`, recolorée en `figure_color` : un masque) et la couleur de chiffre de la carte d'origine (`value_color`,
- * avec un fin contour).
+ * avec un fin contour). Elle peut aussi être carrée (`square`), avoir deux couleurs de fond en diagonale (`color2`)
+ * et une icône en couleurs au centre (`icon`) : les cartes de rôle du Loup-garou.
  * Décorative : la légende ou le titre de la ligne disent la même chose.
  */
 export function OriginalCard({ card, variant = 'list' }: OriginalCardProps) {
-  const size = variant === 'strip' ? styles.strip : styles.list
+  const size = [variant === 'strip' ? styles.strip : styles.list, card.square ? styles.square : '']
+    .filter(Boolean)
+    .join(' ')
   if (card.imageUrl) {
     return (
       <span className={`${styles.card} ${size} ${styles.picture}`} aria-hidden="true">
@@ -33,14 +36,18 @@ export function OriginalCard({ card, variant = 'list' }: OriginalCardProps) {
   }
   const text = card.value_color ?? pickTextColor(card.color)?.color ?? tokens.colors.encre
   const style = {
-    '--original-bg': card.color,
+    // Deux couleurs : la carte coupée en diagonale, la première en haut à gauche.
+    '--original-bg': card.color2 ? `linear-gradient(135deg, ${card.color} 50%, ${card.color2} 50%)` : card.color,
     '--original-fg': text,
     ...(card.figureUrl ? { '--figure': `url("${card.figureUrl}")`, '--figure-color': card.figure_color ?? text } : {}),
   } as CSSProperties
   return (
     <span className={`${styles.card} ${size}`} style={style} aria-hidden="true">
       {card.figureUrl && <span className={styles.figure} />}
-      <span className={card.value_color ? `${styles.value} ${styles.outlined}` : styles.value}>{card.value}</span>
+      {card.iconUrl && <img className={styles.icon} src={card.iconUrl} alt="" />}
+      {card.value && (
+        <span className={card.value_color ? `${styles.value} ${styles.outlined}` : styles.value}>{card.value}</span>
+      )}
     </span>
   )
 }

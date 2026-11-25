@@ -6,6 +6,8 @@
 # 2 à 9 de cœur = villageois ; dame de cœur = voyante ; dame de pique = sorcière ; valet de pique = chasseur ;
 # as de cœur = cupidon ; dame de carreau = petite fille.
 # Le mode Classique parle en cartes, le mode Connaisseur donne le nom du rôle d'origine.
+# Connaisseur : cartes carrées en images (carte-*.webp), découpées d'une planche générée par Gemini fournie par
+# l'utilisateur (build_ressources/MasterCards/LoupGarou), avec `npm run planche`.
 # Pas de score dans le jeu : à chaque manche, chaque joueur du camp gagnant marque 1 point. Pas de fin automatique.
 
 id: loup-garou
@@ -37,6 +39,7 @@ card_groups:
       original: Loup-Garou
       name: Loup-Garou
       power: dévorer un villageois chaque nuit, et se faire passer pour un villageois le jour
+      cards: [{ name: Loup-Garou, square: true, color: '#63161E', image: carte-loup.webp }]
 
   - label: '2 à 9 de cœur'
     cards:
@@ -51,6 +54,7 @@ card_groups:
       original: Villageois
       name: Simple Villageois
       power: aucun pouvoir la nuit, participer aux débats et aux votes le jour
+      cards: [{ name: Villageois, square: true, color: '#D3B253', image: carte-villageois.webp }]
 
   - label: Dame de cœur
     cards:
@@ -65,6 +69,7 @@ card_groups:
       original: Voyante
       name: Voyante
       power: découvrir chaque nuit la carte d’un joueur de son choix
+      cards: [{ name: Voyante, square: true, color: '#621A55', image: carte-voyante.webp }]
 
   - label: Dame de pique
     cards:
@@ -79,6 +84,7 @@ card_groups:
       original: Sorcière
       name: Sorcière
       power: une potion pour sauver la victime des loups, une pour éliminer un joueur, chacune une seule fois
+      cards: [{ name: Sorcière, square: true, color: '#DE2609', image: carte-sorciere.webp }]
 
   - label: Valet de pique
     cards:
@@ -92,6 +98,7 @@ card_groups:
       original: Chasseur
       name: Chasseur
       power: s’il est éliminé, désigner aussitôt un joueur qui meurt avec lui
+      cards: [{ name: Chasseur, square: true, color: '#979C41', image: carte-chasseur.webp }]
 
   - label: As de cœur
     cards:
@@ -106,6 +113,7 @@ card_groups:
       original: Cupidon
       name: Cupidon
       power: désigner la première nuit deux amoureux, qui gagnent ensemble et meurent ensemble
+      cards: [{ name: Cupidon, square: true, color: '#2C62AB', image: carte-cupidon.webp }]
 
   - label: Dame de carreau
     cards:
@@ -120,6 +128,7 @@ card_groups:
       original: Petite Fille
       name: Petite Fille
       power: entrouvrir les yeux pendant le tour des loups, au risque de se faire repérer
+      cards: [{ name: Petite Fille, square: true, color: '#101843', image: carte-petite-fille.webp }]
 
 # Partie en manches : chaque joueur du camp gagnant marque 1 point, éliminés compris. Pas de fin automatique :
 # on arrête avec « Terminer la partie ».

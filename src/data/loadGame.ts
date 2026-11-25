@@ -90,6 +90,7 @@ function loadOriginalCard(card: OriginalCard, assetUrl: (file: string) => string
     ...card,
     ...(card.image ? { imageUrl: assetUrl(card.image) } : {}),
     ...(card.figure ? { figureUrl: assetUrl(card.figure) } : {}),
+    ...(card.icon ? { iconUrl: assetUrl(card.icon) } : {}),
   }
 }
 

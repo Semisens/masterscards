@@ -132,9 +132,18 @@ export type CardLayout = 'single' | 'pile' | 'spread' | 'grid'
 
 /** Une carte du jeu d'origine : pastille de valeur sur fond de couleur. `image` : fichier du dossier du jeu. */
 export interface OriginalCard {
-  value: string
+  /** Valeur écrite sur la carte. Absente : une carte de rôle (Loup-garou), sans chiffre. */
+  value?: string
   name?: string
   color: string
+  /** Seconde couleur de fond, en diagonale. */
+  color2?: string
+  /** Carte carrée, au lieu du format d'une carte à jouer. */
+  square?: boolean
+  /** Icône en couleurs au centre (fichier du dossier du jeu). */
+  icon?: string
+  /** Adresse du fichier `icon`, résolue au chargement du jeu. */
+  iconUrl?: string
   image?: string
   /** Adresse du fichier `image`, résolue au chargement du jeu. */
   imageUrl?: string

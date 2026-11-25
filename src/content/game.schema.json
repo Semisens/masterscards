@@ -510,10 +510,10 @@
     "originalCard": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["value", "color"],
+      "required": ["color"],
       "properties": {
         "value": {
-          "description": "Valeur écrite sur la carte d'origine, ex. « 7 », « 12 ».",
+          "description": "Valeur écrite sur la carte d'origine, ex. « 7 », « 12 ». Facultative : une carte de rôle n'en a pas.",
           "type": "string",
           "minLength": 1,
           "maxLength": 3
@@ -543,6 +543,20 @@
           "description": "Couleur de la forme `figure`, `#RRGGBB`. Absent : la couleur de la valeur.",
           "type": "string",
           "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "square": {
+          "description": "Facultatif : carte carrée (les cartes d'origine du Loup-garou), au lieu du format d'une carte à jouer.",
+          "type": "boolean"
+        },
+        "color2": {
+          "description": "Facultatif : seconde couleur de fond, `#RRGGBB`, posée en diagonale (la carte coupée en deux triangles).",
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "icon": {
+          "description": "Facultatif : une icône en couleurs (png ou svg du dossier du jeu, fond transparent) posée au centre de la carte dessinée, sur son fond. Une image dont tu as les droits, jamais une illustration officielle.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+\\.(svg|png)$"
         },
         "value_color": {
           "description": "Facultatif : couleur de la valeur, `#RRGGBB`, celle de la carte d'origine. Décorative (la ligne dit la même chose) : un fin contour l'aide à se lire. Absent : blanc ou encre, choisi pour le contraste.",

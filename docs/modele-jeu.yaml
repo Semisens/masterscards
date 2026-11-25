@@ -143,6 +143,8 @@ scoring:
 #       # Une carte dessinée (ici comme dans expert.cards) peut aussi porter une forme en grand sous la valeur et les couleurs
 #       # de la carte d'origine : figure: taureau.png (png ou svg du dossier, fond transparent), figure_color: '#2A62A2',
 #       # value_color: '#8CB367' (chiffre décoratif, avec un fin contour). Ex. 6 qui prend.
+#       # Carte de rôle, sans chiffre (value facultatif) : square: true (carte carrée), color2: '#D5A535' (seconde couleur,
+#       # en diagonale), icon: icone-voyante.png (icône en couleurs au centre). Ex. le Loup-garou.
 #     - label: Toutes les autres
 #       cards:
 #         - { ranks: [2, 3, 4, 5, 6], suits: [spades, hearts] }

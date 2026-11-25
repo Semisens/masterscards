@@ -292,10 +292,11 @@ describe.each(games.map((game) => [game.id, game] as const))('jeu « %s »', (id
     it('ont une image et une forme (`figure`) qui existent, s’il y en a', () => {
       for (const card of originals) if (card.image) expect(card.imageUrl, `image ${card.image}`).toBeTruthy()
       for (const card of originals) if (card.figure) expect(card.figureUrl, `forme ${card.figure}`).toBeTruthy()
+      for (const card of originals) if (card.icon) expect(card.iconUrl, `icône ${card.icon}`).toBeTruthy()
     })
 
-    it('ne repètent aucune valeur d’un groupe à l’autre', () => {
-      const values = originals.map((c) => c.value)
+    it('ne repètent aucune valeur d’un groupe à l’autre (les cartes de rôle n’en ont pas)', () => {
+      const values = originals.map((c) => c.value).filter((value) => value !== undefined)
       expect(new Set(values).size).toBe(values.length)
     })
 

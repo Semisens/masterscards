@@ -49,6 +49,20 @@
   position: relative;
 }
 
+/* Carte carrée (cartes de rôle du Loup-garou) : même largeur, aussi haute que large. */
+.square {
+  aspect-ratio: 1 / 1;
+}
+
+/* L'icône en couleurs d'une carte de rôle, au centre, sur le fond (une ou deux couleurs). */
+.icon {
+  position: absolute;
+  inset: 10%;
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
 /* La forme de la carte d'origine (`figure`, ex. une tête de taureau), en grand sous la valeur, à sa couleur. */
 .figure {
   position: absolute;
