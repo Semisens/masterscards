@@ -12,7 +12,8 @@
 
 id: loup-garou
 name: Loup-garou
-main_color: '#2E3466' # indigo de nuit, texte blanc ; le fond des écrans reste le bleu de l'app
+main_color: '#D42821' # le rouge de la carte du loup, texte blanc ; le fond des écrans reste le bleu de l'app
+logo: logo.png # le motif de la carte du loup (planche Gemini), détouré sur fond transparent
 tagline: La nuit, les loups attaquent. Le jour, le village vote.
 description: >-
   Chacun reçoit une carte secrète. Les loups-garous se cachent parmi les villageois et frappent chaque nuit. Le jour,

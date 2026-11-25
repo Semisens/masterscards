@@ -47,7 +47,7 @@ Jeremy note de petites évolutions dans `PATCHES.md` (racine, dans `.gitignore`)
 0. **Avant toute chose, `git pull --rebase`** : l'action de déploiement pousse sur `main` un commit « Version x.y.z ».
    Quoi qu'il arrive, commence par là (et de même avant toute autre demande).
 1. Prends **le premier patch du haut**, un seul par cycle.
-2. Passe en **mode plan** et pose tes questions ; il valide le plan.
+2. Passe **aussitôt et de toi-même en mode plan** (juste après le pull et la lecture du patch, avant d'explorer le code) et pose tes questions ; il valide le plan.
 3. Développe. Il teste à la main (`npm run dev`).
 4. Commit quand il le demande (le hook lance les tests). **Ensuite seulement**, retire ce patch de `PATCHES.md`.
    Le fichier reste, même vide : ne le supprime jamais.
