@@ -122,7 +122,7 @@ test.describe('écrans sans maquette', () => {
 
   test('à propos', async ({ page }) => {
     await page.goto('/a-propos')
-    await expect(page.getByRole('heading', { name: 'Application non officielle' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Le principe' })).toBeVisible()
     await ready(page)
     await expect(page).toHaveScreenshot('a-propos.png')
   })
